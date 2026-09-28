@@ -1,5 +1,18 @@
+# --- Python ---
 venv/
+.venv/
 __pycache__/
+*.pyc
+
+# --- Local databases and uploads ---
 *.sqlite3
 media/
+
+# --- Secrets (never commit these) ---
 .env
+
+# --- Editors and OS files ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
