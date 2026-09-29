@@ -1,0 +1,23 @@
+{% load i18n %}
+{# Usage: {% include "partials/pagination.html" with page=page_obj %} #}
+{% if page.paginator.num_pages > 1 %}
+  <div class="pagination">
+    <span>
+      {% blocktrans trimmed with number=page.number total=page.paginator.num_pages %}
+        Page {{ number }} of {{ total }}
+      {% endblocktrans %}
+    </span>
+    {% if page.has_previous %}
+      <a class="btn btn-outline btn-sm"
+         href="{% querystring page=page.previous_page_number %}">
+        {% trans "Previous" %}
+      </a>
+    {% endif %}
+    {% if page.has_next %}
+      <a class="btn btn-accent btn-sm"
+         href="{% querystring page=page.next_page_number %}">
+        {% trans "Next" %}
+      </a>
+    {% endif %}
+  </div>
+{% endif %}

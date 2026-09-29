@@ -17,11 +17,19 @@ TrustyHands bridges the gap between reliable homeowners and skilled professional
 ---
 
 ## 🛠️ Technology Stack & Architecture
-* **Frontend Design & Prototyping:** Figma (Cyber-luxury dark & light mode styling system, auto-layout components, custom color palettes).
-* **Web Application Architecture:** 
-  * **Framework:** Django
-  * **Backend & Database:** Python (Flask/Django models), MS SQL Server (stored procedures, triggers, complex relational queries).
-
+* **Frontend Design & Prototyping:** Figma (light and dark mode, custom colour palette).
+* **Web Application Architecture:**
+ * **Framework:** Django 6.1 (Python 3.12 or newer)
+ * **Database:** MongoDB Atlas, connected with `django-mongodb-backend`
+ * **Pages:** Django templates, plain CSS and JavaScript, Chart.js for dashboard charts
+ * **Languages:** English and French (Django translations)
+## Getting Started
+1. Clone the repository and open the folder.
+2. Create a virtual environment and install the packages:
+ `python -m venv venv`, activate it, then `pip install -r requirements.txt`
+3. Copy `.env.example` to `.env` and paste the MongoDB Atlas connection string.
+4. Run `python manage.py migrate`, then `python manage.py seed_demo` for demo data.
+5. Start the site with `python manage.py runserver` and open http://127.0.0.1:8000
 
 ## ✨ Key Features & Screen Workflows
 

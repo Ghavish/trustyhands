@@ -1,0 +1,26 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Log in" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/users/auth.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Welcome back" %}{% endblock %}
+{% block page_subtitle %}{% trans "Log in with your email or phone number." %}{% endblock %}
+
+{% block page_body %}
+<div class="page-card auth-card">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% include "partials/form_field.html" with field=form.username %}
+    {% include "partials/form_field.html" with field=form.password %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn btn-accent btn-block" type="submit">{% trans "Log in" %}</button>
+  </form>
+  <div class="auth-links">
+    <a href="{% url 'users:password_reset' %}">{% trans "Forgot your password?" %}</a>
+    <a href="{% url 'users:register' %}">{% trans "Create an account" %}</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% load static i18n th_tags %}
+{% with current=request.resolver_match.url_name %}
+<a class="dash-brand" href="{% url 'dashboard:analytics' %}">
+  <img src="{% static 'images/logo.png' %}" alt="">
+  <span><strong>TrustyHands</strong><span>{% trans "Admin" %}</span></span>
+</a>
+
+<nav class="side-nav">
+  <a href="{% url 'dashboard:analytics' %}"
+     class="side-link {% if current == 'analytics' %}active{% endif %}">
+    {% icon "grid" 26 %} {% trans "Admin Dashboard" %}
+  </a>
+  <a href="{% url 'dashboard:verification_queue' %}"
+     class="side-link {% if 'verification' in current %}active{% endif %}">
+    {% icon "check-circle" 26 %} {% trans "Verification Queue" %}
+  </a>
+  <a href="{% url 'dashboard:user_management' %}"
+     class="side-link {% if 'user_' in current %}active{% endif %}">
+    {% icon "users" 26 %} {% trans "User management" %}
+  </a>
+  <a href="{% url 'dashboard:service_requests' %}"
+     class="side-link {% if 'request' in current %}active{% endif %}">
+    {% icon "user" 26 %} {% trans "Service Requests" %}
+  </a>
+  <a href="{% url 'dashboard:category_management' %}"
+     class="side-link {% if 'categor' in current %}active{% endif %}">
+    {% icon "tag" 26 %} {% trans "Categories" %}
+  </a>
+  <a href="{% url 'dashboard:review_moderation' %}"
+     class="side-link {% if 'review' in current %}active{% endif %}">
+    {% icon "star" 26 %} {% trans "Reviews" %}
+  </a>
+</nav>
+
+<hr class="side-divider">
+
+<nav class="side-nav">
+  <a class="side-link" href="{% url 'dashboard:analytics' %}">
+    {% icon "home" 26 %} {% trans "Home" %}
+  </a>
+  <form method="post" action="{% url 'users:logout' %}">
+    {% csrf_token %}
+    <button class="side-link" type="submit">
+      {% icon "logout" 26 %} {% trans "Sign Out" %}
+    </button>
+  </form>
+</nav>
+
+<div class="side-bottom">
+  <a class="btn btn-accent btn-block" href="{% url 'core:home' %}">
+    {% icon "swap" 24 %} {% trans "Switch to Client view" %}
+  </a>
+</div>
+{% endwith %}

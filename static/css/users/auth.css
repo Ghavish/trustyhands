@@ -1,0 +1,31 @@
+/* Login, register and password reset pages. */
+
+.auth-card {
+  max-width: 460px;
+}
+
+.auth-card-wide {
+  max-width: 760px;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.role-choice > div {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.role-choice label {
+  font-weight: 500;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}

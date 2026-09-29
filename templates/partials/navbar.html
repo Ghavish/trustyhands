@@ -1,0 +1,35 @@
+{% load static i18n th_tags %}
+<header class="site-nav">
+  <a class="brand" href="{% url 'core:home' %}">
+    <img src="{% static 'images/logo.png' %}" alt="TrustyHands logo">
+    <span class="brand-name">TrustyHands</span>
+  </a>
+
+  <nav class="nav-links">
+    {# About Us and Careers have no screen yet, so they are plain text. #}
+    <span>{% trans "About Us" %}</span>
+    <a href="{% url 'client:provider_list' %}">{% trans "Services" %}</a>
+    <span>{% trans "Careers" %}</span>
+    <a href="{% if on_landing %}#contact{% else %}{% url 'core:home' %}#contact{% endif %}">
+      {% trans "Contact" %}
+    </a>
+  </nav>
+
+  <div class="nav-actions">
+    {% if show_dashboard_button %}
+      <a class="btn btn-accent nav-cta" href="{% url 'provider:active_jobs' %}">
+        {% trans "Service Provider Dashboard" %}
+      </a>
+    {% else %}
+      <a class="btn btn-accent nav-cta" href="{% url 'client:provider_list' %}">
+        {% trans "Book Now" %}
+      </a>
+    {% endif %}
+    {% include "partials/theme_toggle.html" %}
+    {% include "partials/language_switch.html" %}
+    {% include "partials/account_menu.html" %}
+    <button class="icon-btn nav-toggle" type="button" aria-label="{% trans 'Menu' %}">
+      {% icon "menu" %}
+    </button>
+  </div>
+</header>

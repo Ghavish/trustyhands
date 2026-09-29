@@ -1,0 +1,45 @@
+{% load static i18n %}
+<footer class="site-footer" id="footer">
+  <div class="footer-grid">
+    <div>
+      <h4>{% trans "For clients" %}</h4>
+      <ul>
+        <li>
+          <a href="{% url 'client:provider_list' %}">{% trans "Browse Services" %}</a>
+        </li>
+        <li>{% trans "How it Works" %}</li>
+        <li>{% trans "FAQ" %}</li>
+      </ul>
+    </div>
+    <div>
+      <h4>{% trans "For Providers" %}</h4>
+      <ul>
+        <li>
+          <a href="{% url 'users:register' %}?role=PROVIDER">{% trans "Become a Provider" %}</a>
+        </li>
+        <li>{% trans "Provider FAQ" %}</li>
+        <li>{% trans "Verification Process" %}</li>
+      </ul>
+    </div>
+    <div>
+      <h4>{% trans "Company" %}</h4>
+      <ul>
+        <li>{% trans "About Us" %}</li>
+        <li>{% trans "Terms & Privacy" %}</li>
+      </ul>
+    </div>
+    <div>
+      <h4>{% trans "Contact Us" %}</h4>
+      <div class="social-row">
+        <img src="{% static 'images/icon_facebook.png' %}" alt="Facebook">
+        <img src="{% static 'images/icon_whatsapp.png' %}" alt="WhatsApp">
+        <img src="{% static 'images/icon_instagram.png' %}" alt="Instagram">
+        <img src="{% static 'images/icon_linkedin.png' %}" alt="LinkedIn">
+      </div>
+      <ul>
+        <li><a href="tel:555555">555-555</a></li>
+        <li><a href="mailto:trustyhands@trusty-hands.mu">trustyhands@trusty-hands.mu</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

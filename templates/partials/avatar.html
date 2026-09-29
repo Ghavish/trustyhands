@@ -1,0 +1,12 @@
+{% load th_tags %}
+{# Usage: {% include "partials/avatar.html" with person=some_user size="40" %} #}
+{% with px=size|default:"40" %}
+{% if person.profile_picture %}
+  <img class="avatar" src="{{ person.profile_picture.url }}"
+       alt="{{ person.display_name }}"
+       style="width:{{ px }}px;height:{{ px }}px">
+{% else %}
+  <span class="avatar avatar-fallback"
+        style="width:{{ px }}px;height:{{ px }}px">{{ person|initials }}</span>
+{% endif %}
+{% endwith %}

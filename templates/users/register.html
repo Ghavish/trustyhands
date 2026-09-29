@@ -1,0 +1,39 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Register" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/users/auth.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Create your account" %}{% endblock %}
+{% block page_subtitle %}
+  {% trans "Clients book trusted professionals. Providers grow their business." %}
+{% endblock %}
+
+{% block page_body %}
+<div class="page-card auth-card auth-card-wide">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-field role-choice">
+      <span class="form-label">{{ form.role.label }}</span>
+      {{ form.role }}
+      {{ form.role.errors }}
+    </div>
+    <div class="grid-2">
+      {% include "partials/form_field.html" with field=form.first_name %}
+      {% include "partials/form_field.html" with field=form.last_name %}
+      {% include "partials/form_field.html" with field=form.email %}
+      {% include "partials/form_field.html" with field=form.phone %}
+      {% include "partials/form_field.html" with field=form.district %}
+      <div></div>
+      {% include "partials/form_field.html" with field=form.password1 %}
+      {% include "partials/form_field.html" with field=form.password2 %}
+    </div>
+    <button class="btn btn-accent btn-block" type="submit">{% trans "Register" %}</button>
+  </form>
+  <div class="auth-links">
+    <a href="{% url 'users:login' %}">{% trans "Already have an account? Log in" %}</a>
+  </div>
+</div>
+{% endblock %}
