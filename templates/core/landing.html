@@ -1,0 +1,74 @@
+{% extends "layouts/public.html" %}
+{% load static i18n %}
+{% comment %}
+  One long page made of the three Figma frames:
+  1. Landing Page (hero)  2. Experts Screen  3. Contact Page
+  The provider landing page reuses this template with
+  show_dashboard_button=True.
+{% endcomment %}
+
+{% block title %}{% trans "Home" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/core/landing.css' %}">
+{% endblock %}
+
+{% block content %}
+{# --- 1. Hero --- #}
+<section class="hero" style="background-image: url('{% static 'images/hero.jpg' %}')">
+  <div class="hero-shade"></div>
+  <div class="hero-text">
+    <h1>{% trans "Trusted Hands for" %}<br>{% trans "What Matters Most" %}</h1>
+    <p>{% trans "High Quality, vetted Home Services with unmatched care and transparency" %}</p>
+    <div class="row">
+      <a class="btn btn-accent hero-btn" href="{% url 'client:provider_list' %}">
+        {% trans "Explore Services" %}
+      </a>
+      <a class="btn btn-outline hero-btn hero-btn-light" href="#experts">
+        {% trans "Our Experts" %}
+      </a>
+    </div>
+  </div>
+</section>
+
+{# --- 2. Experts: one card per active category, from MongoDB --- #}
+<section class="experts" id="experts"
+         style="--experts-bg: url('{% static 'images/experts_bg.jpg' %}')">
+  <h2>{% trans "Our Experts at Your Service" %}</h2>
+  <div class="expert-grid">
+    {% for category in categories %}
+      <a class="expert-card"
+         href="{% url 'client:provider_list' %}?category={{ category.slug }}">
+        {% if category.icon %}
+          <img src="{{ category.icon.url }}" alt="">
+        {% endif %}
+        <span>{{ category.name }}</span>
+      </a>
+    {% empty %}
+      <p class="muted">{% trans "No categories yet." %}</p>
+    {% endfor %}
+  </div>
+</section>
+
+{# --- 3. Join us / contact --- #}
+<section class="join" id="contact"
+         style="background-image: url('{% static 'images/contact_bg.jpg' %}')">
+  <h2>{% trans "Join Mauritius' Trusted Network of Professionals" %}</h2>
+  <p>
+    {% blocktrans trimmed %}
+      From carpentry to electrical work, TrustyHands connects verified
+      providers with clients in their district, available in English,
+      and French.
+    {% endblocktrans %}
+  </p>
+  {% if user.is_authenticated and user.is_provider %}
+    <a class="btn btn-accent join-btn" href="{% url 'provider:registration' %}">
+      {% trans "Join Us" %}
+    </a>
+  {% else %}
+    <a class="btn btn-accent join-btn" href="{% url 'users:register' %}?role=PROVIDER">
+      {% trans "Join Us" %}
+    </a>
+  {% endif %}
+  <img class="join-mascot" src="{% static 'images/worker_mascot.png' %}" alt="">
+</section>
+{% endblock %}
