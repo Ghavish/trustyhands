@@ -1,0 +1,10 @@
+{% load i18n th_tags %}
+{# Sun / switch / moon. The click is handled in static/js/base.js. #}
+<button class="theme-switch" type="button" data-theme-toggle
+        data-url="{% url 'core:set_preferences' %}"
+        title="{% trans 'Switch light or dark mode' %}">
+  {% icon "sun" 20 %}
+  <span class="theme-track"></span>
+  {% icon "moon" 20 %}
+  <span class="sr-only">{% trans "Switch light or dark mode" %}</span>
+</button>

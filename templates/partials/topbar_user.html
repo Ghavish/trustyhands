@@ -1,0 +1,29 @@
+{% load i18n th_tags %}
+{# Bell with unread dot, then the user's picture, name and "Online". #}
+{% if user.is_provider %}
+  <a class="icon-btn" href="{% url 'provider:notifications' %}"
+     title="{% trans 'Notifications' %}">
+    {% icon "bell" 22 %}
+    {% if unread_notifications %}<span class="bell-dot"></span>{% endif %}
+  </a>
+{% endif %}
+<div class="dropdown" data-dropdown>
+  <button class="user-chip theme-switch" type="button" data-dropdown-trigger>
+    {% include "partials/avatar.html" with person=user size="46" %}
+    <span>
+      <strong>{{ user.display_name }}</strong>
+      <span class="online"><span class="dot"></span>{% trans "Online" %}</span>
+    </span>
+    {% icon "chevron-down" 18 %}
+  </button>
+  <div class="dropdown-menu">
+    {% if user.is_provider %}
+      <a href="{% url 'users:edit_profile' %}">{% icon "edit" 18 %} {% trans "Edit Profile" %}</a>
+      <a href="{% url 'provider:choose_plan' %}">{% icon "tag" 18 %} {% trans "My Plan" %}</a>
+    {% endif %}
+    <form method="post" action="{% url 'users:logout' %}">
+      {% csrf_token %}
+      <button type="submit">{% icon "logout" 18 %} {% trans "Sign Out" %}</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+{% load static i18n th_tags %}
+{% with current=request.resolver_match.url_name %}
+<a class="dash-brand" href="{% url 'provider:landing' %}">
+  <img src="{% static 'images/logo.png' %}" alt="">
+  <span><strong>TrustyHands</strong><span>{% trans "Service Provider" %}</span></span>
+</a>
+
+<nav class="side-nav">
+  <a href="{% url 'provider:active_jobs' %}"
+     class="side-link {% if 'job' in current %}active{% endif %}">
+    {% icon "grid" 26 %} {% trans "Active Jobs" %}
+  </a>
+  <a href="{% url 'provider:schedule_manager' %}"
+     class="side-link {% if 'schedule' in current %}active{% endif %}">
+    {% icon "calendar" 26 %} {% trans "Schedule Manager" %}
+  </a>
+  <a href="{% url 'provider:portfolio_editor' %}"
+     class="side-link {% if 'portfolio' in current %}active{% endif %}">
+    {% icon "folder" 26 %} {% trans "Portfolio Editor" %}
+  </a>
+  <a href="{% url 'provider:earnings_overview' %}"
+     class="side-link {% if 'earnings' in current %}active{% endif %}">
+    {% icon "dollar" 26 %} {% trans "Earnings" %}
+  </a>
+  <a href="{% url 'provider:provider_reviews' %}"
+     class="side-link {% if 'review' in current %}active{% endif %}">
+    {% icon "star" 26 %} {% trans "Reviews" %}
+  </a>
+</nav>
+
+<hr class="side-divider">
+
+<form method="post" action="{% url 'users:logout' %}">
+  {% csrf_token %}
+  <button class="side-link" type="submit">
+    {% icon "logout" 26 %} {% trans "Sign Out" %}
+  </button>
+</form>
+
+<div class="side-bottom">
+  <a class="btn btn-accent btn-block" href="{% url 'core:home' %}">
+    {% icon "swap" 24 %} {% trans "Switch to Client view" %}
+  </a>
+</div>
+{% endwith %}

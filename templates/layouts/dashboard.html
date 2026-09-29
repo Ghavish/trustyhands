@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{# Shell for provider and admin pages: sidebar on the left. #}
+
+{% block extra_js %}
+  {# Chart.js for the dashboard charts, then our helpers #}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="{% static 'js/charts.js' %}"></script>
+  {% block screen_js %}{% endblock %}
+{% endblock %}
+
+{% block body %}
+<div class="dash">
+  <aside class="dash-sidebar">
+    {% if user.is_platform_admin %}
+      {% include "partials/sidebar_admin.html" %}
+    {% else %}
+      {% include "partials/sidebar_provider.html" %}
+    {% endif %}
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <h1 class="dash-title">{% block page_title %}{% endblock %}</h1>
+      <div class="topbar-tools">
+        {% block topbar_extra %}{% endblock %}
+        {% include "partials/theme_toggle.html" %}
+        {% include "partials/language_switch.html" %}
+        {% include "partials/topbar_user.html" %}
+      </div>
+    </div>
+
+    {% if user.is_provider and user.provider_profile %}
+      {% if user.provider_profile.verification_status != "APPROVED" %}
+        <div class="banner">
+          {% blocktrans trimmed %}
+            Your profile is pending verification.
+            Clients will see you once an admin approves it.
+          {% endblocktrans %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% include "partials/messages.html" %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

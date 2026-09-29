@@ -1,0 +1,13 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{# English / French choice (FR 9.1). Saved by core/views/preferences.py #}
+<form class="lang-form" method="post" action="{% url 'core:set_preferences' %}"
+      data-auto-submit>
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <label class="sr-only" for="language-select">{% trans "Language" %}</label>
+  <select id="language-select" name="language">
+    <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>EN</option>
+    <option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}>FR</option>
+  </select>
+</form>

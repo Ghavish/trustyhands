@@ -1,0 +1,30 @@
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ current_theme }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}TrustyHands{% endblock %} | TrustyHands</title>
+  <link rel="icon" href="{% static 'images/logo.png' %}">
+
+  {# --- Fonts from Figma: Playfair Display and Inter --- #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&display=swap">
+
+  {# --- Shared styles, then the styles of the current screen --- #}
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% block body %}{% endblock %}
+
+  <script src="{% static 'js/base.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
