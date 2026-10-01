@@ -1,0 +1,14 @@
+{% extends "layouts/generic_page.html" %}
+{% load i18n %}
+{# Placeholder shown until the owner of a screen merges their work. #}
+
+{% block title %}{{ screen_name }}{% endblock %}
+{% block page_title %}{{ screen_name }}{% endblock %}
+{% block page_subtitle %}{% trans "This screen is being built." %}{% endblock %}
+
+{% block page_body %}
+  <div class="page-card empty-state">
+    <h2>{% trans "Coming soon" %}</h2>
+    <p>{% blocktrans %}{{ owner }} is working on this screen.{% endblocktrans %}</p>
+  </div>
+{% endblock %}
