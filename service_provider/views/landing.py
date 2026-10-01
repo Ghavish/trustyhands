@@ -1,13 +1,14 @@
 """
-PLACEHOLDER written by Ghavish in Phase 1 so every link already works.
-Yashmeeta replaces the WHOLE content of this file with the real screen.
+Service Provider landing page (Yashmeeta).
+The same long page as the client landing page, with a
+"Service Provider Dashboard" button in the navbar instead of "Book Now".
 """
 
 from django.shortcuts import render
 
+from core.views.landing import landing_context
+
+
 def provider_landing(request):
-    context = {
-    "screen_name": "Service Provider Landing Page",
-    "owner": "Yashmeeta",
-    }
-    return render(request, "layouts/coming_soon.html", context)
+    context = landing_context(show_dashboard_button=True)
+    return render(request, "core/landing.html", context)
