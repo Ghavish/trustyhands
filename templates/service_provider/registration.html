@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "New Professional Portfolio Hub" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/onboarding.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="ob-page" style="background-image: url('{% static 'images/onboarding_bg.jpg' %}')">
+  <div class="ob-tools">
+    {% include "partials/theme_toggle.html" %}
+    {% include "partials/language_switch.html" %}
+  </div>
+
+  <header class="ob-header">
+    <img class="ob-logo" src="{% static 'images/logo.png' %}" alt="TrustyHands">
+    <div>
+      <h1>{% trans "New Professional Portfolio Hub" %}</h1>
+      <p>
+        {% blocktrans trimmed %}
+          Complete these steps to build your professional profile and
+          showcase your key projects.
+        {% endblocktrans %}
+      </p>
+    </div>
+  </header>
+  {% include "partials/messages.html" %}
+
+  <div class="ob-layout">
+    {# --- Left steps (decoration from Figma) --- #}
+    <ul class="ob-steps">
+      <li><img src="{% static 'images/step_profile.png' %}" alt="">
+        <span><strong>{% trans "Build Your Profile" %}</strong>
+          {% trans "Create a strong professional identity" %}</span></li>
+      <li><img src="{% static 'images/step_showcase.png' %}" alt="">
+        <span><strong>{% trans "Showcase" %}</strong>
+          {% trans "your expertise" %}</span></li>
+      <li><img src="{% static 'images/step_standout.png' %}" alt="">
+        <span><strong>{% trans "Stand Out" %}</strong>
+          {% trans "Impress Clients & embrace opportunities" %}</span></li>
+    </ul>
+
+    {# --- The form --- #}
+    <form class="ob-form" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="grid-2">
+        {% include "partials/form_field.html" with field=form.full_name %}
+        {% include "partials/form_field.html" with field=form.profession_title %}
+      </div>
+
+      <div class="form-field ob-categories">
+        <span class="form-label">{{ form.categories.label }}</span>
+        {{ form.categories }}
+        {{ form.categories.errors }}
+      </div>
+
+      {# Projects: one block per project, "Add New Project" adds more #}
+      {{ projects.management_form }}
+      {{ projects.non_form_errors }}
+      <p class="ob-projects-title">
+        {% trans "My Projects" %} (<span id="project-count">{{ projects.total_form_count }}</span>
+        {% trans "Added" %})
+      </p>
+      <div class="ob-projects" id="project-list">
+        {% for project in projects %}
+          {% include "service_provider/partials/project_block.html" with project=project %}
+        {% endfor %}
+      </div>
+      <template id="project-template">
+        {% with empty=projects.empty_form %}
+          {% include "service_provider/partials/project_block.html" with project=empty %}
+        {% endwith %}
+      </template>
+      <button class="btn btn-accent btn-block ob-add" type="button" id="add-project">
+        {% icon "plus" 18 %} {% trans "Add New Project" %}
+      </button>
+
+      <div class="grid-2">
+        {% include "partials/form_field.html" with field=form.years_experience %}
+        {% include "partials/form_field.html" with field=form.district %}
+      </div>
+      {% include "partials/form_field.html" with field=form.bio %}
+      <div class="grid-2">
+        {% include "partials/form_field.html" with field=form.document_type %}
+        {% include "partials/form_field.html" with field=form.document %}
+      </div>
+
+      <button class="btn btn-accent btn-block" type="submit">
+        {% trans "Submit Your Profile" %}
+      </button>
+    </form>
+
+    {# --- Right steps (decoration from Figma) --- #}
+    <ul class="ob-steps">
+      <li><img src="{% static 'images/step_connect.png' %}" alt="">
+        <span><strong>{% trans "Connect" %}</strong> {% trans "with clients" %}</span></li>
+      <li><img src="{% static 'images/step_projects.png' %}" alt="">
+        <span><strong>{% trans "Showcase Projects" %}</strong>
+          {% trans "Highlight your best work and achievements" %}</span></li>
+      <li><img src="{% static 'images/step_grow.png' %}" alt="">
+        <span><strong>{% trans "Grow" %}</strong> {% trans "Your career" %}</span></li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/service_provider/registration.js' %}"></script>
+{% endblock %}

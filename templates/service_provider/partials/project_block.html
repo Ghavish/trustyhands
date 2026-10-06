@@ -1,0 +1,23 @@
+{% load i18n th_tags %}
+{# One project in the Portfolio Hub. Used by registration.html. #}
+<div class="ob-project">
+  {% include "partials/form_field.html" with field=project.title %}
+  <div class="ob-uploads">
+    <label class="ob-upload">
+      {% icon "upload" 26 %}
+      <span>{{ project.blueprint.label }}</span>
+      {{ project.blueprint }}
+    </label>
+    <label class="ob-upload">
+      {% icon "file" 26 %}
+      <span>{{ project.technical_specs.label }}</span>
+      {{ project.technical_specs }}
+    </label>
+    <label class="ob-upload">
+      {% icon "camera" 26 %}
+      <span>{{ project.photos.label }}</span>
+      {{ project.photos }}
+    </label>
+  </div>
+  {{ project.photos.errors }}
+</div>
