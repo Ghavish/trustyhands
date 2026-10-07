@@ -1,0 +1,254 @@
+/* Service Provider screen: header, filters sidebar and provider cards. */
+.pl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 165px;
+    padding: 0 1.5rem;
+    background-size: cover;
+    background-color: var(--background);
+    border-bottom: 4px solid var(--navy);
+}
+.pl-logo {
+    width: 110px;
+    height: 130px;
+    object-fit: contain;
+}
+.pl-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.pl-join {
+    font: 1.35rem "Indie Flower", "Comic Sans MS", cursive;
+}
+.pl-layout {
+    display: grid;  
+    grid-template-columns: 306px 1fr;
+    min-height: calc(100vh - 165px);
+}
+
+/* --- Sidebar --- */
+.pl-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 1.2rem;
+  background: var(--background);
+  box-shadow: 3px 7px 16px 3px rgba(0, 0, 0, 0.25);
+}
+ 
+.pl-services-title {
+  font: 400 1.5rem var(--font-body);
+  margin-bottom: 1rem;
+}
+ 
+.pl-category {
+  background: var(--navy);
+  color: #fff;
+  margin-bottom: 0.8rem;
+}
+ 
+.pl-filter-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  margin: 1.4rem 0 0.4rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+ 
+.pl-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+ 
+.pl-scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  font-size: 0.85rem;
+}
+ 
+.pl-help {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  margin-top: 2rem;
+}
+ 
+/* --- Results --- */
+.pl-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1rem;
+  background: var(--navy);
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+ 
+.pl-banner .icon {
+  color: var(--gold);
+}
+ 
+.pl-banner-tag {
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: var(--gold);
+}
+ 
+.pl-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem 3rem;
+}
+ 
+.pl-card {
+  display: grid;
+  grid-template-columns: 200px 1.2fr 1fr 220px;
+  align-items: stretch;
+  min-height: 210px;
+  background: var(--surface-alt);
+  border: 2px solid var(--text);
+  border-radius: 25px;
+  overflow: hidden;
+}
+ 
+.pl-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+ 
+.pl-cover-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-muted);
+}
+ 
+.pl-info,
+.pl-services,
+.pl-side {
+  padding: 0.9rem 1.1rem;
+}
+ 
+.pl-info h3 {
+  font: 600 1.9rem var(--font-body);
+  margin: 0;
+}
+ 
+.pl-title {
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+ 
+.pl-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+ 
+.pl-services {
+  border-left: 1.5px solid var(--text);
+  border-right: 1.5px solid var(--text);
+  margin: 1rem 0;
+  padding-top: 0;
+}
+ 
+.pl-services-label {
+  font-weight: 600;
+}
+
+.pl-service {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+}
+ 
+.pl-service img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+ 
+.pl-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+}
+ 
+.pl-location {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+ 
+.pl-view {
+  font-size: 1.1rem;
+}
+ 
+.pl-fav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+ 
+.pl-fav.saved {
+  color: var(--danger);
+}
+ 
+@media (max-width: 1100px) {
+  .pl-card {
+    grid-template-columns: 160px 1fr;
+  }
+ 
+  .pl-services {
+    border: none;
+    margin: 0;
+  }
+}
+ 
+@media (max-width: 800px) {
+  .pl-layout {
+    grid-template-columns: 1fr;
+  }
+ 
+  .pl-cards {
+    padding: 1rem;
+  }
+ 
+  .pl-card {
+    grid-template-columns: 1fr;
+  }
+ 
+  .pl-cover {
+    height: 200px;
+  }
+  .pl-join {
+display: none;
+}
+}
+/* Dark mode: darken the light tools illustration behind the header. */
+[data-theme="dark"] .pl-header {
+background-color: var(--surface);
+background-blend-mode: multiply;
+}
