@@ -1,0 +1,83 @@
+{% extends "layouts/public.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Book a Service" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/client/booking.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="bk-hero">
+  <h1>{% trans "Reach Out to Your Home's Ally" %}</h1>
+  <p>
+    {% blocktrans trimmed with name=provider.business_name %}
+      Complete your hire request details to connect with {{ name }}, a verified professional
+    {% endblocktrans %}
+  </p>
+</section>
+
+<form class="bk-form" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="bk-grid">
+    {# --- Left: contact and job details --- #}
+    <div class="bk-left">
+      {% include "partials/form_field.html" with field=form.contact_name %}
+      {% include "partials/form_field.html" with field=form.contact_phone %}
+      {% include "partials/form_field.html" with field=form.contact_email %}
+      {% include "partials/form_field.html" with field=form.location %}
+      <div class="bk-row">
+        {% include "partials/form_field.html" with field=form.category %}
+        {% include "partials/form_field.html" with field=form.job_type %}
+        {% include "partials/form_field.html" with field=form.urgency %}
+      </div>
+      {% include "partials/form_field.html" with field=form.description %}
+    </div>
+
+    {# --- Right: calendar and photos --- #}
+    <div class="bk-right">
+      <div class="bk-card bk-calendar-card">
+        <img class="bk-keys" src="{% static 'images/booking_keys.png' %}" alt="">
+        <img class="bk-wrench" src="{% static 'images/booking_wrench.png' %}" alt="">
+        <h2>{% trans "Select Your Preferred Date" %}</h2>
+        <p class="bk-selected">
+          {% trans "Date Selected:" %} <span id="selected-label">-</span>
+        </p>
+        <div id="booking-calendar" class="bk-calendar"
+             data-today="{{ today }}" data-lang="{{ LANGUAGE_CODE }}"></div>
+        {{ form.preferred_date }}
+        {{ form.preferred_date.errors }}
+        <p class="bk-legend"><span class="bk-blocked-dot"></span> {% trans "Not available" %}</p>
+      </div>
+
+      <label class="bk-photos-label" for="{{ form.photos.id_for_label }}">
+        {{ form.photos.label }}
+      </label>
+      <div class="bk-card">
+        <div class="bk-slots" id="photo-slots">
+          {% for slot in photo_slots %}
+            <div class="bk-slot">
+              {% if forloop.first %}
+                <img src="{% static 'images/booking_camera.png' %}" alt="">
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <label class="btn btn-accent btn-sm bk-add-photo">
+          {% trans "Add Photo" %}
+          {{ form.photos }}
+        </label>
+        {{ form.photos.errors }}
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-accent bk-submit" type="submit">{% trans "Submit Request" %}</button>
+</form>
+
+{{ blocked|json_script:"blocked-days" }}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/client/booking.js' %}"></script>
+{% endblock %}

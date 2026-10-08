@@ -1,0 +1,229 @@
+/* Service Booking: navy header, form on the left, calendar on the right. */
+
+.bk-hero {
+  background: var(--navy);
+  color: #fff;
+  text-align: center;
+  padding: 1.5rem 1rem 1.8rem;
+}
+
+.bk-hero h1 {
+  font: 700 clamp(2rem, 5vw, 4.3rem) var(--font-body);
+  margin: 0;
+}
+
+.bk-hero p {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0.4rem 0 0;
+}
+
+.bk-form {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.bk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.bk-left label,
+.bk-photos-label {
+  font: 500 1.3rem var(--font-body);
+}
+
+.bk-left input,
+.bk-left select,
+.bk-left textarea {
+  background: var(--surface-alt);
+  border: 1.5px solid var(--text);
+  min-height: 56px;
+}
+
+.bk-left textarea {
+  min-height: 190px;
+}
+
+.bk-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.bk-row label {
+  font-size: 1rem;
+}
+
+.bk-card {
+  position: relative;
+  background: var(--surface-alt);
+  border: 1.5px solid var(--text);
+  border-radius: 8px;
+  padding: 1rem 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.bk-calendar-card {
+  text-align: center;
+}
+
+.bk-calendar-card h2 {
+  font: 400 1.9rem var(--font-body);
+  margin: 0;
+}
+
+.bk-keys,
+.bk-wrench {
+  position: absolute;
+  top: 3.5rem;
+  width: 70px;
+}
+
+.bk-keys { left: 1rem; }
+.bk-wrench { right: 1rem; }
+
+.bk-selected {
+  font-size: 1.1rem;
+  margin: 2.2rem 0 0.6rem;
+}
+
+.bk-calendar {
+  background: var(--surface);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 0.8rem;
+  box-shadow: var(--shadow);
+}
+
+.bk-cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.bk-cal-header button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.bk-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.bk-cal-day-name {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.bk-cal-day {
+  border: none;
+  background: none;
+  color: var(--text);
+  padding: 0.45rem 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font: 0.9rem var(--font-body);
+}
+
+.bk-cal-day:hover:not(:disabled) {
+  background: var(--surface-alt);
+}
+
+.bk-cal-day:disabled {
+  color: var(--border);
+  cursor: not-allowed;
+}
+
+.bk-cal-day.blocked {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.bk-cal-day.selected {
+  background: #1f6feb;
+  color: #fff;
+}
+
+.bk-legend {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0.5rem 0 0;
+}
+
+.bk-blocked-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--danger-soft);
+  border: 1px solid var(--danger);
+}
+
+.bk-slots {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.bk-slot {
+  aspect-ratio: 5 / 4;
+  border: 3px dotted var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bk-slot img {
+  max-width: 75%;
+}
+
+.bk-slot .bk-preview {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bk-add-photo {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.bk-add-photo input {
+  display: none;
+}
+
+.bk-submit {
+  display: flex;
+  width: min(360px, 100%);
+  margin: 1.5rem auto 0;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .bk-grid,
+  .bk-row {
+    grid-template-columns: 1fr;
+  }
+
+  .bk-keys,
+  .bk-wrench {
+    display: none;
+  }
+}
