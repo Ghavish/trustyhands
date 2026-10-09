@@ -1,0 +1,168 @@
+{% extends "layouts/dashboard.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Portfolio Editor" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/portfolio_editor.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Portfolio Editor" %}{% endblock %}
+{% block topbar_extra %}{% include "partials/date_range.html" %}{% endblock %}
+
+{% block content %}
+{# --- Stat cards (gold border, like Figma) --- #}
+<div class="stat-grid pe-stats">
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Total Projects" %}</span>
+    <span class="stat-value">{{ items|length }}</span>
+    <span class="muted">
+      {% if limit %}
+        {% blocktrans %}Your plan allows {{ limit }}{% endblocktrans %}
+      {% else %}
+        {% trans "Unlimited on your plan" %}
+      {% endif %}
+    </span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Portfolio Views" %}</span>
+    <span class="stat-value">{{ view_count }}</span>
+    <div class="pe-spark"><canvas id="views-spark"></canvas></div>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Active Certifications" %}</span>
+    <span class="stat-value">{{ active_certifications }}</span>
+    <span class="status status-{{ user.provider_profile.verification_status|status_class }}">
+      <span class="dot"></span>{{ user.provider_profile.get_verification_status_display }}
+    </span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Client Feedback" %}</span>
+    <span class="stat-value">{{ user.provider_profile.average_rating }}/5</span>
+    <span class="stars">
+      {% for kind in user.provider_profile.average_rating|stars %}
+        <span class="{{ kind }}">{% icon "star" 20 %}</span>
+      {% endfor %}
+    </span>
+  </div>
+</div>
+
+<div class="pe-layout">
+  {# --- Projects --- #}
+  <section class="card">
+    <div class="row-between">
+      <h2 class="pe-title">{% trans "My Projects" %}</h2>
+      {% if can_add %}
+        <a class="btn btn-accent" href="#project-form">
+          {% icon "plus" 18 %} {% trans "Add Project" %}
+        </a>
+      {% else %}
+        <a class="btn btn-outline" href="{% url 'provider:choose_plan' %}">
+          {% trans "Upgrade to add more" %}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="pe-grid">
+      {% for item in items %}
+        <article class="pe-card {% if limit and forloop.counter > limit %}pe-hidden{% endif %}">
+          {% if item.photo %}
+            <img src="{{ item.photo.url }}" alt="{{ item.title }}">
+          {% else %}
+            <div class="pe-noimg">{% icon "camera" 32 %}</div>
+          {% endif %}
+          <h3>{{ item.title }}</h3>
+          <p>-{{ item.client_name }}</p>
+          <div class="pe-card-foot">
+            <span>{{ item.completed_on|date:"M Y" }}</span>
+            <span class="row">
+              <a class="icon-btn" href="?edit={{ item.pk }}#project-form"
+                 aria-label="{% trans 'Edit' %}">{% icon "edit" 18 %}</a>
+              <form method="post" action="{% url 'provider:portfolio_delete' item.pk %}"
+                    data-confirm="{% trans 'Delete this project?' %}">
+                {% csrf_token %}
+                <button class="icon-btn" type="submit" aria-label="{% trans 'Delete' %}">
+                  {% icon "trash" 18 %}
+                </button>
+              </form>
+            </span>
+          </div>
+          {% if limit and forloop.counter > limit %}
+            <span class="badge badge-muted">{% trans "Hidden on your plan" %}</span>
+          {% endif %}
+        </article>
+      {% empty %}
+        <p class="muted">{% trans "No projects yet." %}</p>
+      {% endfor %}
+    </div>
+
+    {# --- Add / edit form --- #}
+    {% if can_add or editing %}
+      <form class="pe-form" id="project-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="save_project">
+        <h3 class="card-title">
+          {% if editing %}{% trans "Edit project" %}{% else %}{% trans "Add a project" %}{% endif %}
+        </h3>
+        <div class="grid-2">
+          {% for field in project_form %}
+            {% include "partials/form_field.html" %}
+          {% endfor %}
+        </div>
+        <button class="btn btn-accent" type="submit">{% trans "Save project" %}</button>
+        {% if editing %}
+          <a class="btn btn-outline" href="{% url 'provider:portfolio_editor' %}">
+            {% trans "Cancel" %}
+          </a>
+        {% endif %}
+      </form>
+    {% endif %}
+  </section>
+
+  {# --- My Portfolio Details --- #}
+  <aside class="card pe-details">
+    <h2 class="card-title">{% trans "My Portfolio Details" %}</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="save_details">
+      {% for field in details_form %}
+        {% include "partials/form_field.html" %}
+      {% endfor %}
+      <button class="btn btn-accent btn-sm" type="submit">{% trans "Save details" %}</button>
+    </form>
+
+    <h3 class="pe-subtitle">{% trans "Certifications & Licenses" %}</h3>
+    <ul class="pe-certs">
+      {% for doc in certifications %}
+        <li>
+          <a href="{{ doc.file.url }}" target="_blank">{{ doc.name|default:doc.file.name }}</a>
+          <span class="badge badge-{{ doc.verification_status|status_class }}">
+            {{ doc.get_verification_status_display }}
+          </span>
+        </li>
+      {% empty %}
+        <li class="muted">{% trans "None yet." %}</li>
+      {% endfor %}
+    </ul>
+    <details>
+      <summary class="btn btn-outline btn-sm">[{% trans "Add Certification" %}]</summary>
+      <form method="post" enctype="multipart/form-data" class="pe-cert-form">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_certification">
+        {% for field in certification_form %}
+          {% include "partials/form_field.html" %}
+        {% endfor %}
+        <button class="btn btn-accent btn-sm" type="submit">{% trans "Upload" %}</button>
+      </form>
+    </details>
+  </aside>
+</div>
+
+{{ views|json_script:"views-trend" }}
+{% endblock %}
+
+{% block screen_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    drawSparkline("views-spark", readJson("views-trend"), "#2f6fed");
+  });
+</script>
+{% endblock %}
