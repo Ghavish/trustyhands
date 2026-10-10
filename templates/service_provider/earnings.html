@@ -1,0 +1,167 @@
+{% extends "layouts/dashboard.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Earnings Overview" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/earnings.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Earnings Overview" %}{% endblock %}
+{% block topbar_extra %}{% include "partials/date_range.html" %}{% endblock %}
+
+{% block content %}
+{# --- Stat cards --- #}
+<div class="er-stats">
+  <div class="card stat-card">
+    <span class="stat-label er-label">{% trans "Total Lifetime Earnings" %}</span>
+    <span class="er-money">{{ lifetime|mur }}</span>
+    <span class="status status-success"><span class="dot"></span>{% trans "Active" %}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label er-label">{% trans "Available for Payout" %}</span>
+    <span class="er-money">{{ available|mur }}</span>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="withdraw">
+      <button class="btn er-withdraw" type="submit">{% trans "Withdraw Funds" %}</button>
+    </form>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label er-label">{% trans "This Month's Earnings" %}</span>
+    <span class="er-money er-blue">{{ this_month|mur }}</span>
+    <div class="er-spark"><canvas id="month-spark"></canvas></div>
+  </div>
+  <div class="card stat-card er-next">
+    <span class="stat-label er-label">{% trans "Next Payout" %}</span>
+    <span class="er-date">{{ next_payout|date:"jS" }}</span>
+    <span class="er-date-month">{{ next_payout|date:"M"|upper }}</span>
+  </div>
+</div>
+
+<div class="er-layout">
+  <div>
+    {# --- Earnings chart --- #}
+    <section class="card er-chart"><canvas id="earnings-chart"></canvas></section>
+
+    {# --- Transactions --- #}
+    <section class="card">
+      <div class="row-between">
+        <h2 class="er-table-title">{% trans "Recent Transactions & Payouts" %}</h2>
+        <form method="get" class="row er-filters">
+          <input type="hidden" name="start" value="{{ range_start|date:'Y-m-d' }}">
+          <input type="hidden" name="end" value="{{ range_end|date:'Y-m-d' }}">
+          <input type="search" name="q" value="{{ search }}" placeholder="{% trans 'Search' %}">
+          <select name="type" onchange="this.form.submit()">
+            <option value="">{% trans "Filter: Job type" %}</option>
+            {% for value, label in job_types %}
+              <option value="{{ value }}" {% if value == job_type %}selected{% endif %}>
+                {{ label }}
+              </option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{% trans "Job ID" %}</th>
+              <th>{% trans "Client" %}</th>
+              <th>{% trans "Job Type" %}</th>
+              <th>{% trans "Date" %}</th>
+              <th>{% trans "Amount" %}</th>
+              <th>{% trans "Payout Status" %}</th>
+              <th>{% trans "Invoice" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for job in transactions %}
+              <tr>
+                <td>{{ job.reference }}</td>
+                <td>{{ job.client.first_name }} {{ job.client.last_name|first }}.</td>
+                <td>{{ job.description|truncatechars:16 }}</td>
+                <td>{{ job.completed_at|date:"M d" }}</td>
+                <td>{{ job.final_amount|mur }}</td>
+                <td>
+                  <span class="badge badge-{{ job.payout_status|status_class }}">
+                    {{ job.get_payout_status_display }}
+                  </span>
+                </td>
+                <td>
+                  <a class="icon-btn" href="{% url 'provider:earnings_invoice' job.pk %}"
+                     target="_blank" aria-label="{% trans 'Invoice' %}">{% icon "file" 24 %}</a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7" class="empty-state">{% trans "No transactions." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  {# --- Earnings details --- #}
+  <aside class="card er-details">
+    <h2>{% trans "Earnings Details" %}</h2>
+    <h3>{% trans "Connected Bank Account" %}</h3>
+    <div class="row-between">
+      <span>{{ provider.bank_label|default:_("No bank account yet") }}</span>
+      {% if provider.bank_account_number %}
+        <span class="badge badge-success">{% trans "Status" %}: {% trans "Active" %}</span>
+      {% endif %}
+    </div>
+    <details class="er-bank">
+      <summary class="btn btn-info btn-block">{% trans "Update Bank" %}</summary>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update_bank">
+        {% for field in bank_form %}{% include "partials/form_field.html" %}{% endfor %}
+        <button class="btn btn-accent btn-sm" type="submit">{% trans "Save" %}</button>
+      </form>
+    </details>
+
+    <h3>{% trans "Payout Schedule" %}</h3>
+    <p>{% trans "Next Payout Date:" %} {{ next_payout|date:"M d, Y" }}</p>
+    <p>{% trans "Estimated Amount:" %} {{ available|mur }}</p>
+    <p>{% trans "Recent Payouts:" %}</p>
+    <ul class="er-payouts">
+      {% for payout in payouts %}
+        <li>
+          + {{ payout.amount|mur }}
+          <span class="muted">{{ payout.paid_at|date:"d M" }}</span>
+        </li>
+      {% empty %}
+        <li class="muted">{% trans "None yet" %}</li>
+      {% endfor %}
+    </ul>
+
+    <h3>{% trans "Tax Forms" %}</h3>
+    <ul class="er-tax">
+      <li>2025 1099-MRA {% icon "external" 18 %}</li>
+      <li>2024 1099-MRA {% icon "external" 18 %}</li>
+      <li>2023 1099-MRA {% icon "external" 18 %}</li>
+    </ul>
+  </aside>
+</div>
+
+<div class="er-help">
+  <span>{% trans "Need Help ?" %}<br>{% trans "Feel Free to Reach Out!" %}</span>
+  <a class="icon-btn" href="tel:555555">{% icon "phone" 28 %}</a>
+  <a class="icon-btn" href="mailto:trustyhands@trusty-hands.mu">{% icon "mail" 28 %}</a>
+</div>
+
+{{ chart_labels|json_script:"chart-labels" }}
+{{ chart_values|json_script:"chart-values" }}
+{{ month_trend|json_script:"month-trend" }}
+{% endblock %}
+
+{% block screen_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    drawLineChart(
+      "earnings-chart", readJson("chart-labels"), readJson("chart-values"), "MUR"
+    );
+    drawSparkline("month-spark", readJson("month-trend"), "#2f6fed");
+  });
+</script>
+{% endblock %}

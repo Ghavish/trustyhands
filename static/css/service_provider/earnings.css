@@ -1,0 +1,138 @@
+/* Earnings Overview and the printable invoice. */
+
+.er-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 150px;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.er-label {
+  font-weight: 700;
+}
+
+.er-money {
+  font: 700 2rem var(--font-display);
+}
+
+.er-blue {
+  color: #1b3a8a;
+}
+
+[data-theme="dark"] .er-blue {
+  color: #7fa7ff;
+}
+
+.er-withdraw {
+  background: #1b3a8a;
+  color: #fff;
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.er-spark {
+  position: relative;
+  height: 60px;
+}
+
+.er-next {
+  border-right: 8px solid var(--success);
+}
+
+.er-date {
+  font: 700 2.2rem var(--font-display);
+}
+
+.er-date-month {
+  font: 700 1.4rem var(--font-display);
+  letter-spacing: 0.1em;
+}
+
+.er-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.er-chart {
+  position: relative;
+  height: 280px;
+  margin-bottom: 1.5rem;
+}
+
+.er-table-title {
+  font: 500 1.2rem var(--font-display);
+  letter-spacing: 0.1em;
+}
+
+.er-filters input,
+.er-filters select {
+  width: auto;
+  padding: 0.4rem 0.6rem;
+}
+
+.er-details h2 {
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.er-details h3 {
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  margin-top: 1.4rem;
+}
+
+.er-details p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+.er-bank summary {
+  list-style: none;
+  margin: 0.8rem 0;
+}
+
+.er-payouts {
+  list-style: none;
+  padding-left: 1.5rem;
+  color: var(--success);
+}
+
+.er-tax {
+  list-style: none;
+  padding: 0;
+  color: var(--info);
+  line-height: 2.2;
+}
+
+.er-help {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+/* --- Invoice --- */
+.invoice {
+  max-width: 760px;
+  margin: 2rem auto;
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .er-stats,
+  .er-layout {
+    grid-template-columns: 1fr;
+  }
+}
