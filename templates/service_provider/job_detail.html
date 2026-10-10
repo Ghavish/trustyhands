@@ -1,0 +1,116 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{{ job.reference }}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/job_detail.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Job" %} {{ job.reference }}{% endblock %}
+{% block page_subtitle %}
+  {{ job.category.name|default:job.get_job_type_display }} |
+  {{ job.preferred_date|date:"d M Y" }}
+{% endblock %}
+{% block page_actions %}
+  <a class="btn btn-outline" href="{% url 'provider:active_jobs' %}">{% trans "Back" %}</a>
+{% endblock %}
+
+{% block page_body %}
+<div class="jd-grid">
+  <section class="page-card">
+    <h2 class="card-title">{% trans "Request" %}</h2>
+    <p>
+      <span class="status status-{{ job.status|status_class }}">
+        <span class="dot"></span>{{ job.get_status_display }}
+      </span>
+      <span class="status status-{{ job.urgency|status_class }}">
+        <span class="dot"></span>{{ job.get_urgency_display }}
+      </span>
+    </p>
+    <p><strong>{% trans "Job type:" %}</strong> {{ job.get_job_type_display }}</p>
+    <p>{{ job.description|linebreaksbr }}</p>
+    {% if job.final_amount is not None %}
+      <p><strong>{% trans "Final amount:" %}</strong> {{ job.final_amount|mur }}</p>
+    {% endif %}
+    <div class="jd-photos">
+      {% for photo in job.photos.all %}
+        <a href="{{ photo.image.url }}" target="_blank">
+          <img src="{{ photo.image.url }}" alt="">
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="page-card">
+    <h2 class="card-title">{% trans "Client" %}</h2>
+    <p class="person">
+      {% include "partials/avatar.html" with person=job.client size="48" %}
+      {{ job.client.display_name }}
+    </p>
+    {% if job.client_contact_visible %}
+      <p>{% icon "phone" 18 %} {{ job.contact_phone }}</p>
+      <p>
+        {% icon "mail" 18 %}
+        <a href="mailto:{{ job.contact_email }}">{{ job.contact_email }}</a>
+      </p>
+      <p>{% icon "pin" 18 %} {{ job.location }}</p>
+    {% else %}
+      <p class="muted">
+        {% trans "Contact details appear once you accept the request." %}
+      </p>
+    {% endif %}
+
+    {# --- Actions for the current status --- #}
+    <div class="jd-actions">
+      {% if job.status == "PENDING" %}
+        <form method="post" action="{% url 'provider:job_update' job.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="accept">
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <button class="btn btn-dark" type="submit">{% trans "Accept" %}</button>
+        </form>
+        <form method="post" action="{% url 'provider:job_update' job.pk %}" class="row">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="decline">
+          <input type="text" name="reason" placeholder="{% trans 'Reason (optional)' %}">
+          <button class="btn btn-accent" type="submit">{% trans "Decline" %}</button>
+        </form>
+      {% elif job.status == "ACCEPTED" %}
+        <form method="post" action="{% url 'provider:job_update' job.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="onsite">
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <button class="btn btn-info" type="submit">{% trans "Mark as On site" %}</button>
+        </form>
+      {% elif job.status == "IN_PROGRESS" %}
+        <form method="post" action="{% url 'provider:job_update' job.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="complete">
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <label class="form-label" for="final-amount">{% trans "Final amount (MUR)" %}</label>
+          <div class="row">
+            <input id="final-amount" type="number" name="final_amount" min="0" step="1" required>
+            <button class="btn btn-success" type="submit">{% trans "Mark as Completed" %}</button>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </section>
+</div>
+
+<section class="page-card">
+  <h2 class="card-title">{% trans "History" %}</h2>
+  <ul class="jd-log">
+    {% for log in logs %}
+      <li>
+        <span class="muted">{{ log.created_at|date:"d M Y H:i" }}</span>
+        {{ log.get_action_display }}
+        {% if log.new_value %}: {{ log.old_value }} &rarr; {{ log.new_value }}{% endif %}
+        {% if log.actor %}({{ log.actor.display_name }}){% endif %}
+        {% if log.note %}<em>{{ log.note }}</em>{% endif %}
+      </li>
+    {% empty %}
+      <li class="muted">{% trans "No changes yet." %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}
