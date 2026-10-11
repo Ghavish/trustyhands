@@ -1,0 +1,70 @@
+/* Reviews & Replies. */
+
+.rv-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.rv-summary {
+  text-align: center;
+}
+
+.rv-average {
+  font: 800 3.5rem var(--font-display);
+  margin: 0;
+}
+
+.rv-average small {
+  font-size: 1.4rem;
+}
+
+.rv-bar {
+  display: grid;
+  grid-template-columns: 40px 1fr 30px;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+
+.rv-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--muted-soft);
+  overflow: hidden;
+}
+
+.rv-track span {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+}
+
+.rv-item p {
+  margin: 0.5rem 0;
+}
+
+.rv-reply {
+  padding: 0.6rem 1rem;
+  border-left: 3px solid var(--gold);
+  background: var(--surface-alt);
+  border-radius: 6px;
+}
+
+.rv-form {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-end;
+}
+
+.rv-form textarea {
+  min-height: 60px;
+}
+
+@media (max-width: 900px) {
+  .rv-layout {
+    grid-template-columns: 1fr;
+  }
+}

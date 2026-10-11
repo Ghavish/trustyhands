@@ -1,0 +1,81 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Reviews" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/reviews.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Reviews & Replies" %}{% endblock %}
+{% block page_subtitle %}
+  {% blocktrans trimmed count counter=waiting %}
+    {{ counter }} review is waiting for your reply.
+  {% plural %}
+    {{ counter }} reviews are waiting for your reply.
+  {% endblocktrans %}
+{% endblock %}
+
+{% block page_body %}
+<div class="rv-layout">
+  {# --- Summary --- #}
+  <aside class="page-card rv-summary">
+    <p class="rv-average">{{ provider.average_rating }}<small>/5</small></p>
+    <span class="stars">
+      {% for kind in provider.average_rating|stars %}
+        <span class="{{ kind }}">{% icon "star" 22 %}</span>
+      {% endfor %}
+    </span>
+    <p class="muted">
+      {% blocktrans with total=provider.review_count %}{{ total }} reviews{% endblocktrans %}
+    </p>
+    {% for row in breakdown %}
+      <div class="rv-bar">
+        <span>{{ row.stars }} {% icon "star" 14 %}</span>
+        <span class="rv-track"><span style="width: {{ row.percent }}%"></span></span>
+        <span>{{ row.count }}</span>
+      </div>
+    {% endfor %}
+  </aside>
+
+  {# --- Review list --- #}
+  <section>
+    {% for review in reviews %}
+      <article class="page-card rv-item">
+        <div class="row-between">
+          <span class="person">
+            {% include "partials/avatar.html" with person=review.client size="40" %}
+            <strong>{{ review.client.display_name }}</strong>
+          </span>
+          <span class="muted">
+            {{ review.created_at|date:"d M Y" }} | {{ review.request.reference }}
+          </span>
+        </div>
+        <span class="stars">
+          {% for kind in review.rating|stars %}
+            <span class="{{ kind }}">{% icon "star" 18 %}</span>
+          {% endfor %}
+        </span>
+        <p>{{ review.comment|default:"-" }}</p>
+
+        {% if review.provider_reply %}
+          <div class="rv-reply">
+            <strong>{% trans "Your reply" %}</strong>
+            <span class="muted">{{ review.replied_at|date:"d M Y" }}</span>
+            <p>{{ review.provider_reply }}</p>
+          </div>
+        {% else %}
+          <form method="post" action="{% url 'provider:review_reply' review.pk %}" class="rv-form">
+            {% csrf_token %}
+            <label class="sr-only" for="reply-{{ review.pk }}">{% trans "Reply" %}</label>
+            {% trans "Write a public reply (one reply per review)" as hint %}
+            <textarea id="reply-{{ review.pk }}" name="reply" rows="2" required
+                      placeholder="{{ hint }}"></textarea>
+            <button class="btn btn-accent btn-sm" type="submit">{% trans "Reply" %}</button>
+          </form>
+        {% endif %}
+      </article>
+    {% empty %}
+      <div class="page-card empty-state">{% trans "No reviews yet." %}</div>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}
