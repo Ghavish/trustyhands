@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Confirm payment" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/onboarding.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="ob-page" style="background-image: url('{% static 'images/onboarding_bg.jpg' %}')">
+  <div class="card checkout-card">
+    <h1 class="card-title">{% trans "Confirm your plan" %}</h1>
+    <table class="table">
+      <tr><td>{% trans "Plan" %}</td><td><strong>{{ tier_label }}</strong></td></tr>
+      <tr><td>{% trans "Billing" %}</td><td>{{ cycle_label }}</td></tr>
+      <tr><td>{% trans "Amount" %}</td><td><strong>{{ amount|mur }}</strong></td></tr>
+    </table>
+    <p class="muted" style="margin-top:1rem">
+      {% icon "lock" 18 %}
+      {% blocktrans trimmed %}
+        This is a simulated payment for the project. No card details are
+        collected. Your choice and the payment record are saved.
+      {% endblocktrans %}
+    </p>
+    <form method="post" class="row">
+      {% csrf_token %}
+      <button class="btn btn-accent" type="submit">{% trans "Confirm payment" %}</button>
+      <a class="btn btn-outline" href="{% url 'provider:choose_plan' %}">{% trans "Back" %}</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

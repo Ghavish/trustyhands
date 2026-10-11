@@ -1,0 +1,84 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Review Moderation" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/review_moderation.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Review Moderation" %}{% endblock %}
+{% block page_subtitle %}
+  {% trans "All ratings and reviews on the platform. Removals are logged." %}
+{% endblock %}
+{% block page_actions %}
+  <form method="get" data-auto-submit>
+    <label class="sr-only" for="show">{% trans "Show" %}</label>
+    <select id="show" name="show">
+      <option value="visible" {% if show == "visible" %}selected{% endif %}>
+        {% trans "Visible" %}
+      </option>
+      <option value="removed" {% if show == "removed" %}selected{% endif %}>
+        {% trans "Removed" %}
+      </option>
+      <option value="all" {% if show == "all" %}selected{% endif %}>{% trans "All" %}</option>
+    </select>
+  </form>
+{% endblock %}
+
+{% block page_body %}
+<div class="page-card table-wrap">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>{% trans "Client" %}</th>
+        <th>{% trans "Provider" %}</th>
+        <th>{% trans "Rating" %}</th>
+        <th>{% trans "Review" %}</th>
+        <th>{% trans "Date" %}</th>
+        <th>{% trans "Actions" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for review in page_obj %}
+        <tr>
+          <td>{{ review.client.display_name }}</td>
+          <td>{{ review.provider.business_name }}</td>
+          <td>
+            <span class="stars">
+              {% for kind in review.rating|stars %}
+                <span class="{{ kind }}">{% icon "star" 15 %}</span>
+              {% endfor %}
+            </span>
+          </td>
+          <td class="rm-comment">
+            {{ review.comment|default:"-" }}
+            {% if review.provider_reply %}
+              <p class="muted">{% trans "Reply:" %} {{ review.provider_reply }}</p>
+            {% endif %}
+          </td>
+          <td>{{ review.created_at|date:"d M Y" }}</td>
+          <td>
+            {% if review.is_removed %}
+              <span class="badge badge-danger">{% trans "Removed" %}</span>
+              <p class="muted rm-log">
+                {{ review.removed_reason }}<br>
+                {{ review.removed_by.display_name }}, {{ review.removed_at|date:"d M Y" }}
+              </p>
+            {% else %}
+              <form method="post" class="rm-form">
+                {% csrf_token %}
+                <input type="hidden" name="review_id" value="{{ review.pk }}">
+                <input type="text" name="reason" required
+                       placeholder="{% trans 'Reason (spam, abusive...)' %}">
+                <button class="btn btn-danger btn-sm" type="submit">{% trans "Remove" %}</button>
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6" class="empty-state">{% trans "No reviews." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "partials/pagination.html" with page=page_obj %}
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Choose Your Plan" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/onboarding.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="ob-page" style="background-image: url('{% static 'images/onboarding_bg.jpg' %}')">
+  <div class="ob-tools">
+    {% include "partials/theme_toggle.html" %}
+    {% include "partials/language_switch.html" %}
+  </div>
+
+  <h1 class="display" style="text-align:center">{% trans "Choose Your Plan" %}</h1>
+  <p class="plan-stepper">
+    <span>{% trans "Profile Setup" %}</span> &rarr;
+    <span class="current">{% trans "Choose Plan" %}</span> &rarr;
+    <span>{% trans "Dashboard" %}</span>
+  </p>
+  {% include "partials/messages.html" %}
+
+  {# --- Monthly / Annual switch (FR 8.2) --- #}
+  <label class="plan-cycle">
+    <input type="checkbox" id="annual-toggle"
+           {% if subscription.billing_cycle == "ANNUAL" %}checked{% endif %}>
+    {% trans "Monthly" %} | {% trans "Annual (Save 20%)" %}
+  </label>
+
+  <div class="plan-grid">
+    {% for plan in plans %}
+      <article class="plan-card {% if plan.popular %}popular{% endif %}
+                      {% if plan.is_current %}current-plan{% endif %}">
+        {% if plan.popular %}<span class="plan-flag">{% trans "Most Popular" %}</span>{% endif %}
+        <h2>{{ plan.label }}</h2>
+        <p class="plan-price" data-monthly="{{ plan.monthly }}" data-annual="{{ plan.annual }}">
+          MUR <span class="price-value">{{ plan.monthly }}</span>
+          <small class="price-unit" data-monthly="{% trans '/ month' %}"
+                 data-annual="{% trans '/ year' %}">{% trans "/ month" %}</small>
+        </p>
+        <ul class="plan-features">
+          {% for feature in plan.features %}
+            <li>{% icon "check-circle" 26 %} {{ feature }}</li>
+          {% endfor %}
+        </ul>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="tier" value="{{ plan.tier }}">
+          <input type="hidden" name="billing_cycle" value="MONTHLY" class="cycle-input">
+          <button type="submit"
+                  class="btn {% if plan.popular %}btn-accent{% else %}btn-outline{% endif %}">
+            {% if plan.is_current %}
+              {% trans "Keep this plan" %}
+            {% else %}
+              {% blocktrans with name=plan.label %}Select {{ name }}{% endblocktrans %}
+            {% endif %}
+          </button>
+        </form>
+      </article>
+    {% endfor %}
+  </div>
+
+  <p class="plan-note">
+    {% icon "lock" 22 %}
+    {% trans "Secure Payment processed via local bank card / Official Bank Payment Platforms" %}
+  </p>
+  <form class="plan-note" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="tier" value="STARTER">
+    <input type="hidden" name="billing_cycle" value="MONTHLY">
+    <button class="btn-link" type="submit">
+      {% trans "Continue with Free Starter Plan for now" %}
+    </button>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Switch every price and hidden field between monthly and annual.
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("annual-toggle");
+    function update() {
+      const cycle = toggle.checked ? "annual" : "monthly";
+      document.querySelectorAll(".plan-price").forEach((price) => {
+        price.querySelector(".price-value").textContent = price.dataset[cycle];
+        const unit = price.querySelector(".price-unit");
+        unit.textContent = unit.dataset[cycle];
+      });
+      document.querySelectorAll(".cycle-input").forEach((input) => {
+        input.value = cycle.toUpperCase();
+      });
+    }
+    toggle.addEventListener("change", update);
+    update();
+  });
+</script>
+{% endblock %}

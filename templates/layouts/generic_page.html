@@ -1,0 +1,24 @@
+{% extends generic_shell %}
+{% comment %}
+  Generic layout for the "Additional Screens to be added".
+  It sits inside the right shell for the user's role:
+  - providers and admins: the dashboard with the sidebar
+  - clients and guests: the public navbar and footer
+  A screen fills in: page_title, page_subtitle, page_actions, page_body.
+{% endcomment %}
+
+{% block content %}
+<div class="{% if generic_shell == 'layouts/public.html' %}public-page{% endif %}">
+  <div class="page-header">
+    <div>
+      {% if generic_shell == "layouts/public.html" %}
+        <h1>{% block page_title %}{% endblock %}</h1>
+      {% endif %}
+      <p>{% block page_subtitle %}{% endblock %}</p>
+    </div>
+    <div class="row">{% block page_actions %}{% endblock %}</div>
+  </div>
+
+  {% block page_body %}{% endblock %}
+</div>
+{% endblock %}
