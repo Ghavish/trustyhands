@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% load static i18n th_tags %}
+{% block title %}{{ provider.business_name }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/client/provider_profile.css' %}">
+{% endblock %}
+
+{% block body %}
+{% with name=provider.user.first_name jobs=provider.completed_jobs_count %}
+<div class="pp-page">
+ {# --- Top navigation --- #}
+ <nav class="pp-nav">
+  <a class="pp-brand" href="{% url 'core:home' %}">Trusty<span>Hands</span></a>
+  <div class="pp-nav-links">
+   <span class="pp-pill">{% trans "About Us" %}</span>
+   <a class="pp-pill active" href="{% url 'client:provider_list' %}">
+    {% trans "Services" %}
+   </a>
+   <a class="pp-pill" href="#portfolio">{% trans "Portfolio" %}</a>
+   <span class="pp-pill">{% trans "Careers" %}</span>
+   <a class="pp-pill" href="{% url 'core:home' %}#contact">{% trans "Contact" %}</a>
+   <a class="pp-pill pp-join" href="{% url 'users:register' %}?role=PROVIDER">
+    {% trans "Join Now" %}
+   </a>
+   {% include "partials/theme_toggle.html" %}
+   {% include "partials/language_switch.html" %}
+   {% include "partials/account_menu.html" %}
+ </div>
+</nav>
+{# --- Header card --- #}
+<section class="pp-header">
+  <img class="pp-logo" src="{% static 'images/logo.png' %}" alt="">
+    <div class="pp-intro">
+      <div class="pp-name-row">
+        {% include "partials/avatar.html" with person=provider.user size="130" %}
+        <div>
+          <h1>{{ provider.business_name }}</h1>
+          <div class="pp-rating">
+            <span class="stars">
+              {% for kind in provider.average_rating|stars %}
+                <span class="{{ kind }}">{% icon "star" 26 "gold" %}</span>
+              {% endfor %}
+            </span>
+            <strong>{{ provider.average_rating }}</strong>
+            <span class="pp-title">{{ provider.profession_title }}</span>
+            {% if provider.verification_status == "APPROVED" %}
+              <span class="badge badge-success">
+                {% icon "shield" 16 %} {% trans "Verified" %}
+              </span>
+            {% endif %}
+          </div>
+          <p class="pp-stats">
+            {% blocktrans trimmed with total=provider.review_count %}
+              {{ jobs }} completed jobs | {{ total }} reviews
+            {% endblocktrans %}
+          </p>
+        </div>
+      </div>
+      <p class="pp-about">
+        <strong>
+          {% blocktrans %}About {{ name }}{% endblocktrans %}:
+        </strong>
+        {{ provider.bio }}
+      </p>
+    </div>
+    <img class="pp-tools" src="{% static 'images/screwdrivers.png' %}" alt="">
+  </section>
+ 
+  <div class="pp-body">
+    {# --- Categories sidebar --- #}
+    <aside class="pp-sidebar">
+      {% for category in categories %}
+        <a href="{% url 'client:provider_list' %}?category={{ category.slug }}"
+           class="pp-cat {% if category.pk in provider_category_ids %}active{% endif %}">
+          {{ category.name }}
+        </a>
+      {% endfor %}
+      <img class="pp-worker" src="{% static 'images/worker_outline.png' %}" alt="">
+    </aside>
+ 
+    {# --- Main content --- #}
+    <main class="pp-main">
+      {% include "partials/messages.html" %}
+ 
+      <div class="row-between" id="portfolio">
+        <h2 class="pp-section-title">
+          {% blocktrans trimmed with shown=portfolio_shown total=portfolio_total %}
+            Portfolio Highlights ({{ shown }} of {{ total }} projects)
+          {% endblocktrans %}
+        </h2>
+        <div class="row">
+          {% if portfolio_page.has_previous %}
+            <a class="icon-btn" aria-label="{% trans 'Previous' %}"
+               href="?page={{ portfolio_page.previous_page_number }}#portfolio">
+              {% icon "chevron-left" %}
+            </a>
+          {% endif %}
+          {% if portfolio_page.has_next %}
+            <a class="icon-btn" aria-label="{% trans 'Next' %}"
+               href="?page={{ portfolio_page.next_page_number }}#portfolio">
+              {% icon "chevron-right" %}
+            </a>
+          {% endif %}
+        </div>
+         </div>
+      <div class="pp-portfolio">
+        {% for item in portfolio_page %}
+          <figure>
+            {% if item.photo %}
+              <img src="{{ item.photo.url }}" alt="{{ item.title }}">
+            {% endif %}
+            <figcaption>{{ item.title }}</figcaption>
+          </figure>
+        {% empty %}
+          <p class="muted">{% trans "No projects yet." %}</p>
+        {% endfor %}
+      </div>
+ 
+      <div class="pp-details">
+        <div>
+          <div class="row">
+            <a class="icon-btn" href="tel:{{ provider.user.phone }}">{% icon "phone" 30 %}</a>
+            <a class="icon-btn" href="mailto:{{ provider.user.email }}">{% icon "mail" 30 %}</a>
+          </div>
+          <h3>
+            {% blocktrans %}Contact {{ name }}:{% endblocktrans %}
+          </h3>
+          {% if user.is_authenticated %}
+            <p>{{ provider.user.phone }} | {{ provider.user.email }}</p>
+          {% else %}
+            <p>
+              <a href="{% url 'users:login' %}?next={{ request.path }}">{% trans "Log in" %}</a>
+              {% trans "to see the contact details." %}
+            </p>
+          {% endif %}
+          {% if areas %}
+            <p class="muted">{% trans "Areas served:" %} {{ areas|join:", " }}</p>
+          {% endif %}
+          {% if can_book %}
+            <form method="post" action="{% url 'client:toggle_favourite' provider.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+              <button class="btn btn-outline btn-sm" type="submit">
+                {% icon "heart" 16 %}
+                {% if is_favourite %}
+                  {% trans "Remove from favourites" %}
+                {% else %}
+                  {% trans "Save to favourites" %}
+                {% endif %}
+              </button>
+            </form>
+          {% endif %}
+        </div>
+        <div>
+          <h3 class="pp-process-title">{% trans "Job and Process Details" %}</h3>
+          <p>
+            <strong>{% trans "Service Requirements:" %}</strong>
+            {{ provider.service_requirements }}
+          </p>
+          <p><strong>{% trans "Process Notes:" %}</strong><br>{{ provider.process_notes }}</p>
+        </div>
+      </div>
+ 
+      <details class="accordion-item">
+        <summary>{% trans "Specialty areas" %}</summary>
+        <div class="accordion-body">
+          {{ provider.specialty_areas|linebreaksbr|default:"-" }}
+        </div>
+      </details>
+      <details class="accordion-item">
+        <summary>
+          {% blocktrans trimmed %}
+            Common Issues & {{ name }}'s solutions
+          {% endblocktrans %}
+        </summary>
+        <div class="accordion-body">
+          {{ provider.common_issues|linebreaksbr|default:"-" }}
+        </div>
+      </details>
+      <details class="accordion-item">
+<summary>{% trans "Client Ratings" %}</summary>
+        <div class="accordion-body">
+          {% for review in reviews %}
+          <div class="pp-review">
+            <span class="stars">
+              {% for kind in review.rating|stars %}
+              <span class="{{ kind }}">{% icon "star" 16 "gold" %}</span>
+              {% endfor %}
+            </span>
+            <strong>{{ review.client.display_name }}</strong>
+            <span class="muted">{{ review.created_at|date:"d M Y" }}</span>
+            <p>{{ review.comment }}</p>
+            {% if review.provider_reply %}
+            <p class="pp-reply">
+              <strong>{% trans "Reply:" %}</strong> {{ review.provider_reply }}
+            </p>
+            {% endif %}
+          </div>
+          {% empty %}
+          <p class="muted">{% trans "No reviews yet." %}</p>
+          {% endfor %}
+        </div>
+      </details>
+      {% if can_book %}
+      <a class="btn btn-accent pp-book" href="{% url 'client:book_service' provider.pk %}">
+        {% trans "Book Now" %}
+      </a>
+      {% elif not user.is_authenticated %}
+      {% url 'client:book_service' provider.pk as booking_url %}
+      <a class="btn btn-accent pp-book" href="{% url 'users:login' %}?next={{ booking_url }}">
+        {% trans "Log in to Book" %}
+      </a>
+      {% endif %}
+    </main>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}
+ <span class="{{ kind }}">{% icon "star" 16 "gold" %}</span>
+{% endfor %}
+</span>
+ <strong>{{ review.client.display_name }}</strong>
+   <span class="muted">{{ review.created_at|date:"d M Y" }}</span>
+ <p>{{ review.comment }}</p>
+{% if review.provider_reply %}
+  <p class="pp-reply">
+    <strong>{% trans "Reply:" %}</strong> {{ review.provider_reply }}
+  </p>
+{% endif %}
+</div>
+{% empty %}
+  <p class="muted">{% trans "No reviews yet." %}</p>
+{% endfor %}
+</div>
+</details>
+{% if can_book %}
+  <a class="btn btn-accent pp-book" href="{% url 'client:book_service' provider.pk %}">
+{% trans "Book Now" %}
+</a>
+{% elif not user.is_authenticated %}
+{% url 'client:book_service' provider.pk as booking_url %}
+  <a class="btn btn-accent pp-book" href="{% url 'users:login' %}?next={{ booking_url }}">
+{% trans "Log in to Book" %}
+</a>
+{% endif %}
+</main>
+</div>
+</div>
+{% endwith %}
+{% endblock %}
