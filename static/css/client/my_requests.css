@@ -1,0 +1,19 @@
+/* My Requests: the inline review form. */
+.mr-review summary {
+ list-style: none;
+}
+.mr-review[open] form {
+ position: absolute;
+ right: 2rem;
+ z-index: 20;
+ width: 300px;
+ margin-top: 0.4rem;
+ padding: 1rem;
+ background: var(--surface);
+ border-radius: var(--radius-sm);
+ box-shadow: var(--shadow);
+} 
+
+.mr-review form > div {
+ margin-bottom: 0.6rem;
+}
