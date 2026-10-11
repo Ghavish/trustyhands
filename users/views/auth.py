@@ -1,4 +1,3 @@
-"""Login, logout, registration and password reset (FR 1.1 - 1.4, 1.6)."""
 
 from django.conf import settings
 from django.contrib import messages
@@ -9,6 +8,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 
 from users.forms import LoginForm, RegisterForm
+from users.models import User  
 
 
 class LoginView(auth_views.LoginView):
@@ -24,7 +24,12 @@ class LogoutView(auth_views.LogoutView):
 def register(request):
     if request.user.is_authenticated:
         return redirect("core:after_login")
-    form = RegisterForm(request.POST or None)
+
+    
+    role = request.GET.get("role", "")
+    initial = {"role": role} if role in User.Role.values else {}
+
+    form = RegisterForm(request.POST or None, initial=initial)
     if request.method == "POST" and form.is_valid():
         user = form.save(commit=False)
         # Copy the choices a guest made before registering.
