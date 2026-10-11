@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static i18n th_tags %}
+{# A printable invoice for one completed job. #}
+
+{% block title %}{% trans "Invoice" %} {{ job.reference }}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/earnings.css' %}">
+{% endblock %}
+
+{% block body %}
+<main class="invoice card">
+  <header class="row-between">
+    <div class="row">
+      <img src="{% static 'images/logo.png' %}" alt="" width="70">
+      <div>
+        <h1>{% trans "Invoice" %}</h1>
+        <p class="muted">{{ job.reference }} | {{ job.completed_at|date:"d M Y" }}</p>
+      </div>
+    </div>
+    <button class="btn btn-accent no-print" type="button" onclick="window.print()">
+      {% trans "Print" %}
+    </button>
+  </header>
+
+  <div class="grid-2">
+    <div>
+      <h3>{% trans "From" %}</h3>
+      <p>{{ provider.business_name }}<br>{{ provider.user.email }}<br>{{ provider.user.phone }}</p>
+    </div>
+    <div>
+      <h3>{% trans "Billed to" %}</h3>
+      <p>{{ job.contact_name }}<br>{{ job.contact_email }}<br>{{ job.location }}</p>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr><th>{% trans "Description" %}</th><th>{% trans "Amount" %}</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>{{ job.description }}</td><td>{{ job.final_amount|mur }}</td></tr>
+      <tr><th>{% trans "Total" %}</th><th>{{ job.final_amount|mur }}</th></tr>
+    </tbody>
+  </table>
+  <p class="muted">{% trans "Payout status:" %} {{ job.get_payout_status_display }}</p>
+</main>
+{% endblock %}
