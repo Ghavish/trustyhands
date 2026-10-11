@@ -1,0 +1,47 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Favourites" %}{% endblock %}
+{% block extra_css %}
+ <link rel="stylesheet" href="{% static 'css/client/favourites.css' %}">
+{% endblock %}
+
+{% block page_title %}{% trans "My Favourites" %}{% endblock %}
+{% block page_subtitle %}{% trans "Professionals you saved for later." %}{% endblock %}
+{% block page_actions %}
+ <a class="btn btn-accent" href="{% url 'client:provider_list' %}">
+{% trans "Browse Services" %}
+</a>
+{% endblock %}
+
+{% block page_body %}
+<div class="fav-grid">
+{% for item in items %}
+{% with provider=item.provider %}
+<article class="page-card fav-card">
+{% if provider.cover_photo %}
+<img class="fav-cover" src="{{ provider.cover_photo.url }}" alt="">
+{% endif %}
+<h3>{{ provider.business_name }}</h3>
+<p class="muted">{{ provider.profession_title }} | {{ provider.location_label }}</p>
+<p>{% icon "star" 18 "gold" %} {{ provider.average_rating }}
+ ({{ provider.review_count }} {% trans "reviews" %})</p>
+<div class="row">
+<a class="btn btn-accent btn-sm"
+href="{% url 'client:provider_profile' provider.pk %}">{% trans "View Profile" %}</a>
+<form method="post" action="{% url 'client:toggle_favourite' provider.pk %}">
+{% csrf_token %}
+<input type="hidden" name="next" value="{{ request.path }}">
+<button class="btn btn-outline btn-sm" type="submit">{% trans "Remove" %}</button>
+</form>
+</div>
+</article>
+{% endwith %}
+{% empty %}
+<div class="page-card empty-state">
+{% icon "heart" 40 %}
+<p>{% trans "You have not saved any professional yet." %}</p>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

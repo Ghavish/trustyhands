@@ -1,0 +1,83 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+{% block title %}{% trans "My Requests" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/client/my_requests.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "My Requests" %}{% endblock %}
+{% block page_subtitle %}
+  {% trans "Follow every request you sent to a professional." %}
+{% endblock %}
+{% block page_actions %}
+  <form method="get" data-auto-submit>
+    <label class="sr-only" for="status">{% trans "Status" %}</label>
+    <select id="status" name="status">
+     <option value="">{% trans "All statuses" %}</option>
+     {% for value, label in statuses %}
+       <option value="{{ value }}" {% if value == status %}selected{% endif %}>
+        {{ label }}
+       </option>
+     {% endfor %}
+    </select>
+  </form>
+{% endblock %}
+
+{% block page_body %}
+<div class="page-card table-wrap">
+ <table class="table">
+  <thead>
+    <tr>
+        <th>{% trans "Req ID" %}</th>
+        <th>{% trans "Professional" %}</th>
+        <th>{% trans "Job" %}</th>
+        <th>{% trans "Preferred Date" %}</th>
+        <th>{% trans "Status" %}</th>
+        <th>{% trans "Action" %}</th>
+    </tr>   
+  </thead>
+  <tbody>
+    {% for job in requests %}
+     <tr>
+      <td>{{ job.reference }}</td>
+      <td>
+<a href="{% url 'client:provider_profile' job.provider.pk %}">
+{{ job.provider.business_name }}
+</a>
+</td>
+<td>{{ job.description|truncatechars:40 }}</td>
+<td>{{ job.preferred_date|date:"d M Y" }}</td>
+<td>
+<span class="status status-{{ job.status|status_class }}">
+<span class="dot"></span>{{ job.get_status_display }}
+</span>
+</td>
+<td class="actions">
+{% if job.status == "PENDING" or job.status == "ACCEPTED" %}
+<form method="post" action="{% url 'client:cancel_request' job.pk %}"
+data-confirm="{% trans 'Cancel this request?' %}">
+{% csrf_token %}
+<button class="btn btn-outline btn-sm" type="submit">{% trans "Cancel" %}</button>
+</form>
+{% elif job.status == "COMPLETED" and job.pk not in reviewed_ids %}
+<details class="mr-review">
+<summary class="btn btn-accent btn-sm">{% trans "Leave a review" %}</summary>
+<form method="post" action="{% url 'client:leave_review' job.pk %}">
+{% csrf_token %}
+{{ review_form.as_div }}
+<button class="btn btn-accent btn-sm" type="submit">{% trans "Send" %}</button>
+</form>
+</details>
+{% elif job.pk in reviewed_ids %}
+<span class="badge badge-success">{% trans "Reviewed" %}</span>
+{% else %}
+<span class="muted">-</span>
+{% endif %}
+</td>
+</tr>
+{% empty %}
+<tr><td colspan="6" class="empty-state">{% trans "No requests yet." %}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}
