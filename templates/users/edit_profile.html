@@ -1,0 +1,81 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+ 
+{% block title %}{% trans "Edit Profile" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/users/edit_profile.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Edit Profile" %}{% endblock %}
+{% block page_subtitle %}{% trans "Keep your details up to date." %}{% endblock %}
+ 
+{% block page_body %}
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="profile">
+ 
+  <section class="page-card">
+    <h2 class="card-title">{% trans "Your account" %}</h2>
+    <div class="ep-avatar">
+      {% include "partials/avatar.html" with person=user size="90" %}
+      <span class="muted">{{ user.email }}</span>
+    </div>
+    <div class="grid-2">
+      {% for field in account_form %}
+        {% include "partials/form_field.html" %}
+      {% endfor %}
+    </div>
+  </section>
+ 
+  {% if details_form %}
+    <section class="page-card">
+      <h2 class="card-title">{% trans "Your professional profile" %}</h2>
+      <div class="grid-2">
+        {% for field in details_form %}
+          <div class="{% if field.name in 'bio categories areas_served' %}ep-wide{% endif %}">
+            {% include "partials/form_field.html" %}
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+ 
+  <button class="btn btn-accent" type="submit">{% trans "Save changes" %}</button>
+</form>
+ 
+{% if service_form %}
+  <section class="page-card ep-services">
+    <h2 class="card-title">{% trans "Services on your card" %}</h2>
+    <ul class="ep-service-list">
+      {% for service in services %}
+        <li>
+          <span>
+            {% if service.icon %}<img src="{{ service.icon.url }}" alt="">{% endif %}
+            <strong>{{ service.name }}</strong>
+            <span class="muted">{{ service.category|default:"" }}</span>
+          </span>
+          <form method="post">
+           {% csrf_token %}
+            <input type="hidden" name="action" value="delete_service">
+            <input type="hidden" name="service_id" value="{{ service.pk }}">
+            <button class="btn btn-outline btn-sm" type="submit">{% trans "Remove" %}</button>
+</form>
+</li>
+{% empty %}
+<li class="muted">{% trans "No services yet." %}</li>
+{% endfor %}
+</ul>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="hidden" name="action" value="add_service">
+<div class="grid-2">
+{% for field in service_form %}
+{% include "partials/form_field.html" %}
+{% endfor %}
+</div>
+<button class="btn btn-dark" type="submit">
+{% icon "plus" 16 %} {% trans "Add service" %}
+</button>
+</form>
+</section>
+{% endif %}
+{% endblock %}
