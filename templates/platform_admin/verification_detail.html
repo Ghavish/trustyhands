@@ -1,0 +1,126 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{{ provider.business_name }}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/admin.css' %}">
+{% endblock %}
+{% block page_title %}{{ provider.business_name }}{% endblock %}
+{% block page_subtitle %}
+  {{ provider.profession_title }} |
+  <span class="badge badge-{{ provider.verification_status|status_class }}">
+    {{ provider.get_verification_status_display }}
+  </span>
+{% endblock %}
+{% block page_actions %}
+  <a class="btn btn-outline" href="{% url 'dashboard:verification_queue' %}">
+    {% trans "Back" %}
+  </a>
+{% endblock %}
+
+{% block page_body %}
+<div class="ad-detail">
+  <div>
+    <section class="page-card">
+      <h2 class="card-title">{% trans "Documents" %}</h2>
+      <div class="ad-docs">
+        {% for doc in documents %}
+          <div class="ad-doc">
+            {% with name=doc.file.name|lower %}
+              {% if ".pdf" in name %}
+                <iframe src="{{ doc.file.url }}" title="{{ doc }}"></iframe>
+              {% else %}
+                <img src="{{ doc.file.url }}" alt="{{ doc }}">
+              {% endif %}
+            {% endwith %}
+            <p><strong>{{ doc.get_doc_type_display }}</strong><br>
+              <a href="{{ doc.file.url }}" target="_blank">{{ doc }}</a></p>
+          </div>
+        {% empty %}
+          <p class="muted">{% trans "No documents uploaded." %}</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="page-card">
+      <h2 class="card-title">{% trans "Profile" %}</h2>
+      <p><strong>{% trans "Email:" %}</strong> {{ provider.user.email }}</p>
+      <p><strong>{% trans "Phone:" %}</strong> {{ provider.user.phone }}</p>
+      <p><strong>{% trans "District:" %}</strong> {{ provider.get_district_display }}</p>
+      <p><strong>{% trans "Experience:" %}</strong> {{ provider.years_experience }}+</p>
+      <p>{{ provider.bio }}</p>
+      <p>
+        <a href="{% url 'client:provider_profile' provider.pk %}">
+          {% trans "Open public profile" %}
+        </a>
+      </p>
+    </section>
+
+    <section class="page-card">
+      <h2 class="card-title">{% trans "History" %}</h2>
+      <ul class="ad-log">
+        {% for log in logs %}
+          <li>
+            <span class="muted">{{ log.created_at|date:"d M Y H:i" }}</span>
+            <strong>{{ log.get_action_display }}</strong>
+            {% if log.stage %}({{ log.stage }}){% endif %}
+            {{ log.note }}
+            {% if log.admin %}- {{ log.admin.display_name }}{% endif %}
+          </li>
+        {% empty %}
+          <li class="muted">{% trans "No decisions yet." %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  <aside class="page-card ad-actions">
+    <h2 class="card-title">{% trans "Decision" %}</h2>
+    <form method="post" class="ad-inline">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="stage">
+      <select name="stage" aria-label="{% trans 'Verification Stage' %}">
+        {% for value, label in stages %}
+          <option value="{{ value }}"
+                  {% if provider.verification_stage == value %}selected{% endif %}>
+            {{ label }}
+          </option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-outline btn-sm" type="submit">{% trans "Set stage" %}</button>
+    </form>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="note">
+      <label class="form-label" for="note">{% trans "Add note" %}</label>
+      <textarea id="note" name="note" rows="3" required></textarea>
+      <label>
+        <input type="checkbox" name="ask_provider">
+        {% trans "Send it to the provider (asks for more information)" %}
+      </label>
+      <button class="btn btn-outline btn-sm" type="submit">{% trans "Save note" %}</button>
+    </form>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="approve">
+      <button class="btn btn-success btn-block" type="submit">
+        {% trans "Accept provider" %}
+      </button>
+    </form>
+
+    <form method="post" id="reject">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="reject">
+      <label class="form-label" for="reason">
+        {% trans "Reason for rejecting (required)" %}
+      </label>
+      <textarea id="reason" name="note" rows="3" required></textarea>
+      <button class="btn btn-danger btn-block" type="submit">
+        {% trans "Reject provider" %}
+      </button>
+    </form>
+  </aside>
+</div>
+{% endblock %}

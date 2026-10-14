@@ -1,0 +1,97 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{{ job.reference }}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/admin.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Request" %} #{{ job.reference }}{% endblock %}
+{% block page_subtitle %}
+  <span class="status status-{{ job.status|status_class }}">
+    <span class="dot"></span>{{ job.get_status_display }}
+  </span>
+{% endblock %}
+{% block page_actions %}
+  <a class="btn btn-outline" href="{% url 'dashboard:service_requests' %}">{% trans "Back" %}</a>
+{% endblock %}
+
+{% block page_body %}
+<div class="ad-detail">
+  <div>
+    <section class="page-card">
+      <h2 class="card-title">{% trans "Details" %}</h2>
+      <p><strong>{% trans "Client:" %}</strong> {{ job.client.display_name }}
+        (<a href="mailto:{{ job.contact_email }}">{{ job.contact_email }}</a>,
+        {{ job.contact_phone }})</p>
+      <p><strong>{% trans "Provider:" %}</strong> {{ job.provider.business_name }}</p>
+      <p><strong>{% trans "Service:" %}</strong>
+        {{ job.category.name|default:"-" }} / {{ job.get_job_type_display }}</p>
+      <p><strong>{% trans "Date:" %}</strong> {{ job.preferred_date|date:"d M Y" }}</p>
+      <p><strong>{% trans "Location:" %}</strong> {{ job.location }}</p>
+      <p>{{ job.description|linebreaksbr }}</p>
+      {% if job.decline_reason %}
+        <p><strong>{% trans "Decline reason:" %}</strong> {{ job.decline_reason }}</p>
+      {% endif %}
+      {% if job.admin_feedback %}
+        <p><strong>{% trans "Admin feedback:" %}</strong> {{ job.admin_feedback }}</p>
+      {% endif %}
+    </section>
+
+    <section class="page-card">
+      <h2 class="card-title">{% trans "History" %}</h2>
+      <ul class="ad-log">
+        {% for log in logs %}
+          <li>
+            <span class="muted">{{ log.created_at|date:"d M Y H:i" }}</span>
+            <strong>{{ log.get_action_display }}</strong>
+            {{ log.old_value }}{% if log.new_value %} &rarr; {{ log.new_value }}{% endif %}
+            {{ log.note }}
+            {% if log.actor %}- {{ log.actor.display_name }}{% endif %}
+          </li>
+        {% empty %}
+          <li class="muted">{% trans "No changes yet." %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  <aside class="page-card ad-actions">
+    <form method="post" id="reschedule">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="reschedule">
+      <label class="form-label" for="date">{% trans "Reschedule" %}</label>
+      <div class="ad-inline">
+        <input id="date" type="date" name="date" value="{{ job.preferred_date|date:'Y-m-d' }}">
+        <button class="btn btn-outline btn-sm" type="submit">{% trans "Save" %}</button>
+      </div>
+    </form>
+
+    <form method="post" id="feedback">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="feedback">
+      <label class="form-label" for="feedback-text">{% trans "Record feedback" %}</label>
+      <textarea id="feedback-text" name="feedback" rows="3">{{ job.admin_feedback }}</textarea>
+      <button class="btn btn-outline btn-sm" type="submit">{% trans "Save feedback" %}</button>
+    </form>
+
+    {% if job.status == "DECLINED" %}
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="reassign">
+        <label class="form-label" for="provider">{% trans "Reassign to" %}</label>
+        <select id="provider" name="provider_id" required>
+          {% for candidate in candidates %}
+            <option value="{{ candidate.pk }}">{{ candidate.business_name }}</option>
+          {% endfor %}
+        </select>
+        <button class="btn btn-accent btn-sm" type="submit">{% trans "Reassign" %}</button>
+      </form>
+    {% endif %}
+
+    <a class="btn btn-info btn-block"
+       href="mailto:{{ job.contact_email }}?subject={{ job.reference }}">
+      {% trans "Message Client" %}
+    </a>
+  </aside>
+</div>
+{% endblock %}

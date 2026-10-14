@@ -1,0 +1,7 @@
+{% load th_tags %}
+{# Green badge when a number went up, red when it went down. #}
+{% if value < 0 %}
+  <span class="badge badge-danger">{% icon "trend-down" 14 %} {{ value }} %</span>
+{% else %}
+  <span class="badge badge-success">{% icon "trend-up" 14 %} {{ value }} %</span>
+{% endif %}

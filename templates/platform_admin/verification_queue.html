@@ -1,0 +1,98 @@
+{% extends "layouts/dashboard.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Verification Queue" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/admin.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Verification Queue" %}{% endblock %}
+{% block topbar_extra %}
+  <form method="get" class="ad-filters" data-auto-submit>
+    <select name="show" aria-label="{% trans 'Show' %}">
+      <option value="open" {% if show == "open" %}selected{% endif %}>
+        {% trans "Waiting for a decision" %}
+      </option>
+      {% for value, label in statuses %}
+        <option value="{{ value }}" {% if show == value %}selected{% endif %}>
+          {{ label }}
+        </option>
+      {% endfor %}
+    </select>
+  </form>
+{% endblock %}
+
+{% block content %}
+<section class="card table-wrap">
+  <table class="table ad-table">
+    <thead>
+      <tr>
+        <th>{% trans "Provider" %}</th>
+        <th>{% trans "Specialty" %}</th>
+        <th>{% trans "Submitted" %}</th>
+        <th>{% trans "Verification Stage" %}</th>
+        <th>{% trans "Actions" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for provider in page_obj %}
+        <tr>
+          <td>
+            <span class="ad-person">
+              {% include "partials/avatar.html" with person=provider.user size="48" %}
+              <span>
+                {{ provider.business_name }}<small>{{ provider.profession_title }}</small>
+              </span>
+            </span>
+          </td>
+          <td>{{ provider.category_names|default:"-" }}</td>
+          <td>{{ provider.submitted_at|date:"d M Y" }}</td>
+          <td>
+            <form method="post" class="ad-inline" data-auto-submit>
+              {% csrf_token %}
+              <input type="hidden" name="provider_id" value="{{ provider.pk }}">
+              <input type="hidden" name="action" value="stage">
+              {% icon "shield" 18 %}
+              <select name="stage" aria-label="{% trans 'Verification Stage' %}">
+                {% for value, label in stages %}
+                  <option value="{{ value }}"
+                          {% if provider.verification_stage == value %}selected{% endif %}>
+                    {{ label }}
+                  </option>
+                {% endfor %}
+              </select>
+            </form>
+            <span class="badge badge-{{ provider.verification_status|status_class }}">
+              {{ provider.get_verification_status_display }}
+            </span>
+          </td>
+          <td>
+            <div class="ad-links">
+              <a href="{% url 'dashboard:verification_detail' provider.pk %}">
+                {% trans "View Docs" %}
+              </a> |
+              <a href="mailto:{{ provider.user.email }}">{% trans "Message Provider" %}</a> |
+              {% if provider.verification_status != "APPROVED" %}
+                <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="provider_id" value="{{ provider.pk }}">
+                  <input type="hidden" name="action" value="approve">
+                  <button class="btn btn-success btn-sm" type="submit">
+                    {% trans "Accept" %}
+                  </button>
+                </form>
+                <a class="btn btn-danger btn-sm"
+                   href="{% url 'dashboard:verification_detail' provider.pk %}#reject">
+                  {% trans "Reject" %}
+                </a>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5" class="empty-state">{% trans "The queue is empty." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "partials/pagination.html" with page=page_obj %}
+</section>
+{% endblock %}

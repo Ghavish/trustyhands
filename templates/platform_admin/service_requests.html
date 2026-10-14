@@ -1,0 +1,81 @@
+{% extends "layouts/dashboard.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Service Requests" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/admin.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Service Requests" %}{% endblock %}
+{% block topbar_extra %}
+  <form method="get" class="ad-filters" data-auto-submit>
+    <select name="status" aria-label="{% trans 'Status' %}">
+      <option value="">{% trans "All statuses" %}</option>
+      {% for value, label in statuses %}
+        <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </form>
+{% endblock %}
+
+{% block content %}
+<section class="card table-wrap">
+  <table class="table ad-table">
+    <thead>
+      <tr>
+        <th>{% trans "Req ID" %}</th>
+        <th>{% trans "Client (Photo + Name)" %}</th>
+        <th>{% trans "Service Type" %}</th>
+        <th>{% trans "Service Status" %}</th>
+        <th>{% trans "Appt Date" %}</th>
+        <th>{% trans "Assigned Provider" %}</th>
+        <th>{% trans "Actions" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job in page_obj %}
+        <tr>
+          <td>#{{ job.reference }}</td>
+          <td>
+            <span class="ad-person">
+              {% include "partials/avatar.html" with person=job.client size="34" %}
+              {{ job.client.display_name }}
+            </span>
+          </td>
+          <td>{{ job.category.name|default:job.get_job_type_display }}</td>
+          <td>
+            <span class="status status-{{ job.status|status_class }}">
+              <span class="dot"></span>{{ job.get_status_display }}
+            </span>
+          </td>
+          <td>{{ job.preferred_date|date:"d M Y" }}</td>
+          <td>
+            <span class="ad-person">
+              {% include "partials/avatar.html" with person=job.provider.user size="34" %}
+              {{ job.provider.business_name }}
+            </span>
+          </td>
+          <td class="ad-links">
+            <a href="{% url 'dashboard:request_detail' job.pk %}">{% trans "View Details" %}</a> |
+            {% if job.status == "COMPLETED" %}
+              <a href="{% url 'dashboard:request_detail' job.pk %}#feedback">
+                {% trans "Record feedback" %}
+              </a>
+            {% elif job.status == "ACCEPTED" or job.status == "PENDING" %}
+              <a href="{% url 'dashboard:request_detail' job.pk %}#reschedule">
+                {% trans "Reschedule" %}
+              </a>
+            {% else %}
+              <a href="mailto:{{ job.contact_email }}?subject={{ job.reference }}">
+                {% trans "Contact Client" %}
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7" class="empty-state">{% trans "No requests." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% include "partials/pagination.html" with page=page_obj %}
+</section>
+{% endblock %}

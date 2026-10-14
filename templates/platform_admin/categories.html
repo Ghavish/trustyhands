@@ -1,0 +1,99 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Category Management" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/admin.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Category Management" %}{% endblock %}
+{% block page_subtitle %}
+  {% trans "Technical Services and Creative & Personal Services." %}
+{% endblock %}
+
+{% block page_body %}
+<div class="ad-detail">
+  <section class="page-card table-wrap">
+    <table class="table ad-table">
+      <thead>
+        <tr>
+          <th>{% trans "Icon" %}</th>
+          <th>{% trans "Name" %}</th>
+          <th>{% trans "Group" %}</th>
+          <th>{% trans "Providers" %}</th>
+          <th>{% trans "Status" %}</th>
+          <th>{% trans "Actions" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+          <tr>
+            <td>
+              {% if category.icon %}<img src="{{ category.icon.url }}" alt="" width="36">{% endif %}
+            </td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.get_group_display }}</td>
+            <td>{{ category.provider_count }}</td>
+            <td>
+              {% if category.is_active %}
+                <span class="badge badge-success">{% trans "Active" %}</span>
+              {% else %}
+                <span class="badge badge-muted">{% trans "Inactive" %}</span>
+              {% endif %}
+            </td>
+            <td class="ad-links">
+              <a href="?edit={{ category.pk }}">{% trans "Edit" %}</a>
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="toggle">
+                <input type="hidden" name="category_id" value="{{ category.pk }}">
+                <button class="btn-link" type="submit">
+                  {% if category.is_active %}
+                    {% trans "Deactivate" %}
+                  {% else %}
+                    {% trans "Activate" %}
+                  {% endif %}
+                </button>
+              </form>
+              <form method="post" data-confirm="{% trans 'Remove this category?' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="category_id" value="{{ category.pk }}">
+                <button class="btn-link" type="submit">{% trans "Remove" %}</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <aside>
+    <section class="page-card">
+      <h2 class="card-title">
+        {% if editing %}{% trans "Edit category" %}{% else %}{% trans "Add a category" %}{% endif %}
+      </h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="save">
+        {% for field in form %}{% include "partials/form_field.html" %}{% endfor %}
+        <button class="btn btn-accent" type="submit">{% trans "Save" %}</button>
+        {% if editing %}
+          <a class="btn btn-outline" href="{% url 'dashboard:category_management' %}">
+            {% trans "Cancel" %}
+          </a>
+        {% endif %}
+      </form>
+    </section>
+
+    <section class="page-card">
+      <h2 class="card-title">{% trans "Link a provider to categories" %}</h2>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="link">
+        {% for field in link_form %}{% include "partials/form_field.html" %}{% endfor %}
+        <button class="btn btn-dark" type="submit">{% trans "Save links" %}</button>
+      </form>
+    </section>
+  </aside>
+</div>
+{% endblock %}

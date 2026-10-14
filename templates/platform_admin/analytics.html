@@ -1,0 +1,100 @@
+{% extends "layouts/dashboard.html" %}
+{% load static i18n humanize th_tags %}
+
+{% block title %}{% trans "Analytics Dashboard" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/admin.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Analytics Dashboard" %}{% endblock %}
+{% block topbar_extra %}{% include "partials/date_range.html" %}{% endblock %}
+
+{% block content %}
+<div class="an-grid">
+  {# --- Pending verifications --- #}
+  <a class="card stat-card an-link" href="{% url 'dashboard:verification_queue' %}">
+    <span class="stat-label">{% trans "Pending Verifications" %} {% icon "trend-up" 22 %}</span>
+    <span class="stat-value">{{ pending }}</span>
+    {% include "platform_admin/partials/change_badge.html" with value=pending_change %}
+  </a>
+
+  {# --- Approvals --- #}
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Approvals This Month" %} {% icon "trend-up" 22 %}</span>
+    <span class="stat-value">{{ approvals }}</span>
+    {% include "platform_admin/partials/change_badge.html" with value=approvals_change %}
+  </div>
+
+  {# --- Transactions --- #}
+  <div class="card stat-card an-money">
+    <span class="stat-label">{% trans "Transactions (MUR)" %}</span>
+    <span class="stat-value">{{ transactions|floatformat:0|intcomma }}</span>
+    <div class="an-spark"><canvas id="money-spark"></canvas></div>
+    {% include "platform_admin/partials/change_badge.html" with value=transactions_change %}
+  </div>
+
+  {# --- Active clients per category --- #}
+  <div class="card an-clients">
+    <div class="row-between">
+      <span class="stat-label">{% trans "Active Clients" %}</span>
+      {% icon "user" 30 %}
+    </div>
+    <span class="stat-value">{{ active_clients|intcomma }}</span>
+    <div class="an-donut-row">
+      <ul class="an-legend">
+        {% for row in category_rows %}
+          <li><span class="an-swatch an-c{{ forloop.counter }}"></span>{{ row.name }}
+            <span class="muted">({{ row.clients }})</span></li>
+        {% endfor %}
+      </ul>
+      <div class="an-donut"><canvas id="clients-donut"></canvas></div>
+    </div>
+  </div>
+</div>
+
+{# --- More platform statistics (FR 7.5) --- #}
+<div class="an-grid an-grid-lower">
+  <div class="card">
+    <h2 class="card-title">{% trans "Requests per week" %}</h2>
+    <div class="an-spark an-spark-tall"><canvas id="weekly-spark"></canvas></div>
+    <p class="muted">{% blocktrans %}{{ total_users }} users on the platform{% endblocktrans %}</p>
+  </div>
+  <div class="card">
+    <h2 class="card-title">{% trans "Providers per category" %}</h2>
+    <ul class="an-list">
+      {% for row in category_rows %}
+        <li><span>{{ row.name }}</span><strong>{{ row.providers }}</strong></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h2 class="card-title">{% trans "Top-rated providers" %}</h2>
+    <ol class="an-list">
+      {% for provider in top_rated %}
+        <li>
+          <a href="{% url 'client:provider_profile' provider.pk %}">{{ provider.business_name }}</a>
+          <strong>{{ provider.average_rating }} {% icon "star" 14 "gold" %}</strong>
+        </li>
+      {% empty %}
+        <li class="muted">{% trans "No reviews yet." %}</li>
+      {% endfor %}
+    </ol>
+  </div>
+</div>
+
+{{ money_trend|json_script:"money-trend" }}
+{{ category_labels|json_script:"category-labels" }}
+{{ category_values|json_script:"category-values" }}
+{{ weekly|json_script:"weekly-trend" }}
+{% endblock %}
+
+{% block screen_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    drawSparkline("money-spark", readJson("money-trend"), "#f5a524");
+    drawSparkline("weekly-spark", readJson("weekly-trend"), "#2f6fed");
+    drawDoughnut(
+      "clients-donut", readJson("category-labels"), readJson("category-values")
+    );
+  });
+</script>
+{% endblock %}
