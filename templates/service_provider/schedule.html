@@ -1,0 +1,187 @@
+{% extends "layouts/dashboard.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Schedule Manager" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/schedule.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Schedule Manager" %}{% endblock %}
+
+{% block content %}
+{# --- Stat cards --- #}
+<div class="stat-grid">
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Confirmed Jobs Today" %}</span>
+    <span class="sm-stat">{{ confirmed_today }} {% icon "calendar" 40 %}</span>
+    <span class="badge badge-success">{% icon "check-circle" 14 %} {% trans "On Track" %}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Available Slots This Week" %}</span>
+    <span class="sm-stat">{{ free_slots }} {% icon "clock" 40 %}</span>
+    <span class="sm-progress"><span style="width: {{ percent_full }}%"></span></span>
+    <span class="muted">{% blocktrans %}{{ percent_full }}% Full{% endblocktrans %}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Recurring Clients" %}</span>
+    <span class="sm-stat">{{ recurring_clients }} {% icon "users" 40 %}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% trans "Scheduling Conflicts" %}</span>
+    <span class="sm-stat">{{ conflicts }} {% icon "alert" 40 %}</span>
+    {% if conflicts %}
+      <span class="badge badge-warning">{% icon "alert" 14 %} {% trans "Needs Review" %}</span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="sm-layout">
+  {# --- Calendar --- #}
+  <section class="card">
+    <div class="row-between">
+      <div class="row">
+        <a class="icon-btn" href="?view={{ view }}&year={{ prev.0 }}&month={{ prev.1 }}"
+           aria-label="{% trans 'Previous month' %}">{% icon "chevron-left" %}</a>
+        <h2 class="sm-month">{{ month_date|date:"F Y"|upper }}</h2>
+        <a class="icon-btn" href="?view={{ view }}&year={{ next.0 }}&month={{ next.1 }}"
+           aria-label="{% trans 'Next month' %}">{% icon "chevron-right" %}</a>
+      </div>
+      <div class="sm-tabs">
+        <a class="{% if view == 'month' %}active{% endif %}" href="?view=month">
+          {% trans "MONTH" %}
+        </a>
+        <a class="{% if view == 'week' %}active{% endif %}" href="?view=week">
+          {% trans "WEEK" %}
+        </a>
+        <a class="{% if view == 'day' %}active{% endif %}" href="?view=day">
+          {% trans "DAY" %}
+        </a>
+      </div>
+    </div>
+
+    {% if view == "day" %}
+      <h3>{{ today|date:"l d F Y" }}</h3>
+      <ul class="sm-day-list">
+        {% for job in day_jobs %}
+          <li class="sm-chip {{ job.chip }}">
+            <a href="{% url 'provider:job_detail' job.pk %}">{{ job.description }}</a>
+            <span>{{ job.client.display_name }}</span>
+          </li>
+        {% empty %}
+          <li class="muted">{% trans "No jobs today." %}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="sm-grid">
+        <span class="sm-head">{% trans "Sun" %}</span>
+        <span class="sm-head">{% trans "Mon" %}</span>
+        <span class="sm-head">{% trans "Tue" %}</span>
+        <span class="sm-head">{% trans "Wed" %}</span>
+        <span class="sm-head">{% trans "Thu" %}</span>
+        <span class="sm-head">{% trans "Fri" %}</span>
+        <span class="sm-head">{% trans "Sat" %}</span>
+        {% for week in calendar_weeks %}
+          {% for cell in week %}
+            <div class="sm-cell {% if not cell.in_month %}out{% endif %}
+                        {% if cell.blocked %}blocked{% endif %}
+                        {% if cell.today %}today{% endif %}">
+              <span class="sm-date">{{ cell.date.day }}</span>
+              {% for job in cell.jobs %}
+                <a class="sm-chip {{ job.chip }}" title="{{ job.client.display_name }}"
+                   href="{% url 'provider:job_detail' job.pk %}">
+                  {{ job.description|truncatechars:20 }}
+                </a>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <p class="sm-legend">
+      <span><span class="dot high"></span> {% trans "High Priority" %}</span>
+      <span><span class="dot plumbing"></span> {% trans "Plumbing Repair" %}</span>
+      <span><span class="dot installation"></span> {% trans "Installation" %}</span>
+      <span><span class="dot maintenance"></span> {% trans "Maintenance" %}</span>
+      <span><span class="dot other"></span> {% trans "Other" %}</span>
+      <span><span class="dot blocked"></span> {% trans "Blocked out" %}</span>
+    </p>
+  </section>
+
+  {# --- Schedule Settings & Details --- #}
+  <aside class="card sm-settings">
+    <h2 class="card-title">{% trans "Schedule Settings & Details" %}</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="settings">
+      <label class="sm-switch">
+        {{ settings_form.recurring_availability }}
+        <span>
+          <strong>{% trans "Recurring Availability" %}</strong><br>
+          {% trans "Manage your recurring schedule" %}
+        </span>
+      </label>
+      <p class="form-label">{% trans "Date Range" %}</p>
+      <div class="grid-2">
+        {% include "partials/form_field.html" with field=settings_form.range_start %}
+        {% include "partials/form_field.html" with field=settings_form.range_end %}
+      </div>
+      <div class="form-field sm-services">
+        <span class="form-label">{{ settings_form.services_offered.label }}</span>
+        {{ settings_form.services_offered }}
+      </div>
+      <p class="form-label">{% trans "Time Slots" %}</p>
+      <div class="grid-2">
+        {% include "partials/form_field.html" with field=settings_form.day_start %}
+        {% include "partials/form_field.html" with field=settings_form.day_end %}
+        {% include "partials/form_field.html" with field=settings_form.slot_minutes %}
+        {% include "partials/form_field.html" with field=settings_form.buffer_minutes %}
+      </div>
+      <button class="btn btn-accent btn-sm" type="submit">{% trans "Save settings" %}</button>
+    </form>
+
+    <hr>
+    <h3>{% trans "Block Out Dates" %}</h3>
+    <ul class="sm-blocks">
+      {% for block in blocked_dates %}
+        <li>
+          {{ block.start_date|date:"d.m.Y" }} - {{ block.end_date|date:"d.m.Y" }}
+          <span class="muted">{{ block.reason }}</span>
+          <form method="post" action="{% url 'provider:schedule_delete_date' block.pk %}">
+            {% csrf_token %}
+            <button class="icon-btn" type="submit" aria-label="{% trans 'Remove' %}">
+              {% icon "trash" 16 %}
+            </button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+    <form method="post" class="grid-2">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="block_date">
+      {% for field in date_form %}{% include "partials/form_field.html" %}{% endfor %}
+      <button class="btn btn-outline btn-sm" type="submit">{% trans "Block dates" %}</button>
+    </form>
+
+    <h3>{% trans "Block Out Times" %}</h3>
+    <ul class="sm-blocks">
+      {% for block in blocked_times %}
+        <li>
+          {{ block.label }} {{ block.start_time|time:"H:i" }}-{{ block.end_time|time:"H:i" }}
+          <form method="post" action="{% url 'provider:schedule_delete_time' block.pk %}">
+            {% csrf_token %}
+            <button class="icon-btn" type="submit" aria-label="{% trans 'Remove' %}">
+              {% icon "trash" 16 %}
+            </button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+    <form method="post" class="grid-2">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="block_time">
+      {% for field in time_form %}{% include "partials/form_field.html" %}{% endfor %}
+      <button class="btn btn-outline btn-sm" type="submit">{% trans "Block time" %}</button>
+    </form>
+  </aside>
+</div>
+{% endblock %}

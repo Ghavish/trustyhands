@@ -1,0 +1,301 @@
+/* Portfolio Hub and Choose Your Plan: shared full-page onboarding look. */
+
+.ob-page {
+  min-height: 100vh;
+  padding: 1.5rem 2rem 3rem;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #1b2634;
+}
+
+[data-theme="dark"] .ob-page {
+  background-image: none !important;
+  color: var(--text);
+}
+
+.ob-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.ob-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+.ob-logo {
+  width: 160px;
+}
+
+.ob-header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.ob-header p {
+  font: 1.6rem var(--font-display);
+  max-width: 850px;
+}
+
+.ob-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 620px) 260px;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.ob-steps {
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 0;
+}
+
+.ob-steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.2rem 0;
+  border-bottom: 2px solid var(--gold);
+  font-size: 0.8rem;
+}
+
+.ob-steps img {
+  width: 70px;
+  height: 70px;
+}
+
+.ob-steps strong {
+  display: block;
+  font-size: 0.85rem;
+}
+
+.ob-form label,
+.ob-form .form-label,
+.ob-projects-title {
+  font: 500 1.15rem var(--font-display);
+}
+
+.ob-categories > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+}
+
+.ob-categories label {
+  font: 0.9rem var(--font-body);
+}
+
+.ob-projects {
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 0.6rem;
+  border-radius: 10px;
+  background: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.ob-project {
+  background: #fff;
+  color: #1b2634;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 0.7rem;
+}
+
+.ob-uploads {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.ob-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+  font: 0.85rem var(--font-display) !important;
+  cursor: pointer;
+}
+
+.ob-upload .icon {
+  color: var(--gold);
+}
+
+.ob-upload input {
+  display: none;
+}
+
+.ob-add {
+  margin-bottom: 1.2rem;
+}
+
+.ob-form textarea {
+  border: 10px solid var(--navy);
+  border-radius: 12px;
+  min-height: 140px;
+}
+
+/* --- Choose Your Plan --- */
+.plan-stepper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  font: 1.6rem var(--font-display);
+  margin: 0.5rem 0;
+}
+
+.plan-stepper .current {
+  background: #3a7bd5;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.1rem 1rem;
+}
+
+.plan-cycle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  font: 1.2rem var(--font-display);
+  margin-bottom: 1.5rem;
+}
+
+/* The checkbox drawn as a switch, like the Figma toggle. */
+.plan-cycle input {
+  appearance: none;
+  width: 46px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--navy);
+  position: relative;
+  cursor: pointer;
+}
+
+.plan-cycle input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.2s;
+}
+
+.plan-cycle input:checked {
+  background: var(--gold);
+}
+
+.plan-cycle input:checked::after {
+  left: 25px;
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 330px));
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.plan-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.6rem 1.4rem;
+  background: rgba(246, 246, 246, 0.92);
+  border: 2px solid var(--navy);
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+  color: #1b2634;
+}
+
+.plan-card.popular {
+  border: 3px solid var(--gold);
+}
+
+.plan-card.current-plan {
+  outline: 3px solid var(--info);
+  outline-offset: 4px;
+}
+
+.plan-flag {
+  position: absolute;
+  top: -1.1rem;
+  background: var(--gold);
+  border-radius: 999px;
+  padding: 0.1rem 1.2rem;
+  font: 1.25rem var(--font-display);
+}
+
+.plan-card h2 {
+  font: 700 1.35rem var(--font-body);
+}
+
+.plan-price {
+  font: 700 2.2rem var(--font-body);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.plan-price small {
+  font-size: 1.1rem;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0 2rem;
+  flex: 1;
+  font: 1.1rem var(--font-display);
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.plan-features .icon {
+  color: var(--gold);
+}
+
+.plan-note {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 1.8rem;
+}
+
+.checkout-card {
+  max-width: 520px;
+  margin: 2rem auto;
+  background: rgba(246, 246, 246, 0.95);
+  color: #1b2634;
+}
+
+@media (max-width: 1100px) {
+  .ob-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ob-steps {
+    display: none;
+  }
+
+  .plan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ob-header {
+    flex-direction: column;
+  }
+}

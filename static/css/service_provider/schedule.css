@@ -1,0 +1,231 @@
+/* Schedule Manager: stat cards, month calendar and settings panel. */
+
+.sm-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 700 2.5rem var(--font-display);
+}
+
+.sm-stat .icon {
+  color: var(--text-muted);
+}
+
+.sm-progress {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--muted-soft);
+  overflow: hidden;
+}
+
+.sm-progress span {
+  display: block;
+  height: 100%;
+  background: var(--info);
+}
+
+.sm-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.sm-month {
+  font: 800 2.2rem var(--font-display);
+  margin: 0;
+}
+
+.sm-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sm-tabs a {
+  padding: 0.2rem 0.9rem;
+  border-radius: 6px;
+  background: var(--muted-soft);
+  font: 0.95rem var(--font-display);
+  text-decoration: none;
+}
+
+.sm-tabs a.active {
+  background: var(--navy);
+  color: #fff;
+}
+
+.sm-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.sm-head {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.sm-cell {
+  min-height: 95px;
+  padding: 0.3rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.sm-cell.out .sm-date {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.sm-cell.blocked {
+  background: repeating-linear-gradient(
+    45deg, var(--muted-soft), var(--muted-soft) 6px, transparent 6px, transparent 12px
+  );
+}
+
+.sm-cell.today .sm-date {
+  background: var(--gold);
+  color: #1b2634;
+  border-radius: 50%;
+  padding: 0 0.35rem;
+}
+
+.sm-date {
+  font-size: 0.75rem;
+  align-self: flex-start;
+}
+
+.sm-chip {
+  display: block;
+  padding: 0.2rem 0.35rem;
+  border-radius: 4px;
+  font: 0.72rem var(--font-display);
+  color: #1b2634;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Colours from the Figma legend */
+.sm-chip.high, .dot.high { background: #f36b6b; color: #1b2634; }
+.sm-chip.plumbing, .dot.plumbing { background: #7cc0f7; }
+.sm-chip.installation, .dot.installation { background: #6fd18f; }
+.sm-chip.maintenance, .dot.maintenance { background: #e3a6f0; }
+.sm-chip.other, .dot.other { background: #ffc764; }
+.dot.blocked { background: var(--muted-soft); border: 1px solid var(--text-muted); }
+
+.sm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.sm-legend .dot {
+  color: transparent;
+}
+
+.sm-day-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.sm-day-list .sm-chip {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  padding: 0.6rem;
+}
+
+.sm-settings h3 {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.sm-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+}
+
+.sm-switch input {
+  appearance: none;
+  flex-shrink: 0;
+  order: 2;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--muted-soft);
+  position: relative;
+  cursor: pointer;
+}
+
+.sm-switch input::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.2s;
+}
+
+.sm-switch input:checked {
+  background: var(--navy);
+}
+
+.sm-switch input:checked::after {
+  left: 23px;
+}
+
+.sm-services > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.2rem 1rem;
+}
+
+.sm-services label {
+  font-weight: 400;
+}
+
+.sm-blocks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+}
+
+.sm-blocks li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 1100px) {
+  .sm-layout {
+    grid-template-columns: 1fr;
+  }
+}

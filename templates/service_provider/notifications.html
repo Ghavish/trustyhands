@@ -1,0 +1,39 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Notifications" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/notifications.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Notifications" %}{% endblock %}
+{% block page_subtitle %}
+  {% trans "Verification results, new requests and reviews." %}
+{% endblock %}
+{% block page_actions %}
+  <form method="post" action="{% url 'provider:mark_all_read' %}">
+    {% csrf_token %}
+    <button class="btn btn-outline btn-sm" type="submit">{% trans "Mark all as read" %}</button>
+  </form>
+{% endblock %}
+
+{% block page_body %}
+<div class="page-card">
+  <ul class="nt-list">
+    {% for item in items %}
+      <li class="nt-item {% if not item.is_read %}unread{% endif %}">
+        <span class="nt-icon">{% icon "bell" 20 %}</span>
+        <div>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.message }}</p>
+          <span class="muted">{{ item.created_at|timesince }}</span>
+        </div>
+        {% if item.link %}
+          <a class="btn btn-accent btn-sm" href="{{ item.link }}">{% trans "Open" %}</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li class="empty-state">{% trans "You have no notifications." %}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

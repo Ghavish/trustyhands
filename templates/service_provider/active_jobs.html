@@ -1,0 +1,198 @@
+{% extends "layouts/dashboard.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{% trans "Active Jobs" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/service_provider/active_jobs.css' %}">
+{% endblock %}
+{% block page_title %}{% trans "Active Jobs & Requests" %}{% endblock %}
+{% block topbar_extra %}{% include "partials/date_range.html" %}{% endblock %}
+
+{% block content %}
+{# --- Stat cards --- #}
+<div class="stat-grid">
+  <div class="card stat-card">
+    <span class="stat-label">{% icon "briefcase" 26 %} {% trans "Active Jobs" %}</span>
+    <div class="aj-stat-row">
+      <span class="stat-value">{{ active_count }}</span>
+      <div class="aj-spark"><canvas id="active-spark"></canvas></div>
+    </div>
+    <span class="badge badge-success">{% icon "trend-up" 14 %} {% trans "On Track" %}</span>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% icon "clock" 26 %} {% trans "Pending Requests" %}</span>
+    <div class="aj-stat-row">
+      <span class="stat-value">{{ pending_count }}</span>
+      <div class="aj-spark"><canvas id="pending-spark"></canvas></div>
+    </div>
+    {% if pending_count %}
+      <span class="badge badge-warning">{% icon "alert" 14 %} {% trans "Needs Action" %}</span>
+    {% endif %}
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% icon "calendar" 26 %} {% trans "Upcoming Bookings" %}</span>
+    <div class="aj-stat-row">
+      <span class="stat-value">{{ upcoming_count }}</span>
+      <ul class="aj-upcoming">
+        {% for job in upcoming %}
+          <li>
+            <span class="dot"></span>{{ job.preferred_date|date:"d M" }}
+            <span class="muted">{{ job.description|truncatechars:18 }}</span>
+          </li>
+        {% empty %}
+          <li class="muted">{% trans "None yet" %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="card stat-card">
+    <span class="stat-label">{% icon "star" 26 %} {% trans "Average Client Rating" %}</span>
+    <span class="stat-value">{{ rating }}/5</span>
+    <span class="stars">
+      {% for kind in rating|stars %}
+        <span class="{{ kind }}">{% icon "star" 26 %}</span>
+      {% endfor %}
+    </span>
+  </div>
+</div>
+
+{# --- Current active jobs (Scheduled and In Progress) --- #}
+<section class="card aj-section">
+  <h2 class="card-title">{% trans "Current Active Jobs" %}</h2>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{% trans "Job Id" %}</th>
+          <th>{% trans "Client Name" %}</th>
+          <th>{% trans "Job Type" %}</th>
+          <th>{% trans "Date" %}</th>
+          <th>{% trans "Status" %}</th>
+          <th>{% trans "Action" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for job in current %}
+          <tr>
+            <td>{{ job.reference }}</td>
+            <td>
+              <span class="person">
+                {% include "partials/avatar.html" with person=job.client size="42" %}
+                {{ job.client.display_name }}
+              </span>
+            </td>
+            <td>{{ job.category.name|default:job.get_job_type_display }}</td>
+            <td>{{ job.preferred_date|date:"d.m.Y" }}</td>
+            <td>
+              <span class="status status-{{ job.status|status_class }}">
+                <span class="dot"></span>{{ job.get_status_display }}
+              </span>
+            </td>
+            <td class="actions">
+              {% if job.status == "ACCEPTED" %}
+                <form method="post" action="{% url 'provider:job_update' job.pk %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="onsite">
+                  <button class="btn btn-info btn-sm" type="submit">{% trans "On site" %}</button>
+                </form>
+              {% else %}
+                <a class="btn btn-danger btn-sm" href="{% url 'provider:job_detail' job.pk %}">
+                  {% trans "Update Status" %}
+                </a>
+              {% endif %}
+            </td>
+            <td>
+              <div class="dropdown" data-dropdown>
+                <button class="icon-btn" type="button" data-dropdown-trigger
+                        aria-label="{% trans 'More actions' %}">{% icon "dots" 22 %}</button>
+                <div class="dropdown-menu">
+                  <a href="{% url 'provider:job_detail' job.pk %}">
+                    {% icon "file" 16 %} {% trans "View Details" %}
+                  </a>
+                  <a href="mailto:{{ job.contact_email }}?subject={{ job.reference }}">
+                    {% icon "message" 16 %} {% trans "Message Client" %}
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="empty-state">{% trans "No active jobs in this period." %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{# --- New job requests queue (Pending) --- #}
+<section class="card aj-section">
+  <h2 class="card-title">{% trans "New Job Requests Queue" %}</h2>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{% trans "Client Name" %}</th>
+          <th>{% trans "Issue Description" %}</th>
+          <th>{% trans "Date Requested" %}</th>
+          <th>{% trans "Urgency" %}</th>
+          <th>{% trans "Action" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for job in queue %}
+          <tr>
+            <td>
+              <span class="person">
+                {% include "partials/avatar.html" with person=job.client size="42" %}
+                {{ job.client.display_name }}
+              </span>
+            </td>
+            <td>{{ job.description|truncatechars:40 }}</td>
+            <td>{{ job.preferred_date|date:"d.m.Y" }}</td>
+            <td>
+              <span class="status status-{{ job.urgency|status_class }}">
+                <span class="dot"></span>{{ job.get_urgency_display }}
+              </span>
+            </td>
+            <td class="actions">
+              <form method="post" action="{% url 'provider:job_update' job.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="accept">
+                <button class="btn btn-dark btn-sm" type="submit">{% trans "Accept" %}</button>
+              </form>
+              <form method="post" action="{% url 'provider:job_update' job.pk %}"
+                    data-confirm="{% trans 'Decline this request?' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="decline">
+                <button class="btn btn-accent btn-sm" type="submit">{% trans "Decline" %}</button>
+              </form>
+            </td>
+            <td>
+              <a class="icon-btn" href="{% url 'provider:job_detail' job.pk %}"
+                 aria-label="{% trans 'View Details' %}">{% icon "dots" 22 %}</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="empty-state">{% trans "No new requests." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{{ active_trend|json_script:"active-trend" }}
+{{ pending_trend|json_script:"pending-trend" }}
+{% endblock %}
+
+{% block screen_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    drawSparkline("active-spark", readJson("active-trend"), "#2f6fed");
+    drawSparkline("pending-spark", readJson("pending-trend"), "#f5a524");
+  });
+</script>
+{% endblock %}

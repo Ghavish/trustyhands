@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static i18n th_tags %}
+ 
+{% block title %}{% trans "Our Verified Professionals" %}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/client/provider_list.css' %}">
+{% endblock %}
+ 
+{% block body %}
+{# --- Header with the tools illustration --- #}
+<header class="pl-header"
+        style="background-image: url('{% static 'images/tools_header.png' %}')">
+  <a href="{% url 'core:home' %}">
+    <img class="pl-logo" src="{% static 'images/logo.png' %}" alt="TrustyHands">
+  </a>
+  <div class="pl-header-actions">
+    <span class="pl-join">{% trans "Want to Join Us ?" %}</span>
+    <a class="btn btn-accent btn-sm" href="{% url 'users:register' %}?role=PROVIDER">
+      {% trans "Register" %}
+    </a>
+    {% include "partials/theme_toggle.html" %}
+    {% include "partials/language_switch.html" %}
+    {% include "partials/account_menu.html" %}
+  </div>
+</header>
+ 
+<div class="pl-layout">
+  {# --- Filters sidebar --- #}
+  <aside class="pl-sidebar">
+    <form method="get" data-auto-submit>
+      <h2 class="pl-services-title">{% trans "Services :" %}</h2>
+      <label class="sr-only" for="category">{% trans "Category" %}</label>
+      <select id="category" name="category" class="pl-category">
+        <option value="">{% trans "All services" %}</option>
+        {% for category in categories %}
+          <option value="{{ category.slug }}"
+                  {% if category == selected_category %}selected{% endif %}>
+            {{ category.name }}
+          </option>
+        {% endfor %}
+      </select>
+ 
+      <label class="sr-only" for="keyword">{% trans "Search" %}</label>
+      <input id="keyword" type="search" name="q" value="{{ keyword }}"
+             placeholder="{% trans 'Search by name or town' %}">
+ 
+      <p class="pl-filter-title">{% trans "FILTER BY" %}</p>
+      <label class="pl-filter">
+        <input type="checkbox" name="closest" {% if closest %}checked{% endif %}>
+        {% icon "pin" 20 %} {% trans "Closest (Location)" %}
+      </label>
+      <label class="pl-filter">
+        <input type="checkbox" name="ratings" {% if ratings %}checked{% endif %}>
+        {% icon "star" 20 %} {% trans "Ratings" %}
+      </label>
+      <label class="pl-filter">
+        <input type="checkbox" name="availability"
+               {% if available_only %}checked{% endif %}>
+        {% icon "calendar" 20 %} {% trans "Availability" %}
+      </label>
+ 
+      <p class="pl-filter-title">{% trans "Project Scale" %}</p>
+      <div class="pl-scale">
+        <label>
+          <input type="radio" name="scale" value="" {% if not scale %}checked{% endif %}>
+          {% trans "Any" %}
+          </label>
+        {% for value, label in scales %}
+          <label>
+            <input type="radio" name="scale" value="{{ value }}"
+                   {% if scale == value %}checked{% endif %}>
+            {{ label }}
+          </label>
+        {% endfor %}
+      </div>
+      <noscript>
+        <button class="btn btn-accent btn-sm" type="submit">{% trans "Apply" %}</button>
+      </noscript>
+    </form>
+ 
+    <div class="pl-help">
+      <span>{% trans "Need Help ?" %}<br>{% trans "Feel Free to Reach Out!" %}</span>
+      <a class="icon-btn" href="tel:555555" aria-label="{% trans 'Call us' %}">
+        {% icon "phone" 28 %}
+      </a>
+      <a class="icon-btn" href="mailto:trustyhands@trusty-hands.mu"
+         aria-label="{% trans 'Email us' %}">
+        {% icon "mail" 28 %}
+      </a>
+    </div>
+  </aside>
+ 
+  {# --- Results --- #}
+  <main class="pl-main">
+    <div class="pl-banner">
+      {% icon "shield" 28 %}
+      <span>{% trans "Our Verified Professionals:" %}</span>
+      {% if selected_category %}
+        <span class="pl-banner-tag">{{ selected_category.name }}</span>
+      {% endif %}
+    </div>
+    {% include "partials/messages.html" %}
+ 
+    <div class="pl-cards">
+      {% for provider in providers %}
+        <article class="pl-card">
+          {% if provider.cover_photo %}
+            <img class="pl-cover" src="{{ provider.cover_photo.url }}" alt="">
+          {% else %}
+            <div class="pl-cover pl-cover-empty">{% icon "briefcase" 48 %}</div>
+          {% endif %}
+ 
+          <div class="pl-info">
+            <h3>{{ provider.business_name }}</h3>
+            <p class="pl-title">{{ provider.profession_title }}</p>
+            <p class="pl-line">
+              {% icon "star" 20 "gold" %}
+              {{ provider.average_rating }}
+              ({{ provider.review_count }} {% trans "reviews" %})
+            </p>
+            <p class="pl-line">
+              {% icon "clock" 20 %}
+              {% blocktrans trimmed with years=provider.years_experience %}
+                {{ years }}+ Years of Experience
+              {% endblocktrans %}
+            </p>
+            <p class="pl-line">{% icon "home" 20 %} {{ provider.get_client_type_display }}</p>
+          </div>
+ 
+          <div class="pl-services">
+            <p class="pl-services-label">{% trans "Services :" %}</p>
+            {% for service in provider.top_services %}
+              <p class="pl-service">
+                {% if service.icon %}
+                  <img src="{{ service.icon.url }}" alt="">
+                {% else %}
+                  {% icon "tag" 22 %}
+                {% endif %}
+                {{ service.name }}
+              </p>
+            {% endfor %}
+</div>
+<div class="pl-side">
+<p class="pl-location">{% icon "pin" 22 %} {{ provider.location_label }}</p>
+<a class="btn btn-accent pl-view"
+href="{% url 'client:provider_profile' provider.pk %}">
+{% trans "View Profile" %}
+</a>
+{% if user.is_authenticated and user.is_client %}
+<form method="post" action="{% url 'client:toggle_favourite' provider.pk %}">
+{% csrf_token %}
+<input type="hidden" name="next" value="{{ request.get_full_path }}">
+<button type="submit"
+class="btn-link pl-fav {% if provider.is_favourite %}saved{% endif %}">
+{% icon "heart" 18 %}
+{% if provider.is_favourite %}
+{% trans "Saved" %}
+{% else %}
+{% trans "Save" %}
+{% endif %}
+</button>
+</form>
+{% endif %}
+</div>
+</article>
+{% empty %}
+<p class="empty-state">{% trans "No providers match these filters yet." %}</p>
+{% endfor %}
+</div>
+</main>
+</div>
+{% endblock %}
