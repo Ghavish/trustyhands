@@ -1,0 +1,10 @@
+{% load i18n th_tags %}
+{# Date range picker for dashboards. Views read it with parse_date_range(). #}
+<form class="date-range" method="get" data-auto-submit>
+    {% icon "calendar" 20 %}
+    <label class="sr-only" for="range-start">{% trans "From" %}</label>
+    <input id="range-start" type="date" name="start" value="{{ range_start|date:'Y-m-d' }}">
+    <span>-</span>
+    <label class="sr-only" for="range-end">{% trans "To" %}</label>
+    <input id="range-end" type="date" name="end" value="{{ range_end|date:'Y-m-d' }}">
+</form>
