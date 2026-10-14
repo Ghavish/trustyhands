@@ -1,0 +1,105 @@
+{% extends "layouts/generic_page.html" %}
+{% load static i18n th_tags %}
+
+{% block title %}{{ person.display_name }}{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/platform_admin/admin.css' %}">
+{% endblock %}
+{% block page_title %}{{ person.display_name }}{% endblock %}
+{% block page_subtitle %}{{ person.get_role_display }} | {{ person.email }}{% endblock %}
+{% block page_actions %}
+  <a class="btn btn-outline" href="{% url 'dashboard:user_management' %}">{% trans "Back" %}</a>
+{% endblock %}
+
+{% block page_body %}
+<div class="ad-detail">
+  <div>
+    <section class="page-card">
+      <div class="ad-person">
+        {% include "partials/avatar.html" with person=person size="80" %}
+        <div>
+          <p><strong>{% trans "Phone:" %}</strong> {{ person.phone|default:"-" }}</p>
+          <p>
+            <strong>{% trans "District:" %}</strong>
+            {{ person.get_district_display|default:"-" }}
+          </p>
+          <p><strong>{% trans "Joined:" %}</strong> {{ person.date_joined|date:"d M Y" }}</p>
+          <p>
+            <strong>{% trans "Last Active:" %}</strong>
+            {{ person.last_login|date:"d M Y"|default:"-" }}
+          </p>
+        </div>
+      </div>
+      {% if provider %}
+        <p>
+          <a href="{% url 'dashboard:verification_detail' provider.pk %}">
+            {% trans "Verification record" %}
+          </a> |
+          <a href="{% url 'client:provider_profile' provider.pk %}">{% trans "Public profile" %}</a>
+        </p>
+      {% endif %}
+    </section>
+
+    <section class="page-card" id="manage">
+      <h2 class="card-title">{% trans "Service history" %}</h2>
+      <ul class="ad-log">
+        {% for job in requests %}
+          <li>
+            {{ job.reference }} - {{ job.provider.business_name }} -
+            {{ job.preferred_date|date:"d M Y" }} - {{ job.get_status_display }}
+          </li>
+        {% empty %}
+          <li class="muted">{% trans "No requests." %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="page-card">
+      <h2 class="card-title">{% trans "Status history" %}</h2>
+      <ul class="ad-log">
+        {% for log in status_logs %}
+          <li>
+            <span class="muted">{{ log.created_at|date:"d M Y" }}</span>
+            {{ log.old_status }} &rarr; {{ log.new_status }} {{ log.reason }}
+            {% if log.admin %}- {{ log.admin.display_name }}{% endif %}
+          </li>
+        {% empty %}
+          <li class="muted">{% trans "No changes yet." %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  <aside>
+    <section class="page-card">
+      <h2 class="card-title">{% trans "Account status" %}</h2>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="status">
+        {% for field in status_form %}{% include "partials/form_field.html" %}{% endfor %}
+        <button class="btn btn-accent" type="submit">{% trans "Save status" %}</button>
+      </form>
+    </section>
+
+    {% if plan_form %}
+      <section class="page-card">
+        <h2 class="card-title">{% trans "Subscription override" %}</h2>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="plan">
+          {% for field in plan_form %}{% include "partials/form_field.html" %}{% endfor %}
+          <button class="btn btn-accent" type="submit">{% trans "Save plan" %}</button>
+        </form>
+        <ul class="ad-log">
+          {% for log in plan_logs %}
+            <li>
+              <span class="muted">{{ log.created_at|date:"d M Y" }}</span>
+              {{ log.old_tier }} &rarr; {{ log.new_tier }} ({{ log.new_cycle }})
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}
