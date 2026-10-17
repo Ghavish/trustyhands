@@ -1,0 +1,12 @@
+{% load i18n th_tags %}
+{% comment %}
+  Shared Back button.
+  - Goes to the previous page when the user came from another TrustyHands page.
+  - Otherwise goes to "fallback" (or the user's home screen).
+  Use it on screens that do not extend a layout:
+    {% include "partials/back_button.html" %}
+    {% include "partials/back_button.html" with fallback=some_url %}
+{% endcomment %}
+<a class="back-btn" href="{{ fallback|default:back_fallback }}" data-back>
+  {% icon "chevron-left" 18 %}<span>{% trans "Back" %}</span>
+</a>

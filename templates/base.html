@@ -19,12 +19,17 @@
   {# --- Shared styles, then the styles of the current screen --- #}
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  {# Toasts, Back button and page transitions #}
+  <link rel="stylesheet" href="{% static 'css/ux.css' %}">
   {% block extra_css %}{% endblock %}
+  {# Dark-mode fixes for every screen; loaded last so they win #}
+  <link rel="stylesheet" href="{% static 'css/theme-dark.css' %}">
 </head>
 <body class="{% block body_class %}{% endblock %}">
   {% block body %}{% endblock %}
 
   <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/ux.js' %}"></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>
