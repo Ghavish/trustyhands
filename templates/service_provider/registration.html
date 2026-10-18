@@ -8,6 +8,7 @@
 
 {% block body %}
 <div class="ob-page" style="background-image: url('{% static 'images/onboarding_bg.jpg' %}')">
+  <div class="ob-back">{% include "partials/back_button.html" %}</div>
   <div class="ob-tools">
     {% include "partials/theme_toggle.html" %}
     {% include "partials/language_switch.html" %}
@@ -26,6 +27,15 @@
     </div>
   </header>
   {% include "partials/messages.html" %}
+  {% if is_upgrade %}
+    <p class="ob-upgrade">
+      {% blocktrans trimmed %}
+        You are signed in as a client. Submitting this form turns your
+        account into a provider account - same email and password, and your
+        requests and favourites stay with you.
+      {% endblocktrans %}
+    </p>
+  {% endif %}
 
   <div class="ob-layout">
     {# --- Left steps (decoration from Figma) --- #}
@@ -62,6 +72,12 @@
       <p class="ob-projects-title">
         {% trans "My Projects" %} (<span id="project-count">{{ projects.total_form_count }}</span>
         {% trans "Added" %})
+      </p>
+      <p class="ob-projects-hint">
+        {% blocktrans trimmed %}
+          Optional. Just starting out? Skip this - you can add projects any
+          time from your Portfolio Editor.
+        {% endblocktrans %}
       </p>
       <div class="ob-projects" id="project-list">
         {% for project in projects %}

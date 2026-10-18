@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
@@ -22,11 +21,14 @@ class LogoutView(auth_views.LogoutView):
 
 
 def register(request):
+    role = request.GET.get("role", "")
     if request.user.is_authenticated:
+        # A logged-in client who clicks "Join Us", "Become a Provider" or
+        # "Register" keeps the same account and goes to the Portfolio Hub.
+        if role == User.Role.PROVIDER and request.user.is_client:
+            return redirect("provider:registration")
         return redirect("core:after_login")
 
-    
-    role = request.GET.get("role", "")
     initial = {"role": role} if role in User.Role.values else {}
 
     form = RegisterForm(request.POST or None, initial=initial)
