@@ -3,6 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TrustyHands 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-16 15:55+0400\n"
 "Language-Team: Team Git Happens\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -10,612 +12,821 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: client/views/booking.py:41
 msgid "Project Photos (Up to 10 photos)"
 msgstr "Photos du projet (10 photos maximum)"
 
+#: client/views/booking.py:53 service_provider/views/portfolio.py:54
+#: templates/platform_admin/categories.html:20
 msgid "Name"
 msgstr "Nom"
 
+#: client/views/booking.py:54
 msgid "Phone Number"
 msgstr "Numéro de téléphone"
 
+#: client/views/booking.py:55
 msgid "Email Address"
 msgstr "Adresse e-mail"
 
+#: client/views/booking.py:56
 msgid "Project Location"
 msgstr "Lieu du projet"
 
+#: client/views/booking.py:57
 msgid "Project Description"
 msgstr "Description du projet"
 
+#: client/views/booking.py:58
 msgid "Service needed"
 msgstr "Service souhaité"
 
+#: client/views/booking.py:59
 msgid "Job type"
 msgstr "Type de travail"
 
+#: client/views/booking.py:60 templates/service_provider/active_jobs.html:140
 msgid "Urgency"
 msgstr "Urgence"
 
+#: client/views/booking.py:70
 msgid "Please select a date on the calendar."
 msgstr "Veuillez choisir une date sur le calendrier."
 
+#: client/views/booking.py:76
 msgid "Please pick a date in the future."
 msgstr "Veuillez choisir une date future."
 
+#: client/views/booking.py:79
 msgid "The professional is not available on that date."
 msgstr "Le professionnel n'est pas disponible à cette date."
 
+#: client/views/booking.py:92
+msgid "You cannot book your own services."
+msgstr "Vous ne pouvez pas réserver vos propres services."
+
+#: client/views/booking.py:95
 msgid "This professional is on leave right now."
 msgstr "Ce professionnel est en congé en ce moment."
 
+#: client/views/booking.py:121 platform_admin/views/service_requests.py:95
 msgid "New job request"
 msgstr "Nouvelle demande de travail"
 
+#: client/views/booking.py:122
 #, python-format
 msgid "%(client)s sent you a request: %(text)s"
 msgstr "%(client)s vous a envoyé une demande : %(text)s"
 
+#: client/views/booking.py:127
 #, python-format
 msgid "Your request %(ref)s was sent."
 msgstr "Votre demande %(ref)s a été envoyée."
 
+#: client/views/favourites.py:24
+msgid "You cannot save your own profile."
+msgstr "Vous ne pouvez pas enregistrer votre propre profil."
+
+#: client/views/favourites.py:31
 msgid "Removed from your favourites."
 msgstr "Retiré de vos favoris."
 
+#: client/views/favourites.py:34
 msgid "Saved to your favourites."
 msgstr "Ajouté à vos favoris."
 
+#: client/views/my_requests.py:22
+#: templates/platform_admin/review_moderation.html:34
 msgid "Rating"
 msgstr "Note"
 
+#: client/views/my_requests.py:31
 msgid "Your review"
 msgstr "Votre avis"
 
+#: client/views/my_requests.py:65
 msgid "This request can no longer be cancelled."
 msgstr "Cette demande ne peut plus être annulée."
 
+#: client/views/my_requests.py:74
 msgid "Request cancelled"
 msgstr "Demande annulée"
 
+#: client/views/my_requests.py:75
 #, python-format
 msgid "%(client)s cancelled request %(ref)s."
 msgstr "%(client)s a annulé la demande %(ref)s."
 
+#: client/views/my_requests.py:79
 msgid "Your request was cancelled."
 msgstr "Votre demande a été annulée."
 
+#: client/views/my_requests.py:89
 msgid "You can review a job once it is completed."
 msgstr "Vous pourrez donner un avis une fois le travail terminé."
 
+#: client/views/my_requests.py:92
 msgid "You already reviewed this job."
 msgstr "Vous avez déjà donné un avis sur ce travail."
 
+#: client/views/my_requests.py:102
 msgid "New review"
 msgstr "Nouvel avis"
 
+#: client/views/my_requests.py:103
 #, python-format
 msgid "%(client)s rated you %(stars)s/5."
 msgstr "%(client)s vous a donné %(stars)s/5."
 
+#: client/views/my_requests.py:107
 msgid "Thank you for your review!"
 msgstr "Merci pour votre avis !"
 
+#: client/views/my_requests.py:109
 msgid "Please choose a rating."
 msgstr "Veuillez choisir une note."
 
+#: core/choices.py:17
 msgid "Island Wide"
 msgstr "Toute l'île"
 
+#: core/choices.py:21
 msgid "Plumbing"
 msgstr "Plomberie"
 
+#: core/choices.py:22
 msgid "Repairs"
 msgstr "Réparations"
 
+#: core/choices.py:23 templates/service_provider/schedule.html:104
 msgid "Maintenance"
 msgstr "Entretien"
 
+#: core/choices.py:24
 msgid "Inspection"
 msgstr "Inspection"
 
+#: core/choices.py:25 templates/service_provider/schedule.html:103
 msgid "Installation"
 msgstr "Installation"
 
+#: core/choices.py:26 templates/service_provider/schedule.html:105
 msgid "Other"
 msgstr "Autre"
 
+#: core/choices.py:30
 msgid "Available"
 msgstr "Disponible"
 
+#: core/choices.py:31
 msgid "Busy"
 msgstr "Occupé"
 
+#: core/choices.py:32
 msgid "On Leave"
 msgstr "En congé"
 
+#: core/choices.py:36
 msgid "Small"
 msgstr "Petit"
 
+#: core/choices.py:37
 msgid "Medium"
 msgstr "Moyen"
 
+#: core/choices.py:38
 msgid "Large"
 msgstr "Grand"
 
+#: core/choices.py:42
 msgid "Residential"
 msgstr "Résidentiel"
 
+#: core/choices.py:43
 msgid "Commercial"
 msgstr "Commercial"
 
+#: core/choices.py:44
 msgid "Residential & Commercial"
 msgstr "Résidentiel et commercial"
 
+#: core/decorators.py:24
 msgid "You do not have access to that page."
 msgstr "Vous n'avez pas accès à cette page."
 
+#: core/decorators.py:51
 msgid "Please complete your professional profile first."
 msgstr "Veuillez d'abord compléter votre profil professionnel."
 
+#: core/forms.py:31
 #, python-format
 msgid "You can upload up to %(max)s files."
 msgstr "Vous pouvez envoyer jusqu'à %(max)s fichiers."
 
+#: core/models.py:28
 msgid "Technical Services"
 msgstr "Services techniques"
 
+#: core/models.py:29
 msgid "Creative & Personal Services"
 msgstr "Services créatifs et personnels"
 
+#: core/models.py:53
 msgid "Pending Verification"
 msgstr "En attente de vérification"
 
+#: core/models.py:54 core/models.py:289 core/models.py:314
 msgid "Approved"
 msgstr "Approuvé"
 
+#: core/models.py:55 core/models.py:290 core/models.py:315
 msgid "Rejected"
 msgstr "Refusé"
 
+#: core/models.py:56
 msgid "More Information Needed"
 msgstr "Informations supplémentaires requises"
 
+#: core/models.py:59
 msgid "Background Check"
 msgstr "Vérification des antécédents"
 
+#: core/models.py:60
 msgid "Identity Verification"
 msgstr "Vérification d'identité"
 
+#: core/models.py:61
 msgid "License Verification"
 msgstr "Vérification de la licence"
 
+#: core/models.py:62
 msgid "Insurance Check"
 msgstr "Vérification de l'assurance"
 
+#: core/models.py:181
 msgid "Starter"
 msgstr "Starter"
 
+#: core/models.py:182
 msgid "Pro Partner"
 msgstr "Pro Partner"
 
+#: core/models.py:183
 msgid "Elite Master"
 msgstr "Elite Master"
 
+#: core/models.py:186 templates/service_provider/choose_plan.html:29
 msgid "Monthly"
 msgstr "Mensuel"
 
+#: core/models.py:187
 msgid "Annual"
 msgstr "Annuel"
 
+#: core/models.py:281
 msgid "Business Registration Document"
 msgstr "Document d'enregistrement d'entreprise"
 
+#: core/models.py:282
 msgid "National ID"
 msgstr "Carte d'identité nationale"
 
+#: core/models.py:283
 msgid "License"
 msgstr "Licence"
 
+#: core/models.py:284
 msgid "Certification"
 msgstr "Certification"
 
+#: core/models.py:285
 msgid "Insurance"
 msgstr "Assurance"
 
+#: core/models.py:288 core/models.py:434
 msgid "Pending"
 msgstr "En attente"
 
+#: core/models.py:312
 msgid "Stage changed"
 msgstr "Étape modifiée"
 
+#: core/models.py:313
 msgid "Note added"
 msgstr "Note ajoutée"
 
+#: core/models.py:422
 msgid "Pending Approval"
 msgstr "En attente d'approbation"
 
+#: core/models.py:423
 msgid "Scheduled"
 msgstr "Planifié"
 
+#: core/models.py:424
 msgid "In Progress"
 msgstr "En cours"
 
+#: core/models.py:425
 msgid "Completed"
 msgstr "Terminé"
 
+#: core/models.py:426
 msgid "Declined"
 msgstr "Refusé"
 
+#: core/models.py:427
 msgid "Cancelled"
 msgstr "Annulé"
 
+#: core/models.py:430
 msgid "Normal"
 msgstr "Normale"
 
+#: core/models.py:431
 msgid "High"
 msgstr "Élevée"
 
+#: core/models.py:435 core/models.py:611
 msgid "Paid"
 msgstr "Payé"
 
+#: core/models.py:518
 msgid "Created"
 msgstr "Créé"
 
+#: core/models.py:519
 msgid "Status changed"
 msgstr "Statut modifié"
 
+#: core/models.py:520
 msgid "Rescheduled"
 msgstr "Reprogrammé"
 
+#: core/models.py:521
 msgid "Feedback recorded"
 msgstr "Commentaire enregistré"
 
+#: core/models.py:522
 msgid "Reassigned"
 msgstr "Réattribué"
 
+#: core/models.py:523
 msgid "Amount set"
 msgstr "Montant fixé"
 
+#: core/models.py:610
 msgid "Requested"
 msgstr "Demandé"
 
+#: core/views/pages.py:9 templates/client/provider_profile.html:16
+#: templates/partials/footer.html:27 templates/partials/navbar.html:9
+msgid "About Us"
+msgstr "À propos"
+
+#: core/views/pages.py:9 core/views/pages.py:14
+msgid "The TrustyHands team"
+msgstr "L'équipe TrustyHands"
+
+#: core/views/pages.py:14 templates/client/provider_profile.html:21
+#: templates/partials/navbar.html:11
+msgid "Careers"
+msgstr "Carrières"
+
+#: platform_admin/views/categories.py:38
 msgid "Verified provider"
 msgstr "Prestataire vérifié"
 
+#: platform_admin/views/categories.py:42
+#: templates/partials/sidebar_admin.html:27
 msgid "Categories"
 msgstr "Catégories"
 
+#: platform_admin/views/categories.py:62
 msgid "Category saved."
 msgstr "Catégorie enregistrée."
 
+#: platform_admin/views/categories.py:69
 msgid "Category updated."
 msgstr "Catégorie mise à jour."
 
+#: platform_admin/views/categories.py:75
 msgid "Category removed."
 msgstr "Catégorie supprimée."
 
+#: platform_admin/views/categories.py:84
 #, python-format
 msgid "Categories of %(name)s saved."
 msgstr "Catégories de %(name)s enregistrées."
 
+#: platform_admin/views/review_moderation.py:18
 msgid "Please give a reason for removing it."
 msgstr "Veuillez indiquer la raison de la suppression."
 
+#: platform_admin/views/review_moderation.py:25
 msgid "The review was removed."
 msgstr "L'avis a été supprimé."
 
+#: platform_admin/views/service_requests.py:49
 msgid "Please pick a valid date."
 msgstr "Veuillez choisir une date valide."
 
+#: platform_admin/views/service_requests.py:60
 #, python-format
 msgid "Request %(ref)s rescheduled"
 msgstr "Demande %(ref)s reprogrammée"
 
+#: platform_admin/views/service_requests.py:61
 #, python-format
 msgid "New date: %(date)s"
 msgstr "Nouvelle date : %(date)s"
 
+#: platform_admin/views/service_requests.py:63
 msgid "The request was rescheduled."
 msgstr "La demande a été reprogrammée."
 
+#: platform_admin/views/service_requests.py:74
 msgid "Feedback recorded."
 msgstr "Commentaire enregistré."
 
+#: platform_admin/views/service_requests.py:82
 msgid "Only declined requests can be reassigned."
 msgstr "Seules les demandes refusées peuvent être réattribuées."
 
+#: platform_admin/views/service_requests.py:96
 #, python-format
 msgid "TrustyHands assigned request %(ref)s to you."
 msgstr "TrustyHands vous a attribué la demande %(ref)s."
 
+#: platform_admin/views/service_requests.py:101
 #, python-format
 msgid "Request %(ref)s reassigned"
 msgstr "Demande %(ref)s réattribuée"
 
+#: platform_admin/views/service_requests.py:102
 #, python-format
 msgid "%(name)s will now handle your request."
 msgstr "%(name)s s'occupera désormais de votre demande."
 
+#: platform_admin/views/service_requests.py:105
 msgid "The request was reassigned."
 msgstr "La demande a été réattribuée."
 
+#: platform_admin/views/user_management.py:22
+#: templates/platform_admin/user_management.html:34
 msgid "Account Status"
 msgstr "Statut du compte"
 
+#: platform_admin/views/user_management.py:25
 msgid "Reason"
 msgstr "Raison"
 
+#: platform_admin/views/user_management.py:33
 msgid "Commission rate (%)"
 msgstr "Taux de commission (%)"
 
+#: platform_admin/views/user_management.py:76
 msgid "You cannot change your own account."
 msgstr "Vous ne pouvez pas modifier votre propre compte."
 
+#: platform_admin/views/user_management.py:89
 msgid "Your account status changed"
 msgstr "Le statut de votre compte a changé"
 
+#: platform_admin/views/user_management.py:90
 #, python-format
 msgid "New status: %(status)s. %(reason)s"
 msgstr "Nouveau statut : %(status)s. %(reason)s"
 
+#: platform_admin/views/user_management.py:94
 msgid "Account status saved."
 msgstr "Statut du compte enregistré."
 
+#: platform_admin/views/user_management.py:110
 msgid "Subscription updated."
 msgstr "Abonnement mis à jour."
 
+#: platform_admin/views/verification.py:38
 msgid "Verification stage updated."
 msgstr "Étape de vérification mise à jour."
 
+#: platform_admin/views/verification.py:50
 msgid "More information needed"
 msgstr "Informations supplémentaires requises"
 
+#: platform_admin/views/verification.py:53
 msgid "Note saved."
 msgstr "Note enregistrée."
 
+#: platform_admin/views/verification.py:67
 msgid "Profile verified"
 msgstr "Profil vérifié"
 
+#: platform_admin/views/verification.py:68
 msgid "Your profile was approved. Clients can now find you."
 msgstr ""
 "Votre profil a été approuvé. Les clients peuvent maintenant vous trouver."
 
+#: platform_admin/views/verification.py:72
 #, python-format
 msgid "%(name)s is approved."
 msgstr "%(name)s est approuvé."
 
+#: platform_admin/views/verification.py:78
 msgid "A reason is required to reject."
 msgstr "Une raison est obligatoire pour refuser."
 
+#: platform_admin/views/verification.py:88
 msgid "Profile not approved"
 msgstr "Profil non approuvé"
 
+#: platform_admin/views/verification.py:89
 #, python-format
 msgid "Reason: %(reason)s"
 msgstr "Raison : %(reason)s"
 
+#: platform_admin/views/verification.py:92
 msgid "The provider was rejected."
 msgstr "Le prestataire a été refusé."
 
+#: service_provider/views/active_jobs.py:103
 msgid "That action is not possible right now."
 msgstr "Cette action n'est pas possible pour le moment."
 
+#: service_provider/views/active_jobs.py:113
 msgid "Please enter the final amount in MUR."
 msgstr "Veuillez saisir le montant final en MUR."
 
+#: service_provider/views/active_jobs.py:137
 #, python-format
 msgid "Update on request %(ref)s"
 msgstr "Mise à jour de la demande %(ref)s"
 
+#: service_provider/views/active_jobs.py:138
 #, python-format
 msgid "Your request is now: %(status)s."
 msgstr "Votre demande est maintenant : %(status)s."
 
+#: service_provider/views/active_jobs.py:144
 #, python-format
 msgid "%(ref)s is now %(status)s."
 msgstr "%(ref)s est maintenant : %(status)s."
 
+#: service_provider/views/earnings.py:30
 msgid "Bank"
 msgstr "Banque"
 
+#: service_provider/views/earnings.py:32
 msgid "Account number"
 msgstr "Numéro de compte"
 
+#: service_provider/views/earnings.py:34
 msgid "Digits only (6 to 20)."
 msgstr "Chiffres uniquement (6 à 20)."
 
-msgid "Please add your bank account first."
-msgstr "Veuillez d'abord ajouter votre compte bancaire."
-
-msgid "There is nothing to withdraw yet."
-msgstr "Il n'y a encore rien à retirer."
-
-#, python-format
-msgid "MUR %(amount)s sent to %(bank)s."
-msgstr "MUR %(amount)s envoyés vers %(bank)s."
-
+#: service_provider/views/earnings.py:73
 msgid "Bank account updated."
 msgstr "Compte bancaire mis à jour."
 
+#: service_provider/views/notifications.py:23
 msgid "All notifications marked as read."
 msgstr "Toutes les notifications sont marquées comme lues."
 
+#: service_provider/views/portfolio.py:40
 msgid "Main Service Specialization (one per line)"
 msgstr "Spécialisation principale (une par ligne)"
 
+#: service_provider/views/portfolio.py:42
 msgid "Professional Biography"
 msgstr "Biographie professionnelle"
 
+#: service_provider/views/portfolio.py:100
 #, python-format
 msgid "Your plan allows %(limit)s projects. Upgrade to add more."
 msgstr ""
-"Votre forfait permet %(limit)s projets. Passez au forfait supérieur pour "
-"en ajouter."
+"Votre forfait permet %(limit)s projets. Passez au forfait supérieur pour en "
+"ajouter."
 
+#: service_provider/views/portfolio.py:107
 msgid "Project saved."
 msgstr "Projet enregistré."
 
+#: service_provider/views/portfolio.py:114
 msgid "Portfolio details saved."
 msgstr "Détails du portfolio enregistrés."
 
+#: service_provider/views/portfolio.py:124
 msgid "Certification added. An admin will check it."
 msgstr "Certification ajoutée. Un administrateur va la vérifier."
 
+#: service_provider/views/portfolio.py:163
 msgid "Project deleted."
 msgstr "Projet supprimé."
 
+#: service_provider/views/registration.py:24
 msgid "Your Full Name"
 msgstr "Votre nom complet"
 
+#: service_provider/views/registration.py:26
 msgid "Profession and Title"
 msgstr "Métier et titre"
 
+#: service_provider/views/registration.py:29
 msgid "Services you offer"
 msgstr "Services que vous proposez"
 
+#: service_provider/views/registration.py:34
 msgid "Years Of Experience"
 msgstr "Années d'expérience"
 
+#: service_provider/views/registration.py:37
 msgid "Primary Location"
 msgstr "Lieu principal"
 
+#: service_provider/views/registration.py:40
 msgid "About Me & Biography"
 msgstr "À propos de moi et biographie"
 
+#: service_provider/views/registration.py:43
 msgid "Briefly share your biography and expert statement here...."
 msgstr "Présentez brièvement votre parcours et votre expertise ici...."
 
+#: service_provider/views/registration.py:48
 msgid "Verification document"
 msgstr "Document de vérification"
 
+#: service_provider/views/registration.py:57
 msgid "Upload the document (PDF or picture)"
 msgstr "Envoyer le document (PDF ou photo)"
 
+#: service_provider/views/registration.py:62
 msgid "Project name"
 msgstr "Nom du projet"
 
+#: service_provider/views/registration.py:64
 msgid "Upload Project Blueprint"
 msgstr "Envoyer le plan du projet"
 
+#: service_provider/views/registration.py:67
 msgid "Add Technical Specs"
 msgstr "Ajouter les spécifications techniques"
 
+#: service_provider/views/registration.py:70
 msgid "Add Project Photos"
 msgstr "Ajouter des photos du projet"
 
+#: service_provider/views/registration.py:158
 msgid "New provider to verify"
 msgstr "Nouveau prestataire à vérifier"
 
+#: service_provider/views/registration.py:159
 #, python-format
 msgid "%(name)s submitted a profile for verification."
 msgstr "%(name)s a soumis un profil pour vérification."
 
+#: service_provider/views/registration.py:164
 msgid "Profile submitted! Now choose your plan."
 msgstr "Profil soumis ! Choisissez maintenant votre forfait."
 
+#: service_provider/views/reviews.py:41
 msgid "You already replied to this review."
 msgstr "Vous avez déjà répondu à cet avis."
 
+#: service_provider/views/reviews.py:43
 msgid "Please write a reply."
 msgstr "Veuillez écrire une réponse."
 
+#: service_provider/views/reviews.py:48
 msgid "Your reply is now public."
 msgstr "Votre réponse est maintenant publique."
 
+#: service_provider/views/schedule.py:28
 msgid "Services Offered"
 msgstr "Services proposés"
 
+#: service_provider/views/schedule.py:42
+#: templates/service_provider/schedule.html:119
 msgid "Recurring Availability"
 msgstr "Disponibilité récurrente"
 
+#: service_provider/views/schedule.py:43 templates/partials/date_range.html:5
+#: templates/service_provider/invoice.html:31
 msgid "From"
 msgstr "Du"
 
+#: service_provider/views/schedule.py:44 templates/partials/date_range.html:8
 msgid "To"
 msgstr "Au"
 
+#: service_provider/views/schedule.py:45
 msgid "Day starts"
 msgstr "Début de journée"
 
+#: service_provider/views/schedule.py:46
 msgid "Day ends"
 msgstr "Fin de journée"
 
+#: service_provider/views/schedule.py:47
 msgid "Slot (min)"
 msgstr "Créneau (min)"
 
+#: service_provider/views/schedule.py:48
 msgid "Buffer (min)"
 msgstr "Pause (min)"
 
+#: service_provider/views/schedule.py:71
 msgid "The end date is before the start."
 msgstr "La date de fin est avant la date de début."
 
+#: service_provider/views/schedule.py:147
 msgid "Schedule settings saved."
 msgstr "Paramètres du planning enregistrés."
 
+#: service_provider/views/schedule.py:155
 msgid "Dates blocked out."
 msgstr "Dates bloquées."
 
+#: service_provider/views/schedule.py:163
 msgid "Time blocked out."
 msgstr "Horaire bloqué."
 
+#: service_provider/views/schedule.py:235
 msgid "Blocked dates removed."
 msgstr "Dates bloquées supprimées."
 
+#: service_provider/views/schedule.py:243
 msgid "Blocked time removed."
 msgstr "Horaire bloqué supprimé."
 
+#: service_provider/views/subscription.py:16
 msgid "Standard Search Ranking"
 msgstr "Classement de recherche standard"
 
+#: service_provider/views/subscription.py:17
 msgid "3 Projects Portfolio Limit"
 msgstr "Portfolio limité à 3 projets"
 
+#: service_provider/views/subscription.py:18
 msgid "Standard Email Support"
 msgstr "Assistance standard par e-mail"
 
+#: service_provider/views/subscription.py:25
 msgid "Priority Search Ranking Boost"
 msgstr "Classement de recherche prioritaire"
 
+#: service_provider/views/subscription.py:26
 msgid "15 Projects Portfolio Limit"
 msgstr "Portfolio limité à 15 projets"
 
+#: service_provider/views/subscription.py:27
 msgid "Verified Pro Badge"
 msgstr "Badge Pro vérifié"
 
+#: service_provider/views/subscription.py:28
 msgid "Direct Client Messaging"
 msgstr "Messagerie directe avec les clients"
 
+#: service_provider/views/subscription.py:34
 msgid "Top-tier Featured Placement"
 msgstr "Mise en avant en tête de liste"
 
+#: service_provider/views/subscription.py:35
 msgid "Unlimited Projects Showcase"
 msgstr "Projets illimités"
 
+#: service_provider/views/subscription.py:36
 msgid "Master Tradesperson Badge"
 msgstr "Badge Maître artisan"
 
+#: service_provider/views/subscription.py:37
 msgid "24/7 Dedicated Phone Support"
 msgstr "Assistance téléphonique dédiée 24h/24, 7j/7"
 
+#: service_provider/views/subscription.py:75
 #, python-format
 msgid "Starter shows 3 projects publicly. Upgrade to show all %(count)s."
 msgstr ""
 "Starter affiche 3 projets au public. Passez au forfait supérieur pour "
 "afficher les %(count)s."
 
+#: service_provider/views/subscription.py:78
 msgid "You are on the Starter plan."
 msgstr "Vous êtes sur le forfait Starter."
 
+#: service_provider/views/subscription.py:120
 #, python-format
 msgid "Payment %(ref)s confirmed. Welcome to %(plan)s!"
 msgstr "Paiement %(ref)s confirmé. Bienvenue dans %(plan)s !"
 
+#: templates/client/booking.html:4
 msgid "Book a Service"
 msgstr "Réserver un service"
 
+#: templates/client/booking.html:11
 msgid "Reach Out to Your Home's Ally"
 msgstr "Contactez l'allié de votre maison"
 
+#: templates/client/booking.html:13
 #, python-format
 msgid ""
 "Complete your hire request details to connect with %(name)s, a verified "
@@ -624,306 +835,468 @@ msgstr ""
 "Complétez votre demande pour être mis en relation avec %(name)s, un "
 "professionnel vérifié"
 
+#: templates/client/booking.html:42
 msgid "Select Your Preferred Date"
 msgstr "Choisissez votre date"
 
+#: templates/client/booking.html:44
 msgid "Date Selected:"
 msgstr "Date choisie :"
 
+#: templates/client/booking.html:50
 msgid "Not available"
 msgstr "Indisponible"
 
+#: templates/client/booking.html:67
 msgid "Add Photo"
 msgstr "Ajouter une photo"
 
+#: templates/client/booking.html:75
 msgid "Submit Request"
 msgstr "Envoyer la demande"
 
+#: templates/client/favourites.html:4 templates/partials/account_menu.html:21
+#: templates/partials/account_menu.html:28
+#: templates/partials/topbar_user.html:25
 msgid "Favourites"
 msgstr "Favoris"
 
+#: templates/client/favourites.html:9
 msgid "My Favourites"
 msgstr "Mes favoris"
 
+#: templates/client/favourites.html:10
 msgid "Professionals you saved for later."
 msgstr "Les professionnels que vous avez gardés pour plus tard."
 
+#: templates/client/favourites.html:13 templates/partials/footer.html:8
 msgid "Browse Services"
 msgstr "Parcourir les services"
 
+#: templates/client/favourites.html:28 templates/client/provider_list.html:146
 msgid "reviews"
 msgstr "avis"
 
+#: templates/client/favourites.html:31 templates/client/provider_list.html:177
+#: templates/platform_admin/user_management.html:56
 msgid "View Profile"
 msgstr "Voir le profil"
 
+#: templates/client/favourites.html:35
+#: templates/platform_admin/categories.html:61
+#: templates/platform_admin/review_moderation.html:72
+#: templates/service_provider/schedule.html:151
+#: templates/service_provider/schedule.html:172
+#: templates/users/edit_profile.html:60
 msgid "Remove"
 msgstr "Retirer"
 
+#: templates/client/favourites.html:43
 msgid "You have not saved any professional yet."
 msgstr "Vous n'avez encore enregistré aucun professionnel."
 
+#: templates/client/my_requests.html:3 templates/client/my_requests.html:7
+#: templates/partials/account_menu.html:19
+#: templates/partials/account_menu.html:26
+#: templates/partials/topbar_user.html:24
 msgid "My Requests"
 msgstr "Mes demandes"
 
+#: templates/client/my_requests.html:9
 msgid "Follow every request you sent to a professional."
 msgstr "Suivez toutes les demandes envoyées à un professionnel."
 
+#: templates/client/my_requests.html:13 templates/client/my_requests.html:34
+#: templates/platform_admin/categories.html:23
+#: templates/platform_admin/service_requests.html:11
+#: templates/platform_admin/user_management.html:18
+#: templates/service_provider/active_jobs.html:70
+#: templates/service_provider/earnings.html:101
 msgid "Status"
 msgstr "Statut"
 
+#: templates/client/my_requests.html:15
+#: templates/platform_admin/service_requests.html:12
+#: templates/platform_admin/user_management.html:19
 msgid "All statuses"
 msgstr "Tous les statuts"
 
+#: templates/client/my_requests.html:30
+#: templates/platform_admin/service_requests.html:25
 msgid "Req ID"
 msgstr "N° demande"
 
+#: templates/client/my_requests.html:31
 msgid "Professional"
 msgstr "Professionnel"
 
+#: templates/client/my_requests.html:32
+#: templates/service_provider/job_detail.html:8
 msgid "Job"
 msgstr "Travail"
 
+#: templates/client/my_requests.html:33
 msgid "Preferred Date"
 msgstr "Date souhaitée"
 
+#: templates/client/my_requests.html:35
+#: templates/service_provider/active_jobs.html:71
+#: templates/service_provider/active_jobs.html:141
 msgid "Action"
 msgstr "Action"
 
+#: templates/client/my_requests.html:57
 msgid "Cancel this request?"
 msgstr "Annuler cette demande ?"
 
+#: templates/client/my_requests.html:59
+#: templates/platform_admin/categories.html:82
+#: templates/service_provider/portfolio_editor.html:112
 msgid "Cancel"
 msgstr "Annuler"
 
+#: templates/client/my_requests.html:63
 msgid "Leave a review"
 msgstr "Laisser un avis"
 
+#: templates/client/my_requests.html:67
 msgid "Send"
 msgstr "Envoyer"
 
+#: templates/client/my_requests.html:71
 msgid "Reviewed"
 msgstr "Avis donné"
 
+#: templates/client/my_requests.html:78
 msgid "No requests yet."
 msgstr "Aucune demande pour le moment."
 
+#: templates/client/provider_list.html:4
 msgid "Our Verified Professionals"
 msgstr "Nos professionnels vérifiés"
 
+#: templates/client/provider_list.html:19
+#: templates/client/provider_profile.html:25 templates/partials/navbar.html:21
+msgid "Service Provider Dashboard"
+msgstr "Tableau de bord prestataire"
+
+#: templates/client/provider_list.html:22
 msgid "Want to Join Us ?"
 msgstr "Envie de nous rejoindre ?"
 
+#: templates/client/provider_list.html:24
+#: templates/partials/account_menu.html:15 templates/users/register.html:4
+#: templates/users/register.html:33
 msgid "Register"
 msgstr "S'inscrire"
 
+#: templates/client/provider_list.html:37
+#: templates/client/provider_list.html:158
 msgid "Services :"
 msgstr "Services :"
 
+#: templates/client/provider_list.html:38
 msgid "Category"
 msgstr "Catégorie"
 
+#: templates/client/provider_list.html:40
 msgid "All services"
 msgstr "Tous les services"
 
+#: templates/client/provider_list.html:49
+#: templates/service_provider/earnings.html:43
 msgid "Search"
 msgstr "Rechercher"
 
+#: templates/client/provider_list.html:51
 msgid "Search by name or town"
 msgstr "Rechercher par nom ou ville"
 
+#: templates/client/provider_list.html:53
 msgid "FILTER BY"
 msgstr "FILTRER PAR"
 
+#: templates/client/provider_list.html:57
 msgid "Closest (Location)"
 msgstr "Le plus proche (lieu)"
 
+#: templates/client/provider_list.html:61
+msgid "Where are you?"
+msgstr "Où êtes-vous ?"
+
+#: templates/client/provider_list.html:63
+msgid "Select your district"
+msgstr "Choisissez votre district"
+
+#: templates/client/provider_list.html:72
+msgid "Choose your district to see the closest professionals first."
+msgstr ""
+"Choisissez votre district pour voir d'abord les professionnels les plus "
+"proches."
+
+#: templates/client/provider_list.html:78
 msgid "Ratings"
 msgstr "Notes"
 
+#: templates/client/provider_list.html:83
 msgid "Availability"
 msgstr "Disponibilité"
 
+#: templates/client/provider_list.html:86
+#: templates/client/provider_list.html:92
 msgid "Project Scale"
 msgstr "Taille du projet"
 
+#: templates/client/provider_list.html:98
 msgid "Any"
 msgstr "Toutes"
 
+#: templates/client/provider_list.html:104
 msgid "Apply"
 msgstr "Appliquer"
 
+#: templates/client/provider_list.html:109
+#: templates/service_provider/earnings.html:124
 msgid "Need Help ?"
 msgstr "Besoin d'aide ?"
 
+#: templates/client/provider_list.html:109
+#: templates/service_provider/earnings.html:124
 msgid "Feel Free to Reach Out!"
 msgstr "N'hésitez pas à nous contacter !"
 
+#: templates/client/provider_list.html:110
 msgid "Call us"
 msgstr "Appelez-nous"
 
+#: templates/client/provider_list.html:114
 msgid "Email us"
 msgstr "Écrivez-nous"
 
+#: templates/client/provider_list.html:124
 msgid "Our Verified Professionals:"
 msgstr "Nos professionnels vérifiés :"
 
+#: templates/client/provider_list.html:150
 #, python-format
 msgid "%(years)s+ Years of Experience"
 msgstr "%(years)s+ ans d'expérience"
 
+#: templates/client/provider_list.html:173
+msgid "Serves your area"
+msgstr "Intervient dans votre zone"
+
+#: templates/client/provider_list.html:187
 msgid "Saved"
 msgstr "Enregistré"
 
+#: templates/client/provider_list.html:189
+#: templates/platform_admin/categories.html:79
+#: templates/platform_admin/request_detail.html:65
+#: templates/service_provider/earnings.html:110
 msgid "Save"
 msgstr "Enregistrer"
 
+#: templates/client/provider_list.html:197
 msgid "No providers match these filters yet."
 msgstr "Aucun prestataire ne correspond à ces filtres pour le moment."
 
-msgid "About Us"
-msgstr "À propos"
-
+#: templates/client/provider_profile.html:18 templates/partials/navbar.html:10
 msgid "Services"
 msgstr "Services"
 
+#: templates/client/provider_profile.html:20
 msgid "Portfolio"
 msgstr "Portfolio"
 
-msgid "Careers"
-msgstr "Carrières"
-
+#: templates/client/provider_profile.html:22 templates/partials/navbar.html:13
 msgid "Contact"
 msgstr "Contact"
 
+#: templates/client/provider_profile.html:29
 msgid "Join Now"
 msgstr "Rejoindre"
 
+#: templates/client/provider_profile.html:58
 msgid "Verified"
 msgstr "Vérifié"
 
+#: templates/client/provider_profile.html:63
 #, python-format
 msgid "%(jobs)s completed jobs | %(total)s reviews"
 msgstr "%(jobs)s travaux terminés | %(total)s avis"
 
+#: templates/client/provider_profile.html:72
 #, python-format
 msgid "About %(name)s"
 msgstr "À propos de %(name)s"
 
+#: templates/client/provider_profile.html:98
 #, python-format
 msgid "Portfolio Highlights (%(shown)s of %(total)s projects)"
 msgstr "Projets phares (%(shown)s sur %(total)s projets)"
 
+#: templates/client/provider_profile.html:104
+#: templates/partials/pagination.html:13
 msgid "Previous"
 msgstr "Précédent"
 
+#: templates/client/provider_profile.html:110
+#: templates/partials/pagination.html:19
 msgid "Next"
 msgstr "Suivant"
 
+#: templates/client/provider_profile.html:127
+#: templates/service_provider/portfolio_editor.html:93
 msgid "No projects yet."
 msgstr "Aucun projet pour le moment."
 
+#: templates/client/provider_profile.html:139
 #, python-format
 msgid "Contact %(name)s:"
 msgstr "Contacter %(name)s :"
 
+#: templates/client/provider_profile.html:146
+#: templates/partials/account_menu.html:14 templates/users/login.html:4
+#: templates/users/login.html:19
+#: templates/users/password_reset_complete.html:10
 msgid "Log in"
 msgstr "Se connecter"
 
+#: templates/client/provider_profile.html:147
 msgid "to see the contact details."
 msgstr "pour voir les coordonnées."
 
+#: templates/client/provider_profile.html:152
 msgid "Areas served:"
 msgstr "Zones desservies :"
 
+#: templates/client/provider_profile.html:162
 msgid "Remove from favourites"
 msgstr "Retirer des favoris"
 
+#: templates/client/provider_profile.html:164
 msgid "Save to favourites"
 msgstr "Ajouter aux favoris"
 
+#: templates/client/provider_profile.html:172
 msgid "Job and Process Details"
 msgstr "Détails du travail et du processus"
 
+#: templates/client/provider_profile.html:174
 msgid "Service Requirements:"
 msgstr "Conditions du service :"
 
+#: templates/client/provider_profile.html:178
 msgid "Process Notes:"
 msgstr "Notes sur le processus :"
 
+#: templates/client/provider_profile.html:185
 msgid "Specialty areas"
 msgstr "Domaines de spécialité"
 
+#: templates/client/provider_profile.html:193
 #, python-format
 msgid "Common Issues & %(name)s's solutions"
 msgstr "Problèmes courants et solutions de %(name)s"
 
+#: templates/client/provider_profile.html:203
 msgid "Client Ratings"
 msgstr "Notes des clients"
 
+#: templates/client/provider_profile.html:217
+#: templates/platform_admin/review_moderation.html:55
 msgid "Reply:"
 msgstr "Réponse :"
 
+#: templates/client/provider_profile.html:222
+#: templates/platform_admin/analytics.html:100
+#: templates/service_provider/reviews.html:77
 msgid "No reviews yet."
 msgstr "Aucun avis pour le moment."
 
+#: templates/client/provider_profile.html:229
+#: templates/partials/navbar.html:25
 msgid "Book Now"
 msgstr "Réserver"
 
+#: templates/client/provider_profile.html:233
+msgid ""
+"This is your public profile. Clients and other providers book you from here."
+msgstr ""
+"Ceci est votre profil public. Les clients et les autres prestataires vous "
+"réservent depuis cette page."
+
+#: templates/client/provider_profile.html:238
 msgid "Log in to Book"
 msgstr "Se connecter pour réserver"
 
+#: templates/core/landing.html:10 templates/partials/sidebar_admin.html:39
 msgid "Home"
 msgstr "Accueil"
 
+#: templates/core/landing.html:20
 msgid "Trusted Hands for"
 msgstr "Des mains de confiance pour"
 
+#: templates/core/landing.html:20
 msgid "What Matters Most"
 msgstr "ce qui compte le plus"
 
+#: templates/core/landing.html:21
 msgid ""
 "High Quality, vetted Home Services with unmatched care and transparency"
 msgstr ""
 "Des services à domicile de qualité, vérifiés, avec un soin et une "
 "transparence inégalés"
 
+#: templates/core/landing.html:24
 msgid "Explore Services"
 msgstr "Découvrir les services"
 
+#: templates/core/landing.html:27
 msgid "Our Experts"
 msgstr "Nos experts"
 
+#: templates/core/landing.html:36
 msgid "Our Experts at Your Service"
 msgstr "Nos experts à votre service"
 
+#: templates/core/landing.html:47
 msgid "No categories yet."
 msgstr "Aucune catégorie pour le moment."
 
+#: templates/core/landing.html:55
 msgid "Join Mauritius' Trusted Network of Professionals"
 msgstr "Rejoignez le réseau de professionnels de confiance de Maurice"
 
+#: templates/core/landing.html:57
 msgid ""
-"From carpentry to electrical work, TrustyHands connects verified providers"
-" with clients in their district, available in English, and French."
+"From carpentry to electrical work, TrustyHands connects verified providers "
+"with clients in their district, available in English, and French."
 msgstr ""
 "De la menuiserie à l'électricité, TrustyHands met en relation des "
 "prestataires vérifiés avec des clients de leur district, en anglais et en "
 "français."
 
+#: templates/core/landing.html:66 templates/core/landing.html:70
 msgid "Join Us"
 msgstr "Rejoignez-nous"
 
+#: templates/layouts/coming_soon.html:7
 msgid "This screen is being built."
 msgstr "Cet écran est en cours de création."
 
+#: templates/layouts/coming_soon.html:11
 msgid "Coming soon"
 msgstr "Bientôt disponible"
 
+#: templates/layouts/coming_soon.html:12
 #, python-format
 msgid "%(owner)s is working on this screen."
 msgstr "%(owner)s travaille sur cet écran."
 
+#: templates/layouts/dashboard.html:39
 msgid ""
 "Your profile is pending verification. Clients will see you once an admin "
 "approves it."
@@ -931,556 +1304,850 @@ msgstr ""
 "Votre profil est en attente de vérification. Les clients vous verront dès "
 "qu'un administrateur l'aura approuvé."
 
+#: templates/partials/account_menu.html:5
 msgid "Account menu"
 msgstr "Menu du compte"
 
+#: templates/partials/account_menu.html:23
+#: templates/service_provider/choose_plan.html:21
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
+#: templates/partials/account_menu.html:31
+#: templates/partials/sidebar_admin.html:11
 msgid "Admin Dashboard"
 msgstr "Tableau de bord admin"
 
+#: templates/partials/account_menu.html:36
+#: templates/partials/topbar_user.html:21 templates/users/edit_profile.html:4
+#: templates/users/edit_profile.html:8
 msgid "Edit Profile"
 msgstr "Modifier le profil"
 
+#: templates/partials/account_menu.html:41
 msgid "Log out"
 msgstr "Se déconnecter"
 
+#: templates/partials/back_button.html:11
+#: templates/platform_admin/request_detail.html:15
+#: templates/platform_admin/user_detail.html:11
+#: templates/platform_admin/verification_detail.html:17
+#: templates/service_provider/checkout.html:28
+#: templates/service_provider/job_detail.html:14
+msgid "Back"
+msgstr "Retour"
+
+#: templates/partials/footer.html:5
 msgid "For clients"
 msgstr "Pour les clients"
 
+#: templates/partials/footer.html:10
 msgid "How it Works"
 msgstr "Comment ça marche"
 
+#: templates/partials/footer.html:11
 msgid "FAQ"
 msgstr "FAQ"
 
+#: templates/partials/footer.html:15
 msgid "For Providers"
 msgstr "Pour les prestataires"
 
+#: templates/partials/footer.html:18
 msgid "Become a Provider"
 msgstr "Devenir prestataire"
 
+#: templates/partials/footer.html:20
 msgid "Provider FAQ"
 msgstr "FAQ prestataires"
 
+#: templates/partials/footer.html:21
 msgid "Verification Process"
 msgstr "Processus de vérification"
 
+#: templates/partials/footer.html:25
 msgid "Company"
 msgstr "Entreprise"
 
+#: templates/partials/footer.html:28
 msgid "Terms & Privacy"
 msgstr "Conditions et confidentialité"
 
+#: templates/partials/footer.html:32
 msgid "Contact Us"
 msgstr "Nous contacter"
 
+#: templates/partials/language_switch.html:8
 msgid "Language"
 msgstr "Langue"
 
-msgid "Service Provider Dashboard"
-msgstr "Tableau de bord prestataire"
+#: templates/partials/messages.html:9 templates/partials/topbar_user.html:5
+#: templates/service_provider/notifications.html:4
+#: templates/service_provider/notifications.html:8
+msgid "Notifications"
+msgstr "Notifications"
 
+#: templates/partials/messages.html:17
+msgid "Dismiss"
+msgstr "Fermer"
+
+#: templates/partials/navbar.html:31
 msgid "Menu"
 msgstr "Menu"
 
+#: templates/partials/pagination.html:6
 #, python-format
 msgid "Page %(number)s of %(total)s"
 msgstr "Page %(number)s sur %(total)s"
 
+#: templates/partials/sidebar_admin.html:5 users/models.py:14
 msgid "Admin"
 msgstr "Admin"
 
+#: templates/partials/sidebar_admin.html:15
+#: templates/platform_admin/verification_queue.html:4
+#: templates/platform_admin/verification_queue.html:8
 msgid "Verification Queue"
 msgstr "File de vérification"
 
+#: templates/partials/sidebar_admin.html:19
 msgid "User management"
 msgstr "Gestion des utilisateurs"
 
+#: templates/partials/sidebar_admin.html:23
+#: templates/platform_admin/service_requests.html:4
+#: templates/platform_admin/service_requests.html:8
 msgid "Service Requests"
 msgstr "Demandes de service"
 
+#: templates/partials/sidebar_admin.html:31
+#: templates/partials/sidebar_provider.html:27
+#: templates/service_provider/reviews.html:4
 msgid "Reviews"
 msgstr "Avis"
 
+#: templates/partials/sidebar_admin.html:44
+#: templates/partials/sidebar_provider.html:36
+#: templates/partials/topbar_user.html:29
 msgid "Sign Out"
 msgstr "Se déconnecter"
 
+#: templates/partials/sidebar_admin.html:51
+#: templates/partials/sidebar_provider.html:42
 msgid "Switch to Client view"
 msgstr "Passer à la vue client"
 
+#: templates/partials/sidebar_provider.html:5 users/models.py:13
 msgid "Service Provider"
 msgstr "Prestataire"
 
+#: templates/partials/sidebar_provider.html:11
+#: templates/service_provider/active_jobs.html:4
+#: templates/service_provider/active_jobs.html:15
 msgid "Active Jobs"
 msgstr "Travaux en cours"
 
+#: templates/partials/sidebar_provider.html:15
+#: templates/service_provider/schedule.html:4
+#: templates/service_provider/schedule.html:8
 msgid "Schedule Manager"
 msgstr "Gestion du planning"
 
+#: templates/partials/sidebar_provider.html:19
+#: templates/service_provider/portfolio_editor.html:4
+#: templates/service_provider/portfolio_editor.html:8
 msgid "Portfolio Editor"
 msgstr "Éditeur de portfolio"
 
+#: templates/partials/sidebar_provider.html:23
 msgid "Earnings"
 msgstr "Revenus"
 
+#: templates/partials/theme_toggle.html:5
+#: templates/partials/theme_toggle.html:9
 msgid "Switch light or dark mode"
 msgstr "Passer en mode clair ou sombre"
 
-msgid "Notifications"
-msgstr "Notifications"
-
+#: templates/partials/topbar_user.html:15
 msgid "Online"
 msgstr "En ligne"
 
+#: templates/partials/topbar_user.html:22
 msgid "My Plan"
 msgstr "Mon forfait"
 
+#: templates/platform_admin/analytics.html:4
+#: templates/platform_admin/analytics.html:8
 msgid "Analytics Dashboard"
 msgstr "Tableau de bord analytique"
 
+#: templates/platform_admin/analytics.html:15
 msgid "Pending Verifications"
 msgstr "Vérifications en attente"
 
-msgid "Approvals This Month"
-msgstr "Approbations ce mois-ci"
+#: templates/platform_admin/analytics.html:18
+#, python-format
+msgid "%(counter)s new submission this period"
+msgid_plural "%(counter)s new submissions this period"
+msgstr[0] "%(counter)s nouvelle demande sur la période"
+msgstr[1] "%(counter)s nouvelles demandes sur la période"
 
+#: templates/platform_admin/analytics.html:28
+msgid "Approvals"
+msgstr "Approbations"
+
+#: templates/platform_admin/analytics.html:36
 msgid "Transactions (MUR)"
 msgstr "Transactions (MUR)"
 
+#: templates/platform_admin/analytics.html:40
+msgid "Running total for the selected dates"
+msgstr "Total cumulé pour les dates choisies"
+
+#: templates/platform_admin/analytics.html:43
+msgid "Running total of transactions per day"
+msgstr "Total cumulé des transactions par jour"
+
+#: templates/platform_admin/analytics.html:49
 msgid "Active Clients"
 msgstr "Clients actifs"
 
+#: templates/platform_admin/analytics.html:66
+msgid "Active clients per category"
+msgstr "Clients actifs par catégorie"
+
+#: templates/platform_admin/analytics.html:69
+msgid "across categories"
+msgstr "toutes catégories"
+
+#: templates/platform_admin/analytics.html:79
 msgid "Requests per week"
 msgstr "Demandes par semaine"
 
+#: templates/platform_admin/analytics.html:81
 #, python-format
 msgid "%(total_users)s users on the platform"
 msgstr "%(total_users)s utilisateurs sur la plateforme"
 
+#: templates/platform_admin/analytics.html:84
 msgid "Providers per category"
 msgstr "Prestataires par catégorie"
 
+#: templates/platform_admin/analytics.html:92
 msgid "Top-rated providers"
 msgstr "Prestataires les mieux notés"
 
+#: templates/platform_admin/categories.html:4
+#: templates/platform_admin/categories.html:8
 msgid "Category Management"
 msgstr "Gestion des catégories"
 
+#: templates/platform_admin/categories.html:10
 msgid "Technical Services and Creative & Personal Services."
 msgstr "Services techniques et services créatifs et personnels."
 
+#: templates/platform_admin/categories.html:19
 msgid "Icon"
 msgstr "Icône"
 
+#: templates/platform_admin/categories.html:21
 msgid "Group"
 msgstr "Groupe"
 
+#: templates/platform_admin/categories.html:22
 msgid "Providers"
 msgstr "Prestataires"
 
+#: templates/platform_admin/categories.html:24
+#: templates/platform_admin/review_moderation.html:37
+#: templates/platform_admin/service_requests.html:31
+#: templates/platform_admin/user_management.html:36
+#: templates/platform_admin/verification_queue.html:33
 msgid "Actions"
 msgstr "Actions"
 
+#: templates/platform_admin/categories.html:38
+#: templates/service_provider/earnings.html:22
+#: templates/service_provider/earnings.html:101 users/models.py:17
 msgid "Active"
 msgstr "Actif"
 
+#: templates/platform_admin/categories.html:40
 msgid "Inactive"
 msgstr "Inactif"
 
+#: templates/platform_admin/categories.html:44
+#: templates/service_provider/portfolio_editor.html:78
 msgid "Edit"
 msgstr "Modifier"
 
+#: templates/platform_admin/categories.html:51
 msgid "Deactivate"
 msgstr "Désactiver"
 
+#: templates/platform_admin/categories.html:53
 msgid "Activate"
 msgstr "Activer"
 
+#: templates/platform_admin/categories.html:57
 msgid "Remove this category?"
 msgstr "Supprimer cette catégorie ?"
 
+#: templates/platform_admin/categories.html:73
 msgid "Edit category"
 msgstr "Modifier la catégorie"
 
+#: templates/platform_admin/categories.html:73
 msgid "Add a category"
 msgstr "Ajouter une catégorie"
 
+#: templates/platform_admin/categories.html:89
 msgid "Link a provider to categories"
 msgstr "Associer un prestataire à des catégories"
 
+#: templates/platform_admin/categories.html:94
 msgid "Save links"
 msgstr "Enregistrer les associations"
 
+#: templates/platform_admin/partials/change_badge.html:9
+msgid "Nothing to compare with in the previous period"
+msgstr "Rien à comparer sur la période précédente"
+
+#: templates/platform_admin/partials/change_badge.html:10
+msgid "New this period"
+msgstr "Nouveau sur la période"
+
+#: templates/platform_admin/partials/change_badge.html:13
+#: templates/platform_admin/partials/change_badge.html:17
+#: templates/platform_admin/partials/change_badge.html:21
+msgid "Compared with the previous period"
+msgstr "Par rapport à la période précédente"
+
+#: templates/platform_admin/partials/change_badge.html:18
+msgid "No change"
+msgstr "Aucun changement"
+
+#: templates/platform_admin/request_detail.html:8
+#: templates/service_provider/job_detail.html:20
 msgid "Request"
 msgstr "Demande"
 
-msgid "Back"
-msgstr "Retour"
-
+#: templates/platform_admin/request_detail.html:22
 msgid "Details"
 msgstr "Détails"
 
+#: templates/platform_admin/request_detail.html:23
 msgid "Client:"
 msgstr "Client :"
 
+#: templates/platform_admin/request_detail.html:26
 msgid "Provider:"
 msgstr "Prestataire :"
 
+#: templates/platform_admin/request_detail.html:27
 msgid "Service:"
 msgstr "Service :"
 
+#: templates/platform_admin/request_detail.html:29
 msgid "Date:"
 msgstr "Date :"
 
+#: templates/platform_admin/request_detail.html:30
 msgid "Location:"
 msgstr "Lieu :"
 
+#: templates/platform_admin/request_detail.html:33
 msgid "Decline reason:"
 msgstr "Raison du refus :"
 
+#: templates/platform_admin/request_detail.html:36
 msgid "Admin feedback:"
 msgstr "Commentaire de l'admin :"
 
+#: templates/platform_admin/request_detail.html:41
+#: templates/platform_admin/verification_detail.html:60
+#: templates/service_provider/job_detail.html:101
 msgid "History"
 msgstr "Historique"
 
+#: templates/platform_admin/request_detail.html:52
+#: templates/platform_admin/user_detail.html:67
+#: templates/service_provider/job_detail.html:112
 msgid "No changes yet."
 msgstr "Aucune modification pour le moment."
 
+#: templates/platform_admin/request_detail.html:62
+#: templates/platform_admin/service_requests.html:65
 msgid "Reschedule"
 msgstr "Reprogrammer"
 
+#: templates/platform_admin/request_detail.html:72
+#: templates/platform_admin/service_requests.html:61
 msgid "Record feedback"
 msgstr "Enregistrer un commentaire"
 
+#: templates/platform_admin/request_detail.html:74
 msgid "Save feedback"
 msgstr "Enregistrer le commentaire"
 
+#: templates/platform_admin/request_detail.html:81
 msgid "Reassign to"
 msgstr "Réattribuer à"
 
+#: templates/platform_admin/request_detail.html:87
 msgid "Reassign"
 msgstr "Réattribuer"
 
+#: templates/platform_admin/request_detail.html:93
+#: templates/service_provider/active_jobs.html:114
 msgid "Message Client"
 msgstr "Écrire au client"
 
+#: templates/platform_admin/review_moderation.html:4
+#: templates/platform_admin/review_moderation.html:8
 msgid "Review Moderation"
 msgstr "Modération des avis"
 
+#: templates/platform_admin/review_moderation.html:10
 msgid "All ratings and reviews on the platform. Removals are logged."
 msgstr ""
 "Toutes les notes et avis de la plateforme. Les suppressions sont "
 "enregistrées."
 
+#: templates/platform_admin/review_moderation.html:14
+#: templates/platform_admin/verification_queue.html:11
 msgid "Show"
 msgstr "Afficher"
 
+#: templates/platform_admin/review_moderation.html:17
 msgid "Visible"
 msgstr "Visibles"
 
+#: templates/platform_admin/review_moderation.html:20
+#: templates/platform_admin/review_moderation.html:61
 msgid "Removed"
 msgstr "Supprimés"
 
+#: templates/platform_admin/review_moderation.html:22
 msgid "All"
 msgstr "Tous"
 
+#: templates/platform_admin/review_moderation.html:32
+#: templates/service_provider/earnings.html:59
+#: templates/service_provider/job_detail.html:44 users/models.py:12
 msgid "Client"
 msgstr "Client"
 
+#: templates/platform_admin/review_moderation.html:33
+#: templates/platform_admin/verification_queue.html:29
 msgid "Provider"
 msgstr "Prestataire"
 
+#: templates/platform_admin/review_moderation.html:35
 msgid "Review"
 msgstr "Avis"
 
+#: templates/platform_admin/review_moderation.html:36
+#: templates/service_provider/active_jobs.html:69
+#: templates/service_provider/earnings.html:61
 msgid "Date"
 msgstr "Date"
 
+#: templates/platform_admin/review_moderation.html:71
 msgid "Reason (spam, abusive...)"
 msgstr "Raison (spam, insultant...)"
 
+#: templates/platform_admin/review_moderation.html:78
 msgid "No reviews."
 msgstr "Aucun avis."
 
+#: templates/platform_admin/service_requests.html:26
 msgid "Client (Photo + Name)"
 msgstr "Client (photo + nom)"
 
+#: templates/platform_admin/service_requests.html:27
 msgid "Service Type"
 msgstr "Type de service"
 
+#: templates/platform_admin/service_requests.html:28
 msgid "Service Status"
 msgstr "Statut du service"
 
+#: templates/platform_admin/service_requests.html:29
 msgid "Appt Date"
 msgstr "Date du RDV"
 
+#: templates/platform_admin/service_requests.html:30
 msgid "Assigned Provider"
 msgstr "Prestataire assigné"
 
+#: templates/platform_admin/service_requests.html:58
+#: templates/service_provider/active_jobs.html:111
+#: templates/service_provider/active_jobs.html:176
 msgid "View Details"
 msgstr "Voir les détails"
 
+#: templates/platform_admin/service_requests.html:69
 msgid "Contact Client"
 msgstr "Contacter le client"
 
+#: templates/platform_admin/service_requests.html:75
+#: templates/platform_admin/user_detail.html:52
 msgid "No requests."
 msgstr "Aucune demande."
 
+#: templates/platform_admin/user_detail.html:21
+#: templates/platform_admin/verification_detail.html:48
 msgid "Phone:"
 msgstr "Téléphone :"
 
+#: templates/platform_admin/user_detail.html:23
+#: templates/platform_admin/verification_detail.html:49
 msgid "District:"
 msgstr "District :"
 
+#: templates/platform_admin/user_detail.html:26
 msgid "Joined:"
 msgstr "Inscrit le :"
 
+#: templates/platform_admin/user_detail.html:28
 msgid "Last Active:"
 msgstr "Dernière activité :"
 
+#: templates/platform_admin/user_detail.html:36
 msgid "Verification record"
 msgstr "Dossier de vérification"
 
+#: templates/platform_admin/user_detail.html:38
 msgid "Public profile"
 msgstr "Profil public"
 
+#: templates/platform_admin/user_detail.html:44
 msgid "Service history"
 msgstr "Historique des services"
 
+#: templates/platform_admin/user_detail.html:58
 msgid "Status history"
 msgstr "Historique des statuts"
 
+#: templates/platform_admin/user_detail.html:75
 msgid "Account status"
 msgstr "Statut du compte"
 
+#: templates/platform_admin/user_detail.html:80
 msgid "Save status"
 msgstr "Enregistrer le statut"
 
+#: templates/platform_admin/user_detail.html:86
 msgid "Subscription override"
 msgstr "Modifier l'abonnement"
 
+#: templates/platform_admin/user_detail.html:91
 msgid "Save plan"
 msgstr "Enregistrer le forfait"
 
+#: templates/platform_admin/user_management.html:4
+#: templates/platform_admin/user_management.html:8
 msgid "User Management"
 msgstr "Gestion des utilisateurs"
 
+#: templates/platform_admin/user_management.html:11
 msgid "Search users"
 msgstr "Rechercher des utilisateurs"
 
+#: templates/platform_admin/user_management.html:12
+#: templates/platform_admin/user_management.html:33
 msgid "Role"
 msgstr "Rôle"
 
+#: templates/platform_admin/user_management.html:13
 msgid "All roles"
 msgstr "Tous les rôles"
 
+#: templates/platform_admin/user_management.html:32
 msgid "User Photo + Name + email"
 msgstr "Photo + nom + e-mail"
 
+#: templates/platform_admin/user_management.html:35
 msgid "Last Active"
 msgstr "Dernière activité"
 
+#: templates/platform_admin/user_management.html:59
 msgid "Manage Records"
 msgstr "Gérer le dossier"
 
+#: templates/platform_admin/user_management.html:61
 msgid "View Service history"
 msgstr "Voir l'historique des services"
 
+#: templates/platform_admin/user_management.html:63
 msgid "Manage permissions"
 msgstr "Gérer les droits"
 
+#: templates/platform_admin/user_management.html:69
 msgid "No users found."
 msgstr "Aucun utilisateur trouvé."
 
+#: templates/platform_admin/verification_detail.html:25
 msgid "Documents"
 msgstr "Documents"
 
+#: templates/platform_admin/verification_detail.html:40
 msgid "No documents uploaded."
 msgstr "Aucun document envoyé."
 
+#: templates/platform_admin/verification_detail.html:46
 msgid "Profile"
 msgstr "Profil"
 
+#: templates/platform_admin/verification_detail.html:47
 msgid "Email:"
 msgstr "E-mail :"
 
+#: templates/platform_admin/verification_detail.html:50
 msgid "Experience:"
 msgstr "Expérience :"
 
+#: templates/platform_admin/verification_detail.html:54
 msgid "Open public profile"
 msgstr "Ouvrir le profil public"
 
+#: templates/platform_admin/verification_detail.html:71
 msgid "No decisions yet."
 msgstr "Aucune décision pour le moment."
 
+#: templates/platform_admin/verification_detail.html:78
 msgid "Decision"
 msgstr "Décision"
 
+#: templates/platform_admin/verification_detail.html:82
+#: templates/platform_admin/verification_queue.html:32
+#: templates/platform_admin/verification_queue.html:55
 msgid "Verification Stage"
 msgstr "Étape de vérification"
 
+#: templates/platform_admin/verification_detail.html:90
 msgid "Set stage"
 msgstr "Changer l'étape"
 
+#: templates/platform_admin/verification_detail.html:96
 msgid "Add note"
 msgstr "Ajouter une note"
 
+#: templates/platform_admin/verification_detail.html:100
 msgid "Send it to the provider (asks for more information)"
 msgstr "L'envoyer au prestataire (demande d'informations)"
 
+#: templates/platform_admin/verification_detail.html:102
 msgid "Save note"
 msgstr "Enregistrer la note"
 
+#: templates/platform_admin/verification_detail.html:109
 msgid "Accept provider"
 msgstr "Accepter le prestataire"
 
+#: templates/platform_admin/verification_detail.html:117
 msgid "Reason for rejecting (required)"
 msgstr "Raison du refus (obligatoire)"
 
+#: templates/platform_admin/verification_detail.html:121
 msgid "Reject provider"
 msgstr "Refuser le prestataire"
 
+#: templates/platform_admin/verification_queue.html:13
 msgid "Waiting for a decision"
 msgstr "En attente de décision"
 
+#: templates/platform_admin/verification_queue.html:30
 msgid "Specialty"
 msgstr "Spécialité"
 
+#: templates/platform_admin/verification_queue.html:31
 msgid "Submitted"
 msgstr "Soumis le"
 
+#: templates/platform_admin/verification_queue.html:71
 msgid "View Docs"
 msgstr "Voir les documents"
 
+#: templates/platform_admin/verification_queue.html:73
 msgid "Message Provider"
 msgstr "Écrire au prestataire"
 
+#: templates/platform_admin/verification_queue.html:80
+#: templates/service_provider/active_jobs.html:165
+#: templates/service_provider/job_detail.html:69
 msgid "Accept"
 msgstr "Accepter"
 
+#: templates/platform_admin/verification_queue.html:85
 msgid "Reject"
 msgstr "Refuser"
 
+#: templates/platform_admin/verification_queue.html:92
 msgid "The queue is empty."
 msgstr "La file est vide."
 
+#: templates/service_provider/active_jobs.html:8
 msgid "Active Jobs & Requests"
 msgstr "Travaux et demandes"
 
+#: templates/service_provider/active_jobs.html:20
+#: templates/service_provider/schedule.html:16
 msgid "On Track"
 msgstr "Dans les temps"
 
+#: templates/service_provider/active_jobs.html:23
 msgid "Pending Requests"
 msgstr "Demandes en attente"
 
+#: templates/service_provider/active_jobs.html:29
 msgid "Needs Action"
 msgstr "Action requise"
 
+#: templates/service_provider/active_jobs.html:33
 msgid "Upcoming Bookings"
 msgstr "Réservations à venir"
 
+#: templates/service_provider/active_jobs.html:43
 msgid "None yet"
 msgstr "Aucune pour le moment"
 
+#: templates/service_provider/active_jobs.html:49
 msgid "Average Client Rating"
 msgstr "Note moyenne des clients"
 
+#: templates/service_provider/active_jobs.html:61
 msgid "Current Active Jobs"
 msgstr "Travaux en cours"
 
+#: templates/service_provider/active_jobs.html:66
 msgid "Job Id"
 msgstr "N° travail"
 
+#: templates/service_provider/active_jobs.html:67
+#: templates/service_provider/active_jobs.html:137
 msgid "Client Name"
 msgstr "Nom du client"
 
+#: templates/service_provider/active_jobs.html:68
+#: templates/service_provider/earnings.html:60
 msgid "Job Type"
 msgstr "Type de travail"
 
+#: templates/service_provider/active_jobs.html:97
 msgid "On site"
 msgstr "Sur place"
 
+#: templates/service_provider/active_jobs.html:101
 msgid "Update Status"
 msgstr "Mettre à jour"
 
+#: templates/service_provider/active_jobs.html:108
 msgid "More actions"
 msgstr "Plus d'actions"
 
+#: templates/service_provider/active_jobs.html:122
 msgid "No active jobs in this period."
 msgstr "Aucun travail en cours sur cette période."
 
+#: templates/service_provider/active_jobs.html:132
 msgid "New Job Requests Queue"
 msgstr "Nouvelles demandes de travail"
 
+#: templates/service_provider/active_jobs.html:138
 msgid "Issue Description"
 msgstr "Description du problème"
 
+#: templates/service_provider/active_jobs.html:139
 msgid "Date Requested"
 msgstr "Date demandée"
 
+#: templates/service_provider/active_jobs.html:168
 msgid "Decline this request?"
 msgstr "Refuser cette demande ?"
 
+#: templates/service_provider/active_jobs.html:171
+#: templates/service_provider/job_detail.html:75
 msgid "Decline"
 msgstr "Refuser"
 
+#: templates/service_provider/active_jobs.html:180
 msgid "No new requests."
 msgstr "Aucune nouvelle demande."
 
+#: templates/service_provider/checkout.html:4
+#: templates/service_provider/checkout.html:27
 msgid "Confirm payment"
 msgstr "Confirmer le paiement"
 
+#: templates/service_provider/checkout.html:12
 msgid "Confirm your plan"
 msgstr "Confirmez votre forfait"
 
+#: templates/service_provider/checkout.html:14
 msgid "Plan"
 msgstr "Forfait"
 
+#: templates/service_provider/checkout.html:15
 msgid "Billing"
 msgstr "Facturation"
 
+#: templates/service_provider/checkout.html:16
+#: templates/service_provider/earnings.html:62
+#: templates/service_provider/invoice.html:42
 msgid "Amount"
 msgstr "Montant"
 
+#: templates/service_provider/checkout.html:20
 msgid ""
-"This is a simulated payment for the project. No card details are "
-"collected. Your choice and the payment record are saved."
+"This is a simulated payment for the project. No card details are collected. "
+"Your choice and the payment record are saved."
 msgstr ""
 "Ceci est un paiement simulé pour le projet. Aucune donnée de carte n'est "
 "collectée. Votre choix et le paiement sont enregistrés."
 
+#: templates/service_provider/choose_plan.html:4
+#: templates/service_provider/choose_plan.html:17
 msgid "Choose Your Plan"
 msgstr "Choisissez votre forfait"
 
+#: templates/service_provider/choose_plan.html:19
 msgid "Profile Setup"
 msgstr "Création du profil"
 
+#: templates/service_provider/choose_plan.html:20
 msgid "Choose Plan"
 msgstr "Choix du forfait"
 
+#: templates/service_provider/choose_plan.html:29
 #, python-format
 msgid "Annual (Save 20%%)"
 msgstr "Annuel (20%% d'économie)"
 
+#: templates/service_provider/choose_plan.html:36
 msgid "Most Popular"
 msgstr "Le plus populaire"
 
+#: templates/service_provider/choose_plan.html:40
+#: templates/service_provider/choose_plan.html:41
 msgid "/ month"
 msgstr "/ mois"
 
+#: templates/service_provider/choose_plan.html:41
 msgid "/ year"
 msgstr "/ an"
 
+#: templates/service_provider/choose_plan.html:55
 msgid "Keep this plan"
 msgstr "Garder ce forfait"
 
+#: templates/service_provider/choose_plan.html:57
 #, python-format
 msgid "Select %(name)s"
 msgstr "Choisir %(name)s"
 
+#: templates/service_provider/choose_plan.html:67
 msgid ""
 "Secure Payment processed via local bank card / Official Bank Payment "
 "Platforms"
@@ -1488,187 +2155,226 @@ msgstr ""
 "Paiement sécurisé par carte bancaire locale / plateformes de paiement "
 "bancaires officielles"
 
+#: templates/service_provider/choose_plan.html:74
 msgid "Continue with Free Starter Plan for now"
 msgstr "Continuer avec le forfait Starter gratuit pour l'instant"
 
+#: templates/service_provider/earnings.html:4
+#: templates/service_provider/earnings.html:8
 msgid "Earnings Overview"
 msgstr "Aperçu des revenus"
 
+#: templates/service_provider/earnings.html:20
 msgid "Total Lifetime Earnings"
 msgstr "Revenus totaux"
 
-msgid "Available for Payout"
-msgstr "Disponible au retrait"
-
-msgid "Withdraw Funds"
-msgstr "Retirer les fonds"
-
+#: templates/service_provider/earnings.html:25
 msgid "This Month's Earnings"
 msgstr "Revenus du mois"
 
-msgid "Next Payout"
-msgstr "Prochain versement"
-
+#: templates/service_provider/earnings.html:39
 msgid "Recent Transactions & Payouts"
 msgstr "Transactions et versements récents"
 
+#: templates/service_provider/earnings.html:45
 msgid "Filter: Job type"
 msgstr "Filtre : type de travail"
 
+#: templates/service_provider/earnings.html:58
 msgid "Job ID"
 msgstr "N° travail"
 
+#: templates/service_provider/earnings.html:63
 msgid "Payout Status"
 msgstr "Statut du versement"
 
+#: templates/service_provider/earnings.html:64
+#: templates/service_provider/earnings.html:82
+#: templates/service_provider/invoice.html:5
+#: templates/service_provider/invoice.html:20
 msgid "Invoice"
 msgstr "Facture"
 
+#: templates/service_provider/earnings.html:86
 msgid "No transactions."
 msgstr "Aucune transaction."
 
+#: templates/service_provider/earnings.html:96
 msgid "Earnings Details"
 msgstr "Détails des revenus"
 
+#: templates/service_provider/earnings.html:97
 msgid "Connected Bank Account"
 msgstr "Compte bancaire associé"
 
+#: templates/service_provider/earnings.html:99
 msgid "No bank account yet"
 msgstr "Pas encore de compte bancaire"
 
+#: templates/service_provider/earnings.html:105
 msgid "Update Bank"
 msgstr "Modifier la banque"
 
-msgid "Payout Schedule"
-msgstr "Calendrier des versements"
-
-msgid "Next Payout Date:"
-msgstr "Date du prochain versement :"
-
-msgid "Estimated Amount:"
-msgstr "Montant estimé :"
-
-msgid "Recent Payouts:"
-msgstr "Versements récents :"
-
+#: templates/service_provider/earnings.html:114
 msgid "Tax Forms"
 msgstr "Documents fiscaux"
 
+#: templates/service_provider/invoice.html:25
 msgid "Print"
 msgstr "Imprimer"
 
+#: templates/service_provider/invoice.html:35
 msgid "Billed to"
 msgstr "Facturé à"
 
+#: templates/service_provider/invoice.html:42
 msgid "Description"
 msgstr "Description"
 
+#: templates/service_provider/invoice.html:46
 msgid "Total"
 msgstr "Total"
 
+#: templates/service_provider/invoice.html:49
 msgid "Payout status:"
 msgstr "Statut du versement :"
 
+#: templates/service_provider/job_detail.html:29
 msgid "Job type:"
 msgstr "Type de travail :"
 
+#: templates/service_provider/job_detail.html:32
 msgid "Final amount:"
 msgstr "Montant final :"
 
+#: templates/service_provider/job_detail.html:58
 msgid "Contact details appear once you accept the request."
 msgstr "Les coordonnées apparaissent une fois la demande acceptée."
 
+#: templates/service_provider/job_detail.html:74
 msgid "Reason (optional)"
 msgstr "Raison (facultatif)"
 
+#: templates/service_provider/job_detail.html:82
 msgid "Mark as On site"
 msgstr "Marquer sur place"
 
+#: templates/service_provider/job_detail.html:89
 msgid "Final amount (MUR)"
 msgstr "Montant final (MUR)"
 
+#: templates/service_provider/job_detail.html:92
 msgid "Mark as Completed"
 msgstr "Marquer comme terminé"
 
+#: templates/service_provider/notifications.html:10
 msgid "Verification results, new requests and reviews."
 msgstr "Résultats de vérification, nouvelles demandes et avis."
 
+#: templates/service_provider/notifications.html:15
 msgid "Mark all as read"
 msgstr "Tout marquer comme lu"
 
+#: templates/service_provider/notifications.html:31
 msgid "Open"
 msgstr "Ouvrir"
 
+#: templates/service_provider/notifications.html:35
 msgid "You have no notifications."
 msgstr "Vous n'avez aucune notification."
 
+#: templates/service_provider/portfolio_editor.html:15
 msgid "Total Projects"
 msgstr "Total des projets"
 
+#: templates/service_provider/portfolio_editor.html:19
 #, python-format
 msgid "Your plan allows %(limit)s"
 msgstr "Votre forfait en permet %(limit)s"
 
+#: templates/service_provider/portfolio_editor.html:21
 msgid "Unlimited on your plan"
 msgstr "Illimité avec votre forfait"
 
+#: templates/service_provider/portfolio_editor.html:26
 msgid "Portfolio Views"
 msgstr "Vues du portfolio"
 
+#: templates/service_provider/portfolio_editor.html:31
 msgid "Active Certifications"
 msgstr "Certifications actives"
 
+#: templates/service_provider/portfolio_editor.html:38
 msgid "Client Feedback"
 msgstr "Avis des clients"
 
+#: templates/service_provider/portfolio_editor.html:52
+#: templates/service_provider/registration.html:73
 msgid "My Projects"
 msgstr "Mes projets"
 
+#: templates/service_provider/portfolio_editor.html:55
 msgid "Add Project"
 msgstr "Ajouter un projet"
 
+#: templates/service_provider/portfolio_editor.html:59
 msgid "Upgrade to add more"
 msgstr "Passer au forfait supérieur"
 
+#: templates/service_provider/portfolio_editor.html:80
 msgid "Delete this project?"
 msgstr "Supprimer ce projet ?"
 
+#: templates/service_provider/portfolio_editor.html:82
 msgid "Delete"
 msgstr "Supprimer"
 
+#: templates/service_provider/portfolio_editor.html:89
 msgid "Hidden on your plan"
 msgstr "Masqué avec votre forfait"
 
+#: templates/service_provider/portfolio_editor.html:103
 msgid "Edit project"
 msgstr "Modifier le projet"
 
+#: templates/service_provider/portfolio_editor.html:103
 msgid "Add a project"
 msgstr "Ajouter un projet"
 
+#: templates/service_provider/portfolio_editor.html:110
 msgid "Save project"
 msgstr "Enregistrer le projet"
 
+#: templates/service_provider/portfolio_editor.html:120
 msgid "My Portfolio Details"
 msgstr "Détails de mon portfolio"
 
+#: templates/service_provider/portfolio_editor.html:127
 msgid "Save details"
 msgstr "Enregistrer les détails"
 
+#: templates/service_provider/portfolio_editor.html:130
 msgid "Certifications & Licenses"
 msgstr "Certifications et licences"
 
+#: templates/service_provider/portfolio_editor.html:140
 msgid "None yet."
 msgstr "Aucune pour le moment."
 
+#: templates/service_provider/portfolio_editor.html:144
 msgid "Add Certification"
 msgstr "Ajouter une certification"
 
+#: templates/service_provider/portfolio_editor.html:151
 msgid "Upload"
 msgstr "Envoyer"
 
+#: templates/service_provider/registration.html:4
+#: templates/service_provider/registration.html:20
 msgid "New Professional Portfolio Hub"
 msgstr "Nouvel espace portfolio professionnel"
 
+#: templates/service_provider/registration.html:22
 msgid ""
 "Complete these steps to build your professional profile and showcase your "
 "key projects."
@@ -1676,222 +2382,315 @@ msgstr ""
 "Suivez ces étapes pour créer votre profil professionnel et présenter vos "
 "projets clés."
 
+#: templates/service_provider/registration.html:32
+msgid ""
+"You are signed in as a client. Submitting this form turns your account into "
+"a provider account - same email and password, and your requests and "
+"favourites stay with you."
+msgstr ""
+"Vous êtes connecté en tant que client. En envoyant ce formulaire, votre "
+"compte devient un compte prestataire : même e-mail et même mot de passe, et "
+"vous gardez vos demandes et vos favoris."
+
+#: templates/service_provider/registration.html:44
 msgid "Build Your Profile"
 msgstr "Créez votre profil"
 
+#: templates/service_provider/registration.html:45
 msgid "Create a strong professional identity"
 msgstr "Créez une identité professionnelle solide"
 
+#: templates/service_provider/registration.html:47
 msgid "Showcase"
 msgstr "Montrez"
 
+#: templates/service_provider/registration.html:48
 msgid "your expertise"
 msgstr "votre expertise"
 
+#: templates/service_provider/registration.html:50
 msgid "Stand Out"
 msgstr "Démarquez-vous"
 
+#: templates/service_provider/registration.html:51
 msgid "Impress Clients & embrace opportunities"
 msgstr "Impressionnez les clients et saisissez les opportunités"
 
+#: templates/service_provider/registration.html:74
 msgid "Added"
 msgstr "ajoutés"
 
+#: templates/service_provider/registration.html:77
+msgid ""
+"Optional. Just starting out? Skip this - you can add projects any time from "
+"your Portfolio Editor."
+msgstr ""
+"Facultatif. Vous débutez ? Passez cette étape : vous pourrez ajouter des "
+"projets à tout moment depuis votre éditeur de portfolio."
+
+#: templates/service_provider/registration.html:93
 msgid "Add New Project"
 msgstr "Ajouter un nouveau projet"
 
+#: templates/service_provider/registration.html:107
 msgid "Submit Your Profile"
 msgstr "Soumettre votre profil"
 
+#: templates/service_provider/registration.html:114
 msgid "Connect"
 msgstr "Connectez-vous"
 
+#: templates/service_provider/registration.html:114
 msgid "with clients"
 msgstr "avec des clients"
 
+#: templates/service_provider/registration.html:116
 msgid "Showcase Projects"
 msgstr "Présentez vos projets"
 
+#: templates/service_provider/registration.html:117
 msgid "Highlight your best work and achievements"
 msgstr "Mettez en avant vos meilleures réalisations"
 
+#: templates/service_provider/registration.html:119
 msgid "Grow"
 msgstr "Développez"
 
+#: templates/service_provider/registration.html:119
 msgid "Your career"
 msgstr "votre carrière"
 
+#: templates/service_provider/reviews.html:8
 msgid "Reviews & Replies"
 msgstr "Avis et réponses"
 
+#: templates/service_provider/reviews.html:10
 #, python-format
 msgid "%(counter)s review is waiting for your reply."
 msgid_plural "%(counter)s reviews are waiting for your reply."
 msgstr[0] "%(counter)s avis attend votre réponse."
 msgstr[1] "%(counter)s avis attendent votre réponse."
 
+#: templates/service_provider/reviews.html:28
 #, python-format
 msgid "%(total)s reviews"
 msgstr "%(total)s avis"
 
+#: templates/service_provider/reviews.html:61
 msgid "Your reply"
 msgstr "Votre réponse"
 
+#: templates/service_provider/reviews.html:68
+#: templates/service_provider/reviews.html:72
 msgid "Reply"
 msgstr "Répondre"
 
+#: templates/service_provider/reviews.html:69
 msgid "Write a public reply (one reply per review)"
 msgstr "Écrivez une réponse publique (une réponse par avis)"
 
+#: templates/service_provider/schedule.html:14
 msgid "Confirmed Jobs Today"
 msgstr "Travaux confirmés aujourd'hui"
 
+#: templates/service_provider/schedule.html:19
 msgid "Available Slots This Week"
 msgstr "Créneaux libres cette semaine"
 
+#: templates/service_provider/schedule.html:22
 #, python-format
 msgid "%(percent_full)s%% Full"
 msgstr "Rempli à %(percent_full)s%%"
 
+#: templates/service_provider/schedule.html:25
 msgid "Recurring Clients"
 msgstr "Clients réguliers"
 
+#: templates/service_provider/schedule.html:29
 msgid "Scheduling Conflicts"
 msgstr "Conflits de planning"
 
+#: templates/service_provider/schedule.html:32
 msgid "Needs Review"
 msgstr "À vérifier"
 
+#: templates/service_provider/schedule.html:43
 msgid "Previous month"
 msgstr "Mois précédent"
 
+#: templates/service_provider/schedule.html:46
 msgid "Next month"
 msgstr "Mois suivant"
 
+#: templates/service_provider/schedule.html:50
 msgid "MONTH"
 msgstr "MOIS"
 
+#: templates/service_provider/schedule.html:53
 msgid "WEEK"
 msgstr "SEMAINE"
 
+#: templates/service_provider/schedule.html:56
 msgid "DAY"
 msgstr "JOUR"
 
+#: templates/service_provider/schedule.html:70
 msgid "No jobs today."
 msgstr "Aucun travail aujourd'hui."
 
+#: templates/service_provider/schedule.html:75
 msgid "Sun"
 msgstr "Dim"
 
+#: templates/service_provider/schedule.html:76
 msgid "Mon"
 msgstr "Lun"
 
+#: templates/service_provider/schedule.html:77
 msgid "Tue"
 msgstr "Mar"
 
+#: templates/service_provider/schedule.html:78
 msgid "Wed"
 msgstr "Mer"
 
+#: templates/service_provider/schedule.html:79
 msgid "Thu"
 msgstr "Jeu"
 
+#: templates/service_provider/schedule.html:80
 msgid "Fri"
 msgstr "Ven"
 
+#: templates/service_provider/schedule.html:81
 msgid "Sat"
 msgstr "Sam"
 
+#: templates/service_provider/schedule.html:101
 msgid "High Priority"
 msgstr "Priorité élevée"
 
+#: templates/service_provider/schedule.html:102
 msgid "Plumbing Repair"
 msgstr "Réparation de plomberie"
 
+#: templates/service_provider/schedule.html:106
 msgid "Blocked out"
 msgstr "Bloqué"
 
+#: templates/service_provider/schedule.html:112
 msgid "Schedule Settings & Details"
 msgstr "Paramètres et détails du planning"
 
+#: templates/service_provider/schedule.html:120
 msgid "Manage your recurring schedule"
 msgstr "Gérez votre planning récurrent"
 
+#: templates/service_provider/schedule.html:123
 msgid "Date Range"
 msgstr "Période"
 
+#: templates/service_provider/schedule.html:132
 msgid "Time Slots"
 msgstr "Créneaux horaires"
 
+#: templates/service_provider/schedule.html:139
 msgid "Save settings"
 msgstr "Enregistrer les paramètres"
 
+#: templates/service_provider/schedule.html:143
 msgid "Block Out Dates"
 msgstr "Bloquer des dates"
 
+#: templates/service_provider/schedule.html:162
 msgid "Block dates"
 msgstr "Bloquer les dates"
 
+#: templates/service_provider/schedule.html:165
 msgid "Block Out Times"
 msgstr "Bloquer des horaires"
 
+#: templates/service_provider/schedule.html:183
 msgid "Block time"
 msgstr "Bloquer l'horaire"
 
+#: templates/users/edit_profile.html:9
 msgid "Keep your details up to date."
 msgstr "Gardez vos informations à jour."
 
+#: templates/users/edit_profile.html:17
 msgid "Your account"
 msgstr "Votre compte"
 
+#: templates/users/edit_profile.html:31
 msgid "Your professional profile"
 msgstr "Votre profil professionnel"
 
+#: templates/users/edit_profile.html:42
 msgid "Save changes"
 msgstr "Enregistrer les modifications"
 
+#: templates/users/edit_profile.html:47
 msgid "Services on your card"
 msgstr "Services sur votre carte"
 
+#: templates/users/edit_profile.html:64
 msgid "No services yet."
 msgstr "Aucun service pour le moment."
 
+#: templates/users/edit_profile.html:76
 msgid "Add service"
 msgstr "Ajouter un service"
 
+#: templates/users/login.html:8
 msgid "Welcome back"
 msgstr "Bon retour"
 
+#: templates/users/login.html:9
 msgid "Log in with your email or phone number."
 msgstr "Connectez-vous avec votre e-mail ou votre numéro de téléphone."
 
+#: templates/users/login.html:22 templates/users/password_reset_form.html:8
 msgid "Forgot your password?"
 msgstr "Mot de passe oublié ?"
 
+#: templates/users/login.html:23
 msgid "Create an account"
 msgstr "Créer un compte"
 
+#: templates/users/password_reset_complete.html:4
+#: templates/users/password_reset_complete.html:5
 msgid "Password changed"
 msgstr "Mot de passe modifié"
 
+#: templates/users/password_reset_complete.html:9
 msgid "Your password has been changed. You can now log in."
 msgstr ""
 "Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter."
 
+#: templates/users/password_reset_confirm.html:4
+#: templates/users/password_reset_confirm.html:8
 msgid "Choose a new password"
 msgstr "Choisissez un nouveau mot de passe"
 
+#: templates/users/password_reset_confirm.html:18
 msgid "Save new password"
 msgstr "Enregistrer le nouveau mot de passe"
 
+#: templates/users/password_reset_confirm.html:22
 msgid "This reset link is invalid or has already been used."
 msgstr "Ce lien est invalide ou a déjà été utilisé."
 
+#: templates/users/password_reset_confirm.html:24
 msgid "Request a new link"
 msgstr "Demander un nouveau lien"
 
+#: templates/users/password_reset_done.html:4
+#: templates/users/password_reset_done.html:5
 msgid "Check your email"
 msgstr "Vérifiez vos e-mails"
 
+#: templates/users/password_reset_done.html:10
 msgid ""
 "If an account exists with that email, a reset link is on its way. While "
 "developing, the email is printed in the terminal that runs the server."
@@ -1900,133 +2699,175 @@ msgstr ""
 "route. Pendant le développement, l'e-mail s'affiche dans le terminal qui "
 "lance le serveur."
 
+#: templates/users/password_reset_done.html:16
 msgid "Back to log in"
 msgstr "Retour à la connexion"
 
+#: templates/users/password_reset_email.txt:1
 msgid "Hello,"
 msgstr "Bonjour,"
 
+#: templates/users/password_reset_email.txt:3
 msgid "Someone asked to reset the password of your TrustyHands account."
 msgstr ""
 "Quelqu'un a demandé à réinitialiser le mot de passe de votre compte "
 "TrustyHands."
 
+#: templates/users/password_reset_email.txt:4
 msgid "Open this link to choose a new password:"
 msgstr "Ouvrez ce lien pour choisir un nouveau mot de passe :"
 
+#: templates/users/password_reset_email.txt:8
 msgid "If this was not you, you can ignore this email."
 msgstr "Si ce n'était pas vous, vous pouvez ignorer cet e-mail."
 
+#: templates/users/password_reset_form.html:4
 msgid "Reset password"
 msgstr "Réinitialiser le mot de passe"
 
+#: templates/users/password_reset_form.html:10
 msgid "Enter your email and we will send you a reset link."
 msgstr ""
 "Saisissez votre e-mail et nous vous enverrons un lien de réinitialisation."
 
+#: templates/users/password_reset_form.html:19
 msgid "Send reset link"
 msgstr "Envoyer le lien"
 
+#: templates/users/password_reset_subject.txt:1
 msgid "Reset your TrustyHands password"
 msgstr "Réinitialisez votre mot de passe TrustyHands"
 
+#: templates/users/register.html:8
 msgid "Create your account"
 msgstr "Créez votre compte"
 
+#: templates/users/register.html:10
 msgid "Clients book trusted professionals. Providers grow their business."
 msgstr ""
 "Les clients réservent des professionnels de confiance. Les prestataires "
 "développent leur activité."
 
+#: templates/users/register.html:36
 msgid "Already have an account? Log in"
 msgstr "Déjà un compte ? Connectez-vous"
 
+#: trustyhands/settings.py:128 users/models.py:22
 msgid "English"
 msgstr "Anglais"
 
+#: trustyhands/settings.py:129 users/models.py:23
 msgid "French"
 msgstr "Français"
 
+#: users/forms.py:15
 msgid "Email or phone number"
 msgstr "E-mail ou numéro de téléphone"
 
+#: users/forms.py:21
 msgid "Wrong email/phone or password. Please try again."
 msgstr "E-mail/téléphone ou mot de passe incorrect. Veuillez réessayer."
 
+#: users/forms.py:23
 msgid "This account is suspended or deactivated."
 msgstr "Ce compte est suspendu ou désactivé."
 
+#: users/forms.py:31
 msgid "I want to"
 msgstr "Je veux"
 
+#: users/forms.py:33
 msgid "Hire a professional (Client)"
 msgstr "Engager un professionnel (Client)"
 
+#: users/forms.py:34
 msgid "Offer my services (Service Provider)"
 msgstr "Proposer mes services (Prestataire)"
 
+#: users/forms.py:39
 msgid "First name"
 msgstr "Prénom"
 
+#: users/forms.py:40
 msgid "Last name"
 msgstr "Nom"
 
+#: users/forms.py:41
 msgid "Email address"
 msgstr "Adresse e-mail"
 
+#: users/forms.py:42
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
+#: users/forms.py:44
 msgid "District"
 msgstr "District"
 
+#: users/forms.py:57
 msgid "An account with this email already exists."
 msgstr "Un compte existe déjà avec cet e-mail."
 
+#: users/forms.py:65
 msgid "An account with this phone number already exists."
 msgstr "Un compte existe déjà avec ce numéro de téléphone."
 
+#: users/models.py:18
 msgid "Suspended"
 msgstr "Suspendu"
 
+#: users/models.py:19
 msgid "Deactivated"
 msgstr "Désactivé"
 
+#: users/models.py:26
 msgid "Light"
 msgstr "Clair"
 
+#: users/models.py:27
 msgid "Dark"
 msgstr "Sombre"
 
+#: users/models.py:32
 msgid "email address"
 msgstr "adresse e-mail"
 
+#: users/models.py:33
 msgid "phone number"
 msgstr "numéro de téléphone"
 
+#: users/models.py:34
 msgid "address"
 msgstr "adresse"
 
+#: users/models.py:36
 msgid "district"
 msgstr "district"
 
+#: users/views/auth.py:47
 msgid "Welcome to TrustyHands!"
 msgstr "Bienvenue sur TrustyHands !"
 
+#: users/views/edit_profile.py:38
 msgid "Another account already uses this phone number."
 msgstr "Un autre compte utilise déjà ce numéro de téléphone."
 
+#: users/views/edit_profile.py:47
 msgid "Service categories"
 msgstr "Catégories de services"
 
+#: users/views/edit_profile.py:52
 msgid "Areas served"
 msgstr "Zones desservies"
 
+#: users/views/edit_profile.py:108
 msgid "Your profile has been saved."
 msgstr "Votre profil a été enregistré."
 
+#: users/views/edit_profile.py:117
 msgid "Service added."
 msgstr "Service ajouté."
 
+#: users/views/edit_profile.py:126
 msgid "Service removed."
 msgstr "Service supprimé."
