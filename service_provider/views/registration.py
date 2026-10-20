@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
 from core.choices import District
-from core.decorators import provider_required
+from core.decorators import role_required
 from core.forms import MultipleImageField
 from core.models import (
     PortfolioItem, PortfolioPhoto, ScheduleSettings, ServiceCategory,
@@ -70,9 +70,21 @@ class ProjectForm(forms.Form):
         label=gettext_lazy("Add Project Photos"), required=False, max_files=10
     )
 
+    def has_changed(self):
+        """
+        A project block left completely empty counts as "not filled in",
+        so it is skipped instead of asking for a project name. (An empty
+        multi-file input sends [] which Django would otherwise treat as a
+        change.)
+        """
+        return any(self[name].data for name in self.fields)
 
+
+# Projects are optional: a beginner can register with none and add them
+# later from the Portfolio Editor. Blocks added with "Add New Project"
+# and left empty are ignored.
 ProjectFormSet = forms.formset_factory(
-    ProjectForm, extra=0, min_num=1, validate_min=True
+    ProjectForm, extra=0, min_num=0, validate_min=False
 )
 
 
@@ -113,12 +125,15 @@ def save_profile(user, profile_form, project_formset):
     return provider
 
 
-@provider_required
+# Clients may open this page too: a client who wants to offer services
+# keeps the same login and becomes a provider when the form is submitted.
+@role_required("CLIENT", "PROVIDER")
 def portfolio_hub(request):
     if hasattr(request.user, "provider_profile"):
         return redirect("provider:active_jobs")
 
     user = request.user
+    is_upgrade = user.is_client
     profile_form = ProfileForm(
         request.POST or None, request.FILES or None,
         initial={"full_name": user.display_name, "district": user.district},
@@ -131,6 +146,9 @@ def portfolio_hub(request):
         and profile_form.is_valid()
         and project_formset.is_valid()
     ):
+        if is_upgrade:
+            user.role = get_user_model().Role.PROVIDER
+            user.save(update_fields=["role"])
         provider = save_profile(user, profile_form, project_formset)
         admins = get_user_model().objects.filter(
             Q(role="ADMIN") | Q(is_superuser=True)
@@ -150,5 +168,6 @@ def portfolio_hub(request):
     context = {
         "form": profile_form,
         "projects": project_formset,
+        "is_upgrade": is_upgrade,
     }
     return render(request, "service_provider/registration.html", context)

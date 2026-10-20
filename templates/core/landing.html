@@ -60,7 +60,8 @@
       and French.
     {% endblocktrans %}
   </p>
-  {% if user.is_authenticated and user.is_provider %}
+  {# Logged-in clients upgrade their own account (same login). #}
+  {% if user.is_authenticated and not user.is_platform_admin %}
     <a class="btn btn-accent join-btn" href="{% url 'provider:registration' %}">
       {% trans "Join Us" %}
     </a>
