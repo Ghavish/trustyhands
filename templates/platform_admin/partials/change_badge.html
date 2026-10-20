@@ -1,7 +1,24 @@
-{% load th_tags %}
-{# Green badge when a number went up, red when it went down. #}
-{% if value < 0 %}
-  <span class="badge badge-danger">{% icon "trend-down" 14 %} {{ value }} %</span>
+{% load i18n th_tags %}
+{% comment %}
+  Change compared with the previous period of the same length.
+  - green with + when it went up, red when it went down, grey when flat
+  - "New" when there was nothing in the previous period (no fake 100%)
+  Use: {% include "platform_admin/partials/change_badge.html" with value=x %}
+{% endcomment %}
+{% if value is None %}
+  <span class="badge badge-info an-badge" title="{% trans 'Nothing to compare with in the previous period' %}">
+    {% trans "New this period" %}
+  </span>
+{% elif value < 0 %}
+  <span class="badge badge-danger an-badge" title="{% trans 'Compared with the previous period' %}">
+    {% icon "trend-down" 14 %} {{ value|floatformat:1 }}%
+  </span>
+{% elif value == 0 %}
+  <span class="badge badge-muted an-badge" title="{% trans 'Compared with the previous period' %}">
+    {% trans "No change" %}
+  </span>
 {% else %}
-  <span class="badge badge-success">{% icon "trend-up" 14 %} {{ value }} %</span>
+  <span class="badge badge-success an-badge" title="{% trans 'Compared with the previous period' %}">
+    {% icon "trend-up" 14 %} +{{ value|floatformat:1 }}%
+  </span>
 {% endif %}

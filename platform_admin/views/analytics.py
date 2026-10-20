@@ -9,6 +9,7 @@ from decimal import Decimal
 
 from django.db.models import Sum
 from django.shortcuts import render
+from django.utils import timezone
 
 from core.decorators import admin_required
 from core.models import (
@@ -57,12 +58,17 @@ def analytics_dashboard(request):
     approvals = approvals_between(start, end)
     transactions = money_in(start, end)
 
-    # Running total of money per day, for the orange line.
-    money_trend, running = [], Decimal(0)
-    for offset in range(length):
+    # Charts stop at today: days that have not happened yet would only add
+    # a flat line (money) or a drop to zero (requests per week).
+    last_day = min(end, timezone.localdate())
+
+    # Running total of money per day, for the Transactions chart.
+    money_trend, money_labels, running = [], [], Decimal(0)
+    for offset in range(max((last_day - start).days + 1, 1)):
         day = start + datetime.timedelta(days=offset)
         running += money_in(day, day)
         money_trend.append(float(running))
+        money_labels.append(day.strftime("%d %b"))
 
     # Active clients who booked in each category (doughnut chart).
     active_clients = User.objects.filter(
@@ -85,7 +91,7 @@ def analytics_dashboard(request):
 
     # Requests per week, last 8 weeks.
     weekly = []
-    week_end = end
+    week_end = last_day
     for _ in range(8):
         week_start = week_end - datetime.timedelta(days=6)
         weekly.insert(0, ServiceRequest.objects.filter(
@@ -101,10 +107,10 @@ def analytics_dashboard(request):
         "range_start": start,
         "range_end": end,
         "pending": pending,
-        "pending_change": percent_change(
-            submissions_between(start, end),
-            submissions_between(prev_start, prev_end),
-        ),
+        # The big number is "waiting right now", so the badge counts the
+        # new submissions in this period instead of a percentage that
+        # compared two different things.
+        "pending_new": submissions_between(start, end),
         "approvals": approvals,
         "approvals_change": percent_change(
             approvals, approvals_between(prev_start, prev_end)
@@ -114,10 +120,12 @@ def analytics_dashboard(request):
             float(transactions), float(money_in(prev_start, prev_end))
         ),
         "money_trend": money_trend,
+        "money_labels": money_labels,
         "active_clients": active_clients.count(),
         "category_rows": category_rows,
         "category_labels": [row["name"] for row in category_rows],
         "category_values": [row["clients"] for row in category_rows],
+        "category_total": sum(row["clients"] for row in category_rows),
         "weekly": weekly,
         "total_users": User.objects.count(),
         "top_rated": top_rated,
