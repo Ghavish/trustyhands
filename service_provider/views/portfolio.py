@@ -136,6 +136,12 @@ def portfolio_editor(request):
         "limit": limit,
         "can_add": limit is None or items.count() < limit,
         "editing": editing,
+        # The "Add a project" form stays closed until "+ Add Project" is
+        # clicked (?add=1). It also stays open while editing a project or
+        # when a save failed, so the errors are visible.
+        "show_project_form": bool(
+            editing or request.GET.get("add") or action == "save_project"
+        ),
         "project_form": project_form,
         "details_form": details_form,
         "certification_form": certification_form,
