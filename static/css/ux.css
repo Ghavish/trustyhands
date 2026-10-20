@@ -1,0 +1,211 @@
+/* TrustyHands: shared interaction styles.
+   1. Pop-up toasts (Django messages)
+   2. Back button
+   3. Page transitions
+   Colours come from the variables in base.css, so light and dark mode
+   both work without extra rules. */
+
+/* --- 1. Toasts --- */
+.toast-stack {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: min(380px, calc(100vw - 2rem));
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 0.9rem 0.9rem 1rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.35);
+  overflow: hidden;
+  pointer-events: auto;
+  animation: toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.toast.is-leaving {
+  animation: toast-out 0.25s ease-in forwards;
+}
+
+.toast-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--toast-accent, var(--info));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--toast-accent, var(--info)) 20%, transparent);
+}
+
+.toast-text {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.toast-dismiss {
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.55rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.toast-dismiss:hover,
+.toast-dismiss:focus-visible {
+  background: var(--surface-alt);
+  color: var(--text);
+}
+
+/* Thin bar along the bottom that shrinks until the toast closes */
+.toast-timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--toast-accent, var(--info));
+  opacity: 0.55;
+  transform-origin: left;
+}
+
+.toast[data-autoclose] .toast-timer {
+  animation: toast-timer var(--toast-life, 4.5s) linear forwards;
+}
+
+.toast:hover .toast-timer {
+  animation-play-state: paused;
+}
+
+.toast:not([data-autoclose]) .toast-timer {
+  display: none;
+}
+
+.toast-success { --toast-accent: var(--success); }
+.toast-error { --toast-accent: var(--danger); }
+.toast-warning { --toast-accent: var(--warning); }
+.toast-info { --toast-accent: var(--info); }
+.toast-debug { --toast-accent: var(--text-muted); }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes toast-out {
+  to { opacity: 0; transform: translateX(24px); }
+}
+
+@keyframes toast-timer {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+/* --- 2. Back button --- */
+.back-row {
+  padding-top: 1rem;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.back-btn:hover {
+  border-color: var(--gold);
+  background: var(--surface-alt);
+}
+
+.back-btn:active {
+  transform: translateX(-2px);
+}
+
+.dash-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+@media print {
+  .back-btn,
+  .toast-stack {
+    display: none !important;
+  }
+}
+
+/* --- 3. Page transitions ---
+   Browsers that support cross-document View Transitions cross-fade
+   between pages. Every browser also gets a short fade-up of the content
+   when a page opens. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.18s ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* "backwards" (not "both") so nothing stays applied once the fade ends.
+   A kept transform or opacity puts each part of the page on its own layer,
+   and the account menu then slides under the content below the header. */
+.page-enter {
+  animation: page-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* Screens that do not use a layout fade in as a whole */
+body > .pl-header,
+body > .pl-header ~ :not(script),
+body > .pp-page,
+body > .ob-page,
+body > .invoice {
+  animation: page-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes page-out {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

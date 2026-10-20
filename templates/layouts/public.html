@@ -5,7 +5,12 @@
   {% include "partials/navbar.html" %}
   <main class="page-body">
     {% include "partials/messages.html" %}
-    {% block content %}{% endblock %}
+    {% if show_back %}
+      <div class="back-row container">{% include "partials/back_button.html" %}</div>
+    {% endif %}
+    <div class="page-enter">
+      {% block content %}{% endblock %}
+    </div>
   </main>
   {% block footer %}
     {% include "partials/footer.html" %}

@@ -1,7 +1,23 @@
+{% load i18n %}
+{% comment %}
+  Django messages shown as small pop-up toasts in the top-right corner.
+  static/js/ux.js closes each toast after a few seconds; the Dismiss
+  button closes it straight away. Errors stay until dismissed.
+{% endcomment %}
 {% if messages %}
-  <ul class="messages container">
+  <div class="toast-stack" role="region" aria-live="polite"
+       aria-label="{% trans 'Notifications' %}" data-toast-stack>
     {% for message in messages %}
-      <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+      <div class="toast toast-{{ message.tags|default:'info' }}"
+           role="{% if message.level >= 40 %}alert{% else %}status{% endif %}"
+           {% if message.level < 40 %}data-autoclose{% endif %}>
+        <span class="toast-dot" aria-hidden="true"></span>
+        <p class="toast-text">{{ message }}</p>
+        <button class="toast-dismiss" type="button" data-toast-dismiss>
+          {% trans "Dismiss" %}
+        </button>
+        <span class="toast-timer" aria-hidden="true"></span>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
 {% endif %}

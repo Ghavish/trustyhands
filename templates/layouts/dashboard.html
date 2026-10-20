@@ -21,7 +21,10 @@
 
   <main class="dash-main">
     <div class="dash-topbar">
-      <h1 class="dash-title">{% block page_title %}{% endblock %}</h1>
+      <div class="dash-title-row">
+        {% if show_back %}{% include "partials/back_button.html" %}{% endif %}
+        <h1 class="dash-title">{% block page_title %}{% endblock %}</h1>
+      </div>
       <div class="topbar-tools">
         {% block topbar_extra %}{% endblock %}
         {% include "partials/theme_toggle.html" %}
@@ -42,7 +45,9 @@
     {% endif %}
 
     {% include "partials/messages.html" %}
-    {% block content %}{% endblock %}
+    <div class="page-enter">
+      {% block content %}{% endblock %}
+    </div>
   </main>
 </div>
 {% endblock %}

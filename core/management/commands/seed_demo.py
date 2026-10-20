@@ -40,6 +40,56 @@ MEDIA_FOLDERS = [
 # Django adds "_AbC1234" to a file name when the name is already taken.
 DJANGO_SUFFIX = re.compile(r"_[A-Za-z0-9]{7}(?=\.\w+$)")
 
+# Sample licences, certificates, insurance notes and business registrations
+# for the demo providers. They are clearly marked "SAMPLE - NOT A REAL
+# DOCUMENT" and name a fictional issuer. Files are in seed_images/documents/.
+DOCUMENTS = IMAGES / "documents"
+
+# Review comments by star rating, so reviews read like real people wrote them.
+REVIEW_COMMENTS = {
+    5: [
+        "Arrived on time, explained everything and left the place spotless.",
+        "Fixed in one visit. Fair price and very polite.",
+        "Excellent work, I will book again for the kitchen.",
+        "Very professional. Sent photos of the work before leaving.",
+        "Quick quote on WhatsApp and the job was done the next day.",
+        "Careful and tidy. Took time to show me what was wrong.",
+    ],
+    4: [
+        "Good job overall, came about 30 minutes late.",
+        "Solid work. Price was a little higher than the first quote.",
+        "Did what was needed. Had to come back once for a small fix.",
+        "Friendly and knew the job well. Communication could be faster.",
+    ],
+    3: [
+        "The work is fine but it took two visits to finish.",
+        "OK result. Left some dust behind and had to reschedule once.",
+    ],
+    2: [
+        "The repair held but the visit was rescheduled twice.",
+    ],
+}
+
+
+def stars():
+    """A realistic rating: mostly 4-5 stars, sometimes 3, rarely 2."""
+    return random.choices([5, 4, 3, 2], weights=[64, 26, 8, 2])[0]
+
+
+def comment_for(rating):
+    return random.choice(REVIEW_COMMENTS[rating])
+
+
+def document(filename):
+    """Read one sample PDF from seed_images/documents/."""
+    return ContentFile((DOCUMENTS / filename).read_bytes(), name=filename)
+
+
+def backdate(instance, **fields):
+    """Set auto_now_add dates (created_at, uploaded_at...) to a past time."""
+    type(instance).objects.filter(pk=instance.pk).update(**fields)
+
+
 # A tiny valid PDF used as a stand-in for uploaded documents.
 SAMPLE_PDF = (
     b"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n"
@@ -53,6 +103,10 @@ def image(folder, name):
     """Read one picture from core/management/seed_images/."""
     data = (IMAGES / folder / name).read_bytes()
     return ContentFile(data, name=name)
+
+
+def slug(text):
+    return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
 def days_ago(days):
@@ -225,7 +279,7 @@ class Command(BaseCommand):
         rows = [
             {
                 "first": "Danny", "last": "Williams", "email": f"danny@{DOMAIN}",
-                "business": "Danny Williams", "title": "Licensed Electrician",
+                "business": "Danny Williams", "areas": ["PLAINES_WILHEMS", "MOKA"], "title": "Licensed Electrician",
                 "town": "Castel", "district": "PLAINES_WILHEMS", "years": 15,
                 "tier": "ELITE", "client_type": "RESIDENTIAL", "scale": "MEDIUM",
                 "cover": "portfolio/panel_testing.png", "avatar": "danny.png",
@@ -236,7 +290,7 @@ class Command(BaseCommand):
                 ],
             },
             {
-                "first": "David", "last": "Williams", "business": "David Williams",
+                "first": "David", "last": "Williams", "business": "David Williams", "areas": ["PLAINES_WILHEMS"],
                 "title": "Licensed Electrician", "town": "Castel",
                 "district": "PLAINES_WILHEMS", "years": 8, "tier": "STARTER",
                 "client_type": "RESIDENTIAL", "scale": "SMALL",
@@ -246,9 +300,32 @@ class Command(BaseCommand):
                     ("Wiring and Installations", "wiring.png", "electrician"),
                     ("Electronic Repairs", "repairs.png", "electrician"),
                 ],
+                "bio": (
+                    "David has 8 years of experience on residential wiring in "
+                    "Plaines Wilhems. He works alone, so every job is done by "
+                    "him from the first visit to the final test."
+                ),
+                "specialisations": "Residential rewiring\nLighting\nFault finding",
+                "specialty": (
+                    "Full and partial rewiring of older houses, outdoor and "
+                    "garden lighting, and finding faults that cause power cuts."
+                ),
+                "issues": (
+                    "Power cuts when the kettle and iron run together: we "
+                    "split the circuits and fit the right breaker.\n"
+                    "Burnt smell from sockets: we replace damaged sockets and "
+                    "check the cable behind them."
+                ),
+                "requirements": "Photos of the fuse board and the problem area help us quote.",
+                "process": "Free first visit within Plaines Wilhems. Work is tested before we leave.",
+                "portfolio": [
+                    ("Outdoor Lighting for a Garden", "Priya R.", 35, "smart_fan.png"),
+                    ("CCTV and Gate Wiring", "Kevin L.", 95, "cctv.png"),
+                    ("Rewiring of a 1980s House", "Anjali D.", 160, "control_cabinet.png"),
+                ],
             },
             {
-                "first": "Marc", "last": "Jacobs", "business": "PowerLine Electricals",
+                "first": "Marc", "last": "Jacobs", "business": "PowerLine Electricals", "areas": ["PLAINES_WILHEMS", "PORT_LOUIS", "MOKA"],
                 "title": "Registered Contractor", "town": "Vacoas - Phoenix",
                 "district": "PLAINES_WILHEMS", "years": 12, "tier": "PRO",
                 "client_type": "BOTH", "scale": "LARGE",
@@ -261,9 +338,32 @@ class Command(BaseCommand):
                     ),
                     ("Safety Inspection and Report", "safety.png", "electrician"),
                 ],
+                "bio": (
+                    "PowerLine is a team of six electricians working on shops, "
+                    "offices and large homes. We install heavy equipment and "
+                    "issue a written safety report after every job."
+                ),
+                "specialisations": "Commercial wiring\nThree-phase installation\nSafety reports",
+                "specialty": (
+                    "Three-phase supplies, distribution boards for shops and "
+                    "offices, and safety inspections for insurance or sale."
+                ),
+                "issues": (
+                    "Breakers tripping in a busy shop: we balance the load "
+                    "across phases.\nOld boards with no earth leakage "
+                    "protection: we upgrade the board and certify it."
+                ),
+                "requirements": "A site visit is needed for any commercial job. Please send the building plan if you have one.",
+                "process": "Quote within 48 hours of the visit. Work outside opening hours on request.",
+                "portfolio": [
+                    ("Conduit Wiring for a Warehouse", "Bel Air Storage", 28, "conduit_wiring.png"),
+                    ("Control Cabinet for a Bakery", "Boulangerie du Port", 76, "control_cabinet.png"),
+                    ("Board Testing for an Office Block", "Ebene office block", 140, "panel_testing.png"),
+                    ("Kitchen Appliance Circuits", "Hotel Sable", 210, "dishwasher.png"),
+                ],
             },
             {
-                "first": "Olivia", "last": "Perez", "business": "SolarVolt Solution",
+                "first": "Olivia", "last": "Perez", "business": "SolarVolt Solution", "areas": ["ISLAND_WIDE"],
                 "title": "Registered Company", "town": "Island Wide",
                 "district": "ISLAND_WIDE", "years": 6, "tier": "ELITE",
                 "client_type": "BOTH", "scale": "LARGE",
@@ -273,9 +373,31 @@ class Command(BaseCommand):
                     ("Solar Energy Solutions", "solar.png", "electrician"),
                     ("EV Charger Installation", "ev.png", "electrician"),
                 ],
+                "bio": (
+                    "SolarVolt designs and installs solar panels and home EV "
+                    "chargers across Mauritius. We handle the CEB paperwork "
+                    "and show you how to read your production each month."
+                ),
+                "specialisations": "Rooftop solar\nHome EV chargers\nBattery storage",
+                "specialty": (
+                    "Rooftop solar for homes and small businesses, wall "
+                    "chargers for electric cars, and battery back-up."
+                ),
+                "issues": (
+                    "Panels producing less than expected: we clean them and "
+                    "check the inverter settings.\nCharger too slow: we check "
+                    "the supply and move the charger to its own circuit."
+                ),
+                "requirements": "Send your last two electricity bills and a photo of the roof.",
+                "process": "Roof survey, then a design with the expected savings. Installation in one to two days.",
+                "portfolio": [
+                    ("Solar Array for a Guest House", "Villa Corail", 22, "solarvolt.png"),
+                    ("Inverter and Board for a 3 kW System", "Nitin P.", 64, "smart_panel.png"),
+                    ("EV Charger Supply Cabling", "Claire M.", 150, "conduit_wiring.png"),
+                ],
             },
             {
-                "first": "Maria", "last": "Garcia", "business": "Garcia Handyman",
+                "first": "Maria", "last": "Garcia", "business": "Garcia Handyman", "areas": ["PLAINES_WILHEMS", "BLACK_RIVER"],
                 "title": "Registered Contractor", "town": "Quatre Bornes",
                 "district": "PLAINES_WILHEMS", "years": 9, "tier": "PRO",
                 "client_type": "RESIDENTIAL", "scale": "SMALL",
@@ -285,9 +407,31 @@ class Command(BaseCommand):
                     ("House Painting", None, "painting"),
                     ("Custom Furniture", None, "carpentry"),
                 ],
+                "bio": (
+                    "Maria runs a small team of carpenters and painters in "
+                    "Quatre Bornes. We build fitted furniture and repaint "
+                    "rooms and facades, often in the same project."
+                ),
+                "specialisations": "Fitted wardrobes\nInterior painting\nSmall renovations",
+                "specialty": (
+                    "Made-to-measure wardrobes and kitchen cupboards, interior "
+                    "and exterior painting, and small room makeovers."
+                ),
+                "issues": (
+                    "Paint peeling after the rainy season: we treat the damp "
+                    "and use a breathable paint.\nSwollen cupboard doors: we "
+                    "replace them with moisture-resistant board."
+                ),
+                "requirements": "Room sizes or a quick sketch, and photos of the space.",
+                "process": "Colour samples are painted on the wall before the job starts.",
+                "portfolio": [
+                    ("Repainting a Family House", "Elizabeth G.", 40, "house_paint.png"),
+                    ("Bathroom Cabinet and Shelving", "Lisa J.", 120, "bathroom.png"),
+                    ("Garage Door and Frame", "Emma L.", 185, "garage_door.png"),
+                ],
             },
             {
-                "first": "Harry", "last": "Styles", "business": "Styles Plumbing",
+                "first": "Harry", "last": "Styles", "business": "Styles Plumbing", "areas": ["PLAINES_WILHEMS", "GRAND_PORT", "SAVANNE"],
                 "title": "Licensed Plumber", "town": "Curepipe",
                 "district": "PLAINES_WILHEMS", "years": 11, "tier": "STARTER",
                 "client_type": "BOTH", "scale": "MEDIUM",
@@ -297,10 +441,35 @@ class Command(BaseCommand):
                     ("Pipe Leak Repair", None, "plumbing"),
                     ("Bathroom Renovation", None, "interior"),
                 ],
+                "bio": (
+                    "Harry has 11 years of plumbing experience in Curepipe and "
+                    "the central plateau. Most calls are leaks, water heaters "
+                    "and bathroom refits."
+                ),
+                "specialisations": "Leak repair\nWater heaters\nBathroom refits",
+                "specialty": (
+                    "Finding and fixing leaks, installing solar and electric "
+                    "water heaters, and full bathroom refits."
+                ),
+                "issues": (
+                    "Low water pressure upstairs: we check the tank and fit a "
+                    "pressure pump if needed.\nWater heater not heating: we "
+                    "test the element and thermostat."
+                ),
+                "requirements": "Tell us where the leak is and how long it has been there.",
+                "process": "Emergency calls answered the same day in Curepipe.",
+                "portfolio": [
+                    ("Leak Repair Under a Kitchen Sink", "Ravi S.", 18, "water_pipes.png"),
+                    ("Dishwasher Plumbing", "Sandra T.", 70, "dishwasher.png"),
+                    ("Full Bathroom Refit", "Yan C.", 175, "bathroom.png"),
+                ],
             },
         ]
+        # Approved at different times, so "Approvals" has a real history.
+        verified_ages = [210, 150, 95, 40, 18, 6]
         providers = {}
         for index, row in enumerate(rows):
+            verified_age = verified_ages[index]
             user = self.make_user(
                 row["first"], row["last"], User.Role.PROVIDER,
                 avatar=row["avatar"], district=row["district"],
@@ -314,22 +483,38 @@ class Command(BaseCommand):
                 district=row["district"], years_experience=row["years"],
                 client_type=row["client_type"], project_scale=row["scale"],
                 cover_photo=image(folder, cover),
-                areas_served=[row["district"], "MOKA"],
+                areas_served=row["areas"],
                 verification_status="APPROVED",
                 verification_stage="INSURANCE",
-                submitted_at=timezone.now() - datetime.timedelta(days=90),
-                verified_at=timezone.now() - datetime.timedelta(days=80),
-                bio=(
-                    f"With over {row['years']} years of professional "
-                    "experience, we deliver safe, precise and reliable work "
-                    "with a focus on customer service."
-                ),
-                service_requirements=(
+                submitted_at=timezone.now()
+                - datetime.timedelta(days=verified_age + 6),
+                verified_at=timezone.now() - datetime.timedelta(days=verified_age),
+                bio=row.get("bio", ""),
+                main_specializations=row.get("specialisations", ""),
+                specialty_areas=row.get("specialty", ""),
+                common_issues=row.get("issues", ""),
+                service_requirements=row.get("requirements", (
                     "A preliminary site description and service request are "
                     "needed for an accurate quote."
-                ),
-                process_notes="On-site checks are mandatory.",
+                )),
+                process_notes=row.get("process", "On-site checks are mandatory."),
+                bank_name="MCB" if index % 2 == 0 else "SBM",
+                bank_account_number=f"0001{23450000 + index * 1111}",
             )
+            for stage in ["IDENTITY", "BACKGROUND", "LICENSE", "INSURANCE"]:
+                m.VerificationLog.objects.create(
+                    provider=provider, admin=self.admin,
+                    action=m.VerificationLog.Action.STAGE, stage=stage,
+                )
+            log = m.VerificationLog.objects.create(
+                provider=provider, admin=self.admin,
+                action=m.VerificationLog.Action.APPROVE,
+                note="All documents checked.",
+            )
+            backdate(log, created_at=provider.verified_at)
+            m.VerificationLog.objects.filter(
+                provider=provider, action=m.VerificationLog.Action.STAGE
+            ).update(created_at=provider.verified_at - datetime.timedelta(days=2))
             provider.categories.set(
                 [self.categories[key] for key in row["categories"]]
             )
@@ -340,12 +525,33 @@ class Command(BaseCommand):
                     icon=image("services", icon) if icon else "",
                 )
             m.Subscription.objects.create(provider=provider, tier=row["tier"])
+            # One subscription payment per month since the provider joined.
             if row["tier"] != "STARTER":
-                m.Payment.objects.create(
-                    provider=provider, tier=row["tier"],
-                    billing_cycle="MONTHLY",
-                    amount=m.Subscription.price_for(row["tier"], "MONTHLY"),
-                    reference=f"PAY-{1000 + index}",
+                for month in range(min(verified_age // 30 + 1, 7)):
+                    payment = m.Payment.objects.create(
+                        provider=provider, tier=row["tier"],
+                        billing_cycle="MONTHLY",
+                        amount=m.Subscription.price_for(row["tier"], "MONTHLY"),
+                        reference=f"PAY-{1000 + index * 10 + month}",
+                    )
+                    backdate(payment, created_at=timezone.now()
+                             - datetime.timedelta(days=month * 30 + index + 1))
+            for kind, doc_type in [
+                ("license", "LICENSE"), ("certification", "CERTIFICATION"),
+                ("insurance", "INSURANCE"), ("brn", "BRN"),
+            ]:
+                filename = f"{slug(row['business'])}_{kind}.pdf"
+                doc = m.VerificationDocument.objects.create(
+                    provider=provider, doc_type=doc_type, name=filename,
+                    verification_status="APPROVED", file=document(filename),
+                )
+                backdate(doc, uploaded_at=provider.submitted_at)
+            for title, client_name, age, photo in row.get("portfolio", []):
+                folder_name = "providers" if photo == "solarvolt.png" else "portfolio"
+                m.PortfolioItem.objects.create(
+                    provider=provider, title=title, client_name=client_name,
+                    completed_on=days_ago(age), photo=image(folder_name, photo),
+                    description=f"{title} for {client_name}.",
                 )
             m.ScheduleSettings.objects.create(
                 provider=provider,
@@ -375,6 +581,14 @@ class Command(BaseCommand):
             "Tripping breakers: we check the load and replace faulty "
             "breakers.\nFlickering lights: we test the wiring and fixtures."
         )
+        danny.service_requirements = (
+            "A short description of the problem and a photo of the fuse "
+            "board or pipes help us give an accurate quote."
+        )
+        danny.process_notes = (
+            "On-site check first. The quote is sent the same day and work "
+            "starts once you accept it."
+        )
         danny.bank_name = "MCB"
         danny.bank_account_number = "000123454321"
         danny.save()
@@ -383,38 +597,45 @@ class Command(BaseCommand):
     # --- Pending providers (Verification Queue) ---
     def create_pending_providers(self):
         rows = [
-            ("Zara", "Carter", "Plumber", "plumbing", "BACKGROUND", 0),
-            ("Adrian", "Wilson", "Carpenter", "carpentry", "BACKGROUND", 2),
-            ("Kiara", "Patel", "Electrician", "electrician", "BACKGROUND", 9),
-            ("Noah", "Bennet", "Carpenter", "carpentry", "IDENTITY", 14),
-            ("Maya", "Reynolds", "Painter", "painting", "LICENSE", 0),
-            ("Ryan", "Wilson", "Electrician", "electrician", "BACKGROUND", 5),
-            ("Ava", "Milton", "Plumber", "plumbing", "INSURANCE", 10),
+            ("Zara", "Carter", "Plumber", "plumbing", "BACKGROUND", 3, "Saint Pierre", 4),
+            ("Adrian", "Wilson", "Carpenter", "carpentry", "BACKGROUND", 9, "Moka", 7),
+            ("Kiara", "Patel", "Electrician", "electrician", "BACKGROUND", 15, "Rose Belle", 2),
+            ("Noah", "Bennet", "Carpenter", "carpentry", "IDENTITY", 24, "Goodlands", 12),
+            ("Maya", "Reynolds", "Painter", "painting", "LICENSE", 33, "Flacq", 5),
+            ("Ryan", "Wilson", "Electrician", "electrician", "BACKGROUND", 41, "Beau Bassin", 9),
+            ("Ava", "Milton", "Plumber", "plumbing", "INSURANCE", 52, "Mahebourg", 3),
         ]
-        for first, last, title, category, stage, age in rows:
+        for first, last, title, category, stage, age, town, years in rows:
             user = self.make_user(first, last, User.Role.PROVIDER)
             provider = m.ServiceProvider.objects.create(
                 user=user, business_name=f"{first} {last}",
-                profession_title=title, district="MOKA",
-                verification_stage=stage, years_experience=4,
+                profession_title=title, district="MOKA", town=town,
+                verification_stage=stage, years_experience=years,
                 submitted_at=timezone.now() - datetime.timedelta(days=age),
-                bio=f"{title} with 4 years of experience.",
+                bio=(
+                    f"{title} based in {town} with {years} years of "
+                    "experience, now taking on new clients."
+                ),
             )
             provider.categories.set([self.categories[category]])
             m.Subscription.objects.create(provider=provider)
-            m.VerificationDocument.objects.create(
-                provider=provider, doc_type="BRN",
-                name=f"{first.lower()}_brn.pdf",
-                file=ContentFile(SAMPLE_PDF, name=f"{first.lower()}_brn.pdf"),
-            )
+            name = f"{first} {last}"
+            for kind, doc_type in [("brn", "BRN"), ("license", "LICENSE")]:
+                filename = f"{slug(name)}_{kind}.pdf"
+                doc = m.VerificationDocument.objects.create(
+                    provider=provider, doc_type=doc_type, name=filename,
+                    file=document(filename),
+                )
+                backdate(doc, uploaded_at=provider.submitted_at)
 
     # --- Service requests, reviews and earnings ---
     def create_requests(self):
         danny = self.providers["Danny Williams"]
         plumbing = self.categories["plumbing"]
         electrician = self.categories["electrician"]
+        now = timezone.now()
 
-        def request(client, provider, status, days, **extra):
+        def request(client, provider, status, days, created_days_ago=None, **extra):
             client = self.clients[client]
             defaults = {
                 "category": plumbing,
@@ -432,7 +653,23 @@ class Command(BaseCommand):
                 + datetime.timedelta(days=days),
                 **defaults,
             )
+            # Requests were sent before their preferred date, not all today.
+            if created_days_ago is None:
+                created_days_ago = max(-days, 0) + random.randint(2, 9)
+            backdate(created, created_at=now - datetime.timedelta(
+                days=created_days_ago, hours=random.randint(0, 10)))
             return created
+
+        def complete(job, age, rating=None):
+            job.completed_at = now - datetime.timedelta(days=age)
+            job.save(update_fields=["completed_at"])
+            rating = rating or stars()
+            review = m.Review.objects.create(
+                request=job, client=job.client, provider=job.provider,
+                rating=rating, comment=comment_for(rating),
+            )
+            backdate(review, created_at=job.completed_at
+                     + datetime.timedelta(days=random.randint(0, 3)))
 
         # Active jobs (In Progress)
         for name, days in [
@@ -442,11 +679,11 @@ class Command(BaseCommand):
             request(name, danny, "IN_PROGRESS", days)
 
         # New job requests queue (Pending)
-        request("Chloe Kelly", danny, "PENDING", 4,
+        request("Chloe Kelly", danny, "PENDING", 4, created_days_ago=1,
                 description="Leaking Faucet", urgency="HIGH")
-        request("Tony Stark", danny, "PENDING", 6,
+        request("Tony Stark", danny, "PENDING", 6, created_days_ago=2,
                 description="Pipe Leak Repair", job_type="REPAIRS")
-        request("Ollie Watkins", danny, "PENDING", 8,
+        request("Ollie Watkins", danny, "PENDING", 8, created_days_ago=3,
                 description="Toilet Repair", job_type="REPAIRS")
 
         # Upcoming bookings (Scheduled)
@@ -455,71 +692,80 @@ class Command(BaseCommand):
         request("Jen Wilson", danny, "ACCEPTED", 9,
                 description="Shower Installation", job_type="INSTALLATION")
 
-        # Completed jobs: earnings history and reviews (FR 6.1)
+        # Danny's completed jobs: earnings history and reviews (FR 6.1).
+        # He works in both electrical and plumbing jobs.
         history = [
-            ("Chloe Evans", 2, "1850", "INSTALLATION", "Elec. Install", 5),
-            ("Sophia Thompson", 4, "950", "REPAIRS", "Elec. Repair", 5),
-            ("Sarah John", 8, "450", "MAINTENANCE", "Maintenance", 4),
-            ("Ethan Harris", 15, "250", "INSTALLATION", "Elec. Install", 5),
-            ("Jen Wilson", 20, "600", "REPAIRS", "Elec. Repairs", 5),
-            ("Reece James", 25, "800", "INSTALLATION", "Elec. Install", 5),
-            ("Tony Stark", 40, "1200", "REPAIRS", "Pipe Repair", 5),
-            ("Ollie Watkins", 70, "2400", "INSTALLATION", "Panel Upgrade", 4),
-            ("Chloe Kelly", 100, "1600", "MAINTENANCE", "Maintenance", 5),
-            ("Sarah John", 130, "2800", "INSTALLATION", "Rewiring", 5),
-            ("Ethan Harris", 160, "900", "REPAIRS", "Elec. Repair", 5),
-            ("Jen Wilson", 190, "1150", "INSTALLATION", "Elec. Install", 5),
+            ("Chloe Evans", 2, "1850", "INSTALLATION", "Elec. Install", "electrician"),
+            ("Sophia Thompson", 4, "950", "REPAIRS", "Elec. Repair", "electrician"),
+            ("Sarah John", 8, "450", "MAINTENANCE", "Maintenance", "plumbing"),
+            ("Ethan Harris", 15, "250", "REPAIRS", "Tap Replacement", "plumbing"),
+            ("Jen Wilson", 20, "600", "REPAIRS", "Elec. Repairs", "electrician"),
+            ("Reece James", 25, "800", "INSTALLATION", "Elec. Install", "electrician"),
+            ("Tony Stark", 40, "1200", "REPAIRS", "Pipe Repair", "plumbing"),
+            ("Ollie Watkins", 70, "2400", "INSTALLATION", "Panel Upgrade", "electrician"),
+            ("Chloe Kelly", 100, "1600", "MAINTENANCE", "Maintenance", "plumbing"),
+            ("Sarah John", 130, "2800", "INSTALLATION", "Rewiring", "electrician"),
+            ("Ethan Harris", 160, "900", "REPAIRS", "Elec. Repair", "electrician"),
+            ("Jen Wilson", 190, "1150", "INSTALLATION", "Elec. Install", "electrician"),
         ]
-        for index, (name, age, amount, job_type, text, stars) in enumerate(
-            history
-        ):
+        # Danny is the demo account, so his ratings are fixed (average 4.6).
+        danny_ratings = [5, 5, 4, 5, 5, 3, 5, 4, 5, 5, 4, 5]
+        for index, (name, age, amount, job_type, text, category) in enumerate(history):
             job = request(
-                name, danny, "COMPLETED", -age, category=electrician,
+                name, danny, "COMPLETED", -age,
+                category=self.categories[category],
                 job_type=job_type, description=text,
                 final_amount=Decimal(amount),
                 payout_status="PENDING" if index < 2 else "PAID",
             )
-            job.completed_at = timezone.now() - datetime.timedelta(days=age)
-            job.save(update_fields=["completed_at"])
-            m.Review.objects.create(
-                request=job, client=job.client, provider=danny,
-                rating=stars,
-                comment="Professional, on time and very clean work.",
-            )
+            complete(job, age, danny_ratings[index])
 
-        # Other providers: a few completed jobs so they have ratings.
-        for business, ratings in [
-            ("David Williams", [5, 5, 4, 5]),
-            ("PowerLine Electricals", [5, 4, 5, 5, 4]),
-            ("SolarVolt Solution", [5, 5, 5, 5]),
-            ("Garcia Handyman", [5, 4, 4]),
-            ("Styles Plumbing", [4, 5]),
-        ]:
+        # Other providers: completed jobs in their own categories, spread
+        # over the last eight months, with amounts that are not round.
+        active_clients = [
+            name for name, user in self.clients.items()
+            if user.account_status == "ACTIVE"
+        ]
+        jobs_by_provider = {
+            "David Williams": (7, ["electrician"], ["Socket Repair", "Rewiring", "Light Fitting"]),
+            "PowerLine Electricals": (9, ["electrician", "appliance"], ["Board Upgrade", "Three-phase Supply", "Oven Installation", "Safety Report"]),
+            "SolarVolt Solution": (6, ["electrician"], ["Solar Install", "EV Charger", "Inverter Check"]),
+            "Garcia Handyman": (8, ["carpentry", "painting", "interior"], ["Wardrobe Build", "Room Painting", "Kitchen Cupboards", "Facade Painting"]),
+            "Styles Plumbing": (7, ["plumbing", "interior"], ["Leak Repair", "Water Heater", "Bathroom Refit", "Pump Install"]),
+        }
+        for business, (count, category_keys, jobs) in jobs_by_provider.items():
             provider = self.providers[business]
-            for index, stars in enumerate(ratings):
+            for index in range(count):
+                age = random.randint(3, 240)
+                category = self.categories[random.choice(category_keys)]
                 job = request(
-                    list(self.clients)[index], provider, "COMPLETED",
-                    -(10 + index * 7), category=electrician,
-                    job_type="INSTALLATION", description="Installation",
-                    final_amount=Decimal(500 + index * 150),
+                    random.choice(active_clients), provider, "COMPLETED", -age,
+                    category=category,
+                    job_type=random.choice(["INSTALLATION", "REPAIRS", "MAINTENANCE"]),
+                    description=random.choice(jobs),
+                    final_amount=Decimal(random.randrange(350, 4800, 25)),
+                    payout_status="PAID",
                 )
-                job.completed_at = timezone.now() - datetime.timedelta(
-                    days=10 + index * 7
-                )
-                job.save(update_fields=["completed_at"])
-                m.Review.objects.create(
-                    request=job, client=job.client, provider=provider,
-                    rating=stars, comment="Great service.",
-                )
+                complete(job, age)
             provider.recalculate_completed_jobs()
 
-        # Requests shown in the admin Service Requests table
-        request("Sarah John", self.providers["PowerLine Electricals"],
-                "IN_PROGRESS", 1, category=plumbing)
-        request("Ethan Harris", self.providers["Styles Plumbing"],
-                "IN_PROGRESS", -2, description="Painting")
-        request("Liam Davis", self.providers["David Williams"],
-                "PENDING", 3, category=electrician)
+        # Open, declined and cancelled requests in recent weeks, so the
+        # admin tables and the "Requests per week" chart look lived-in.
+        recent = [
+            ("Sarah John", "PowerLine Electricals", "IN_PROGRESS", 1, "electrician", "Board Upgrade"),
+            ("Ethan Harris", "Styles Plumbing", "IN_PROGRESS", -2, "plumbing", "Water Heater"),
+            ("Jen Wilson", "David Williams", "PENDING", 3, "electrician", "Socket Repair"),
+            ("Reece James", "Garcia Handyman", "ACCEPTED", 6, "painting", "Room Painting"),
+            ("Sophia Thompson", "SolarVolt Solution", "PENDING", 10, "electrician", "Solar Install"),
+            ("Chloe Evans", "Garcia Handyman", "DECLINED", -12, "carpentry", "Wardrobe Build"),
+            ("Tony Stark", "Styles Plumbing", "CANCELLED", -20, "plumbing", "Pump Install"),
+            ("Ollie Watkins", "PowerLine Electricals", "ACCEPTED", 12, "appliance", "Oven Installation"),
+            ("Chloe Kelly", "Garcia Handyman", "PENDING", 7, "interior", "Kitchen Cupboards"),
+        ]
+        for name, business, status, days, category, text in recent:
+            request(name, self.providers[business], status, days,
+                    created_days_ago=random.randint(1, 50),
+                    category=self.categories[category], description=text)
         danny.recalculate_completed_jobs()
 
     # --- Portfolio, schedule, payouts, notifications, wishlist ---
@@ -547,17 +793,6 @@ class Command(BaseCommand):
                 description=f"{title} for {client_name}",
             )
 
-        for doc_type, name in [
-            ("LICENSE", "license_masterelectrician.pdf"),
-            ("CERTIFICATION", "4628362025.pdf"),
-            ("BRN", "greencompanyid7824.pdf"),
-        ]:
-            m.VerificationDocument.objects.create(
-                provider=danny, doc_type=doc_type, name=name,
-                verification_status="APPROVED",
-                file=ContentFile(SAMPLE_PDF, name=name),
-            )
-
         today = timezone.localdate()
         m.BlockedDate.objects.create(
             provider=danny, start_date=today + datetime.timedelta(days=12),
@@ -568,19 +803,23 @@ class Command(BaseCommand):
             start_time=datetime.time(12, 0), end_time=datetime.time(13, 0),
         )
 
-        for amount, age in [("3200", 60), ("2100", 30)]:
-            m.Payout.objects.create(
-                provider=danny, amount=Decimal(amount), status="PAID",
-                bank_label=danny.bank_label,
-                paid_at=timezone.now() - datetime.timedelta(days=age),
-            )
+        # TrustyHands does not hold money, so there are no payouts to seed.
 
-        for _ in range(215):
-            view = m.ProfileView.objects.create(provider=danny)
-            view.viewed_at = timezone.now() - datetime.timedelta(
-                days=random.randint(0, 29)
-            )
-            view.save(update_fields=["viewed_at"])
+        # Profile visits for every approved provider, not only Danny.
+        visits = {
+            "Danny Williams": 215, "David Williams": 64,
+            "PowerLine Electricals": 131, "SolarVolt Solution": 158,
+            "Garcia Handyman": 89, "Styles Plumbing": 47,
+        }
+        for business, count in visits.items():
+            for _ in range(count):
+                view = m.ProfileView.objects.create(
+                    provider=self.providers[business]
+                )
+                view.viewed_at = timezone.now() - datetime.timedelta(
+                    days=random.randint(0, 29), hours=random.randint(0, 23)
+                )
+                view.save(update_fields=["viewed_at"])
 
         m.Notification.objects.create(
             user=danny.user, title="New job request",
