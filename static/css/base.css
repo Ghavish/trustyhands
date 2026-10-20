@@ -35,25 +35,45 @@
   color-scheme: light;
 }
 
-/* --- Colour tokens: dark mode (built from the brand colours) --- */
+/* Shared tokens used by both themes */
+:root {
+  --surface-raised: #ffffff;
+  --border-strong: #b9c1cc;
+  --focus-ring: 0 0 0 3px rgba(219, 168, 68, 0.45);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Colour tokens: dark mode (built from the brand navy) ---
+   Every surface is the same navy hue, stepped lighter as it comes
+   forward: page -> card -> raised. Status colours are brighter than in
+   light mode so text and badges stay readable on navy. */
 [data-theme="dark"] {
-  --background: #1b2634;
-  --surface: #243244;
-  --surface-alt: #2c3b50;
-  --surface-muted: #2c3b50;
-  --text: #f6f6f6;
-  --text-muted: #aab4c3;
-  --border: #3a4a60;
-  --header-bg: #131c27;
-  --header-text: #f6f6f6;
-  --success-soft: #1f4a33;
-  --warning-soft: #4d3b12;
-  --danger-soft: #4f2226;
-  --info-soft: #1f3560;
-  --muted-soft: #34445a;
-  --shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --background: #141d29;
+  --surface: #1c2837;
+  --surface-alt: #243346;
+  --surface-muted: #243346;
+  --surface-raised: #2a3b51;
+  --text: #eef1f5;
+  --text-muted: #9fabbc;
+  --border: #2e3e53;
+  --border-strong: #3d5069;
+  --header-bg: #0f1620;
+  --header-text: #eef1f5;
+  --gold: #e0b354;
+  --gold-dark: #cf9f3c;
+  --success: #5fd394;
+  --success-soft: rgba(95, 211, 148, 0.14);
+  --warning: #f2c14e;
+  --warning-soft: rgba(242, 193, 78, 0.14);
+  --danger: #ff7a7e;
+  --danger-soft: rgba(255, 122, 126, 0.14);
+  --info: #82aaff;
+  --info-soft: rgba(130, 170, 255, 0.15);
+  --muted-soft: rgba(159, 171, 188, 0.14);
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 10px 30px -12px rgba(3, 8, 16, 0.75);
   color-scheme: dark;
 }
+
 
 /* --- Reset and page defaults --- */
 *,
@@ -73,7 +93,19 @@ body {
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.5;
-  transition: background 0.2s, color 0.2s;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s, color 0.25s;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Visible keyboard focus everywhere (mouse clicks do not show it) */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 6px;
 }
 
 img {
@@ -92,6 +124,12 @@ h3,
   font-family: var(--font-display);
   margin: 0 0 0.5rem;
   line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 h1 { font-size: 2.4rem; }
@@ -131,11 +169,20 @@ p {
   font: 600 0.95rem var(--font-body);
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.1s, background 0.2s;
+  transition: transform 0.15s var(--ease-out), background 0.2s,
+    box-shadow 0.2s, border-color 0.2s;
 }
 
 .btn:hover {
   transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn:focus-visible {
+  box-shadow: var(--focus-ring);
 }
 
 .btn-accent {
@@ -161,6 +208,17 @@ p {
 [data-theme="dark"] .btn-dark {
   background: #f6f6f6;
   color: var(--navy);
+}
+
+[data-theme="dark"] .btn-accent {
+  color: #141d29;
+  box-shadow: 0 6px 18px -8px rgba(224, 179, 84, 0.55);
+}
+
+[data-theme="dark"] .btn-info,
+[data-theme="dark"] .btn-success,
+[data-theme="dark"] .btn-danger {
+  color: #0f1620;
 }
 
 .btn-danger {
@@ -255,6 +313,26 @@ textarea:focus {
   outline-offset: 1px;
 }
 
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] input[type="tel"],
+[data-theme="dark"] input[type="number"],
+[data-theme="dark"] input[type="date"],
+[data-theme="dark"] input[type="time"],
+[data-theme="dark"] input[type="search"],
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background: var(--background);
+  border-color: var(--border-strong);
+}
+
 textarea {
   min-height: 120px;
   resize: vertical;
@@ -299,6 +377,11 @@ textarea {
   padding: 1.25rem 1.5rem;
 }
 
+/* In dark mode a hairline edge separates cards from the page */
+[data-theme="dark"] .card {
+  border: 1px solid var(--border);
+}
+
 .card-title {
   font-family: var(--font-display);
   font-size: 1.35rem;
@@ -324,6 +407,7 @@ textarea {
   font-size: 2.4rem;
   font-weight: 700;
   line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .stat-grid {
@@ -391,10 +475,24 @@ textarea {
   border-bottom: 2px solid var(--text);
 }
 
+[data-theme="dark"] .table th {
+  border-bottom-color: var(--border-strong);
+  color: var(--text-muted);
+}
+
 .table td {
   padding: 0.7rem 0.5rem;
   border-bottom: 1.5px solid var(--border);
   vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.table tbody tr {
+  transition: background 0.15s;
+}
+
+.table tbody tr:hover {
+  background: var(--muted-soft);
 }
 
 .person {
