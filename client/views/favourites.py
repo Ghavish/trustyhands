@@ -4,21 +4,25 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
-from core.decorators import client_required
+from core.decorators import role_required
 from core.models import ServiceProvider, WishlistItem
 from core.utils import redirect_back
 
-@client_required
+# Providers can save other providers too (they can also book them).
+@role_required("CLIENT", "PROVIDER")
 def favourites(request):
     items = request.user.wishlist_items.select_related(
     "provider", "provider__user"
     )
     return render(request, "client/favourites.html", {"items": items})
 
-@client_required
+@role_required("CLIENT", "PROVIDER")
 @require_POST
 def toggle_favourite(request, pk):
     provider = get_object_or_404(ServiceProvider, pk=pk)
+    if provider.user == request.user:
+        messages.error(request, _("You cannot save your own profile."))
+        return redirect_back(request, "client:favourites")
     item = WishlistItem.objects.filter(
         client=request.user, provider=provider
     ).first()

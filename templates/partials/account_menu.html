@@ -21,6 +21,11 @@
         <a href="{% url 'client:favourites' %}">{% icon "heart" 18 %} {% trans "Favourites" %}</a>
       {% elif user.is_provider %}
         <a href="{% url 'provider:active_jobs' %}">{% icon "grid" 18 %} {% trans "Dashboard" %}</a>
+        {# Providers can book other providers, so they keep these two. #}
+        <a href="{% url 'client:my_requests' %}">
+          {% icon "list" 18 %} {% trans "My Requests" %}
+        </a>
+        <a href="{% url 'client:favourites' %}">{% icon "heart" 18 %} {% trans "Favourites" %}</a>
       {% elif user.is_platform_admin %}
         <a href="{% url 'dashboard:analytics' %}">
           {% icon "grid" 18 %} {% trans "Admin Dashboard" %}

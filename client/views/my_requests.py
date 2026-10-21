@@ -9,7 +9,10 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_POST
-from core.decorators import client_required
+from core.decorators import role_required
+
+# Providers who booked another provider follow their requests here too.
+customer_required = role_required("CLIENT", "PROVIDER")
 from core.models import RequestLog, Review, ServiceRequest
 from core.utils import notify
  
@@ -29,7 +32,7 @@ class ReviewForm(forms.ModelForm):
         widgets = {"comment": forms.Textarea(attrs={"rows": 3})}
  
  
-@client_required
+@customer_required
 def my_requests(request):
     status = request.GET.get("status", "")
     requests = request.user.service_requests.select_related(
@@ -52,7 +55,7 @@ def my_requests(request):
     return render(request, "client/my_requests.html", context)
  
  
-@client_required
+@customer_required
 @require_POST
 def cancel_request(request, pk):
     job = get_object_or_404(ServiceRequest, pk=pk, client=request.user)
@@ -77,7 +80,7 @@ def cancel_request(request, pk):
     return redirect("client:my_requests")
  
  
-@client_required
+@customer_required
 @require_POST
 def leave_review(request, pk):
     job = get_object_or_404(ServiceRequest, pk=pk, client=request.user)

@@ -10,14 +10,23 @@
 {# --- Header with the tools illustration --- #}
 <header class="pl-header"
         style="background-image: url('{% static 'images/tools_header.png' %}')">
-  <a href="{% url 'core:home' %}">
-    <img class="pl-logo" src="{% static 'images/logo.png' %}" alt="TrustyHands">
-  </a>
-  <div class="pl-header-actions">
-    <span class="pl-join">{% trans "Want to Join Us ?" %}</span>
-    <a class="btn btn-accent btn-sm" href="{% url 'users:register' %}?role=PROVIDER">
-      {% trans "Register" %}
+  <div class="pl-header-start">
+    {% if show_back %}{% include "partials/back_button.html" %}{% endif %}
+    <a href="{% url 'core:home' %}">
+      <img class="pl-logo" src="{% static 'images/logo.png' %}" alt="TrustyHands">
     </a>
+  </div>
+  <div class="pl-header-actions">
+    {% if user.is_authenticated and user.is_provider %}
+      <a class="btn btn-accent btn-sm" href="{% url 'provider:active_jobs' %}">
+        {% trans "Service Provider Dashboard" %}
+      </a>
+    {% else %}
+      <span class="pl-join">{% trans "Want to Join Us ?" %}</span>
+      <a class="btn btn-accent btn-sm" href="{% url 'users:register' %}?role=PROVIDER">
+        {% trans "Register" %}
+      </a>
+    {% endif %}
     {% include "partials/theme_toggle.html" %}
     {% include "partials/language_switch.html" %}
     {% include "partials/account_menu.html" %}
@@ -46,9 +55,27 @@
  
       <p class="pl-filter-title">{% trans "FILTER BY" %}</p>
       <label class="pl-filter">
-        <input type="checkbox" name="closest" {% if closest %}checked{% endif %}>
+        <input type="checkbox" name="closest" {% if closest %}checked{% endif %}
+               data-closest-toggle>
         {% icon "pin" 20 %} {% trans "Closest (Location)" %}
       </label>
+      {# Shown when "Closest" is ticked: the visitor picks their district. #}
+      <div class="pl-district" data-district-box {% if not closest %}hidden{% endif %}>
+        <label for="district">{% trans "Where are you?" %}</label>
+        <select id="district" name="district" {% if not closest %}disabled{% endif %}>
+          <option value="">{% trans "Select your district" %}</option>
+          {% for value, label in districts %}
+            <option value="{{ value }}" {% if district == value %}selected{% endif %}>
+              {{ label }}
+            </option>
+          {% endfor %}
+        </select>
+        {% if closest and not district %}
+          <p class="pl-district-hint">
+            {% trans "Choose your district to see the closest professionals first." %}
+          </p>
+        {% endif %}
+      </div>
       <label class="pl-filter">
         <input type="checkbox" name="ratings" {% if ratings %}checked{% endif %}>
         {% icon "star" 20 %} {% trans "Ratings" %}
@@ -60,18 +87,21 @@
       </label>
  
       <p class="pl-filter-title">{% trans "Project Scale" %}</p>
-      <div class="pl-scale">
-        <label>
-          <input type="radio" name="scale" value="" {% if not scale %}checked{% endif %}>
-          {% trans "Any" %}
-          </label>
-        {% for value, label in scales %}
-          <label>
-            <input type="radio" name="scale" value="{{ value }}"
-                   {% if scale == value %}checked{% endif %}>
-            {{ label }}
-          </label>
-        {% endfor %}
+      {# Slider with four stops. The hidden field carries the real value. #}
+      <div class="pl-scale" data-scale>
+        <input type="hidden" name="scale" value="{{ scale }}" data-scale-value>
+        <input class="pl-scale-range" type="range" min="0" max="{{ scale_max }}"
+               step="1" value="{{ scale_index }}" data-scale-range
+               aria-label="{% trans 'Project Scale' %}"
+               style="--fill: {% widthratio scale_index scale_max 100 %}%">
+        <div class="pl-scale-stops">
+          {% for value, label in scale_stops %}
+            <button type="button" class="pl-scale-stop {% if scale == value %}active{% endif %}"
+                    data-scale-stop="{{ forloop.counter0 }}" data-value="{{ value }}">
+              {% if label %}{{ label }}{% else %}{% trans "Any" %}{% endif %}
+            </button>
+          {% endfor %}
+        </div>
       </div>
       <noscript>
         <button class="btn btn-accent btn-sm" type="submit">{% trans "Apply" %}</button>
@@ -142,11 +172,14 @@
 </div>
 <div class="pl-side">
 <p class="pl-location">{% icon "pin" 22 %} {{ provider.location_label }}</p>
+{% if provider.is_nearby %}
+<span class="badge badge-success pl-near">{% trans "Serves your area" %}</span>
+{% endif %}
 <a class="btn btn-accent pl-view"
 href="{% url 'client:provider_profile' provider.pk %}">
 {% trans "View Profile" %}
 </a>
-{% if user.is_authenticated and user.is_client %}
+{% if user.is_authenticated and user.is_client or user.is_authenticated and user.is_provider and provider.user != user %}
 <form method="post" action="{% url 'client:toggle_favourite' provider.pk %}">
 {% csrf_token %}
 <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -169,4 +202,8 @@ class="btn-link pl-fav {% if provider.is_favourite %}saved{% endif %}">
 </div>
 </main>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/client/provider_list.js' %}"></script>
 {% endblock %}

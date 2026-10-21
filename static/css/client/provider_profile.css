@@ -245,3 +245,13 @@
     grid-template-columns: 1fr;
  }
 }
+/* --- Back button above the header card --- */
+.pp-back {
+  margin: 0 0 1rem;
+}
+
+/* Shown instead of "Book Now" when providers look at their own profile */
+.pp-own-note {
+  text-align: center;
+  margin-top: 1.5rem;
+}

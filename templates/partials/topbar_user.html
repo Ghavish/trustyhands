@@ -20,6 +20,9 @@
     {% if user.is_provider %}
       <a href="{% url 'users:edit_profile' %}">{% icon "edit" 18 %} {% trans "Edit Profile" %}</a>
       <a href="{% url 'provider:choose_plan' %}">{% icon "tag" 18 %} {% trans "My Plan" %}</a>
+      {# Requests this provider sent to other providers, and saved providers #}
+      <a href="{% url 'client:my_requests' %}">{% icon "list" 18 %} {% trans "My Requests" %}</a>
+      <a href="{% url 'client:favourites' %}">{% icon "heart" 18 %} {% trans "Favourites" %}</a>
     {% endif %}
     <form method="post" action="{% url 'users:logout' %}">
       {% csrf_token %}

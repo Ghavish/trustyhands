@@ -27,8 +27,13 @@ def provider_profile(request, pk):
     paginator = Paginator(visible_items, 3)
     portfolio_page = paginator.get_page(request.GET.get("page"))
 
+    # Clients and other providers can book; nobody can book themselves.
+    can_book = viewer.is_authenticated and (
+        viewer.is_client or (viewer.is_provider and not is_owner)
+    )
+
     is_favourite = False
-    if viewer.is_authenticated and viewer.is_client:
+    if can_book:
         is_favourite = viewer.wishlist_items.filter(provider=provider).exists()
 
     context = {
@@ -49,6 +54,7 @@ def provider_profile(request, pk):
         ).choices if value in provider.areas_served
         ],
         "is_favourite": is_favourite,
-        "can_book": viewer.is_authenticated and viewer.is_client,
+        "can_book": can_book,
+        "is_owner": is_owner,
         }
     return render(request, "client/provider_profile.html", context)
