@@ -15,7 +15,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
 from core.choices import Availability
-from core.decorators import client_required
+from core.decorators import role_required
 from core.forms import MultipleImageField
 from core.models import (
     RequestLog, ServiceProvider, ServiceRequest, ServiceRequestPhoto,
@@ -81,11 +81,16 @@ class BookingForm(forms.ModelForm):
         return day
 
 
-@client_required
+# Clients and providers can book. A provider books other providers the
+# same way a client does, but never their own profile.
+@role_required("CLIENT", "PROVIDER")
 def book_service(request, pk):
     provider = get_object_or_404(ServiceProvider, pk=pk)
     if not provider.is_public:
         raise Http404
+    if provider.user == request.user:
+        messages.error(request, _("You cannot book your own services."))
+        return redirect("client:provider_profile", pk=provider.pk)
     if provider.availability == Availability.ON_LEAVE:
         messages.warning(request, _("This professional is on leave right now."))
         return redirect("client:provider_profile", pk=provider.pk)
