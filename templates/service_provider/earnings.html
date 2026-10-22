@@ -9,7 +9,12 @@
 {% block topbar_extra %}{% include "partials/date_range.html" %}{% endblock %}
 
 {% block content %}
-{# --- Stat cards --- #}
+{% comment %}
+  --- Stat cards ---
+  TrustyHands does not hold money for providers: clients pay providers
+  directly. So there is no "Available for Payout", "Withdraw Funds",
+  "Next Payout" or payout schedule here.
+{% endcomment %}
 <div class="er-stats">
   <div class="card stat-card">
     <span class="stat-label er-label">{% trans "Total Lifetime Earnings" %}</span>
@@ -17,23 +22,9 @@
     <span class="status status-success"><span class="dot"></span>{% trans "Active" %}</span>
   </div>
   <div class="card stat-card">
-    <span class="stat-label er-label">{% trans "Available for Payout" %}</span>
-    <span class="er-money">{{ available|mur }}</span>
-    <form method="post">
-      {% csrf_token %}
-      <input type="hidden" name="action" value="withdraw">
-      <button class="btn er-withdraw" type="submit">{% trans "Withdraw Funds" %}</button>
-    </form>
-  </div>
-  <div class="card stat-card">
     <span class="stat-label er-label">{% trans "This Month's Earnings" %}</span>
     <span class="er-money er-blue">{{ this_month|mur }}</span>
     <div class="er-spark"><canvas id="month-spark"></canvas></div>
-  </div>
-  <div class="card stat-card er-next">
-    <span class="stat-label er-label">{% trans "Next Payout" %}</span>
-    <span class="er-date">{{ next_payout|date:"jS" }}</span>
-    <span class="er-date-month">{{ next_payout|date:"M"|upper }}</span>
   </div>
 </div>
 
@@ -119,21 +110,6 @@
         <button class="btn btn-accent btn-sm" type="submit">{% trans "Save" %}</button>
       </form>
     </details>
-
-    <h3>{% trans "Payout Schedule" %}</h3>
-    <p>{% trans "Next Payout Date:" %} {{ next_payout|date:"M d, Y" }}</p>
-    <p>{% trans "Estimated Amount:" %} {{ available|mur }}</p>
-    <p>{% trans "Recent Payouts:" %}</p>
-    <ul class="er-payouts">
-      {% for payout in payouts %}
-        <li>
-          + {{ payout.amount|mur }}
-          <span class="muted">{{ payout.paid_at|date:"d M" }}</span>
-        </li>
-      {% empty %}
-        <li class="muted">{% trans "None yet" %}</li>
-      {% endfor %}
-    </ul>
 
     <h3>{% trans "Tax Forms" %}</h3>
     <ul class="er-tax">

@@ -1,6 +1,7 @@
 """
-Earnings Overview (Meer). Payouts and bank details are simulated,
-but every withdrawal and bank change is saved.
+Earnings Overview (Meer). TrustyHands does not hold money for providers,
+so this screen only reports earnings; there are no withdrawals or payouts.
+Bank details are kept so clients know where to pay.
 """
 
 import calendar
@@ -17,9 +18,9 @@ from django.utils.translation import gettext_lazy
 
 from core.choices import JobType
 from core.decorators import provider_profile_required
-from core.models import BankDetailsLog, Payout, ServiceRequest
+from core.models import BankDetailsLog, ServiceRequest
 from core.utils import (
-    day_end, day_start, month_bounds, next_payout_date, parse_date_range,
+    day_end, day_start, month_bounds, parse_date_range,
 )
 
 COMPLETED = ServiceRequest.Status.COMPLETED
@@ -57,26 +58,6 @@ def earnings_overview(request):
     today = timezone.localdate()
     action = request.POST.get("action")
     bank_form = BankForm()
-
-    # --- Withdraw every job that is not paid out yet ---
-    if request.method == "POST" and action == "withdraw":
-        unpaid = completed.filter(payout_status="PENDING")
-        amount = total(unpaid)
-        if not provider.bank_account_number:
-            messages.error(request, _("Please add your bank account first."))
-        elif amount <= 0:
-            messages.error(request, _("There is nothing to withdraw yet."))
-        else:
-            Payout.objects.create(
-                provider=provider, amount=amount, status=Payout.Status.PAID,
-                bank_label=provider.bank_label, paid_at=timezone.now(),
-            )
-            unpaid.update(payout_status="PAID")
-            messages.success(
-                request, _("MUR %(amount)s sent to %(bank)s.")
-                % {"amount": f"{amount:,.0f}", "bank": provider.bank_label},
-            )
-        return redirect("provider:earnings_overview")
 
     # --- Update the bank account ---
     if request.method == "POST" and action == "update_bank":
@@ -125,10 +106,8 @@ def earnings_overview(request):
         "range_start": start,
         "range_end": end,
         "lifetime": total(completed),
-        "available": total(completed.filter(payout_status="PENDING")),
         "this_month": total(this_month),
         "month_trend": day_values,
-        "next_payout": next_payout_date(today),
         "chart_labels": [
             calendar.month_abbr[m] for m in range(1, today.month + 1)
         ],
@@ -137,7 +116,6 @@ def earnings_overview(request):
         "search": search,
         "job_type": job_type,
         "job_types": JobType.choices,
-        "payouts": provider.payouts.all()[:3],
         "bank_form": bank_form,
         "provider": provider,
     }
