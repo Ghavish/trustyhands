@@ -12,24 +12,35 @@
 <div class="an-grid">
   {# --- Pending verifications --- #}
   <a class="card stat-card an-link" href="{% url 'dashboard:verification_queue' %}">
-    <span class="stat-label">{% trans "Pending Verifications" %} {% icon "trend-up" 22 %}</span>
+    <span class="stat-label">{% trans "Pending Verifications" %}</span>
     <span class="stat-value">{{ pending }}</span>
-    {% include "platform_admin/partials/change_badge.html" with value=pending_change %}
+    <span class="badge badge-info an-badge">
+      {% blocktrans count counter=pending_new trimmed %}
+        {{ counter }} new submission this period
+      {% plural %}
+        {{ counter }} new submissions this period
+      {% endblocktrans %}
+    </span>
   </a>
 
   {# --- Approvals --- #}
   <div class="card stat-card">
-    <span class="stat-label">{% trans "Approvals This Month" %} {% icon "trend-up" 22 %}</span>
+    <span class="stat-label">{% trans "Approvals" %}</span>
     <span class="stat-value">{{ approvals }}</span>
     {% include "platform_admin/partials/change_badge.html" with value=approvals_change %}
   </div>
 
   {# --- Transactions --- #}
   <div class="card stat-card an-money">
-    <span class="stat-label">{% trans "Transactions (MUR)" %}</span>
+    <div class="row-between">
+      <span class="stat-label">{% trans "Transactions (MUR)" %}</span>
+      {% include "platform_admin/partials/change_badge.html" with value=transactions_change %}
+    </div>
     <span class="stat-value">{{ transactions|floatformat:0|intcomma }}</span>
-    <div class="an-spark"><canvas id="money-spark"></canvas></div>
-    {% include "platform_admin/partials/change_badge.html" with value=transactions_change %}
+    <span class="muted an-caption">{% trans "Running total for the selected dates" %}</span>
+    {# The chart grows to fill the card, so there is no empty space below #}
+    <div class="an-money-chart"><canvas id="money-chart"
+         aria-label="{% trans 'Running total of transactions per day' %}" role="img"></canvas></div>
   </div>
 
   {# --- Active clients per category --- #}
@@ -40,13 +51,24 @@
     </div>
     <span class="stat-value">{{ active_clients|intcomma }}</span>
     <div class="an-donut-row">
-      <ul class="an-legend">
+      {# Swatch colours are set by charts.js from the same list as the chart #}
+      <ul class="an-legend" id="clients-legend">
         {% for row in category_rows %}
-          <li><span class="an-swatch an-c{{ forloop.counter }}"></span>{{ row.name }}
-            <span class="muted">({{ row.clients }})</span></li>
+          <li data-legend-index="{{ forloop.counter0 }}">
+            <span class="an-swatch"></span>
+            <span class="an-legend-name">{{ row.name }}</span>
+            <strong class="an-legend-value">{{ row.clients }}</strong>
+          </li>
         {% endfor %}
       </ul>
-      <div class="an-donut"><canvas id="clients-donut"></canvas></div>
+      <div class="an-donut">
+        <canvas id="clients-donut" role="img"
+                aria-label="{% trans 'Active clients per category' %}"></canvas>
+        <div class="an-donut-centre">
+          <strong>{{ category_total }}</strong>
+          <span>{% trans "across categories" %}</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -82,6 +104,7 @@
 </div>
 
 {{ money_trend|json_script:"money-trend" }}
+{{ money_labels|json_script:"money-labels" }}
 {{ category_labels|json_script:"category-labels" }}
 {{ category_values|json_script:"category-values" }}
 {{ weekly|json_script:"weekly-trend" }}
@@ -90,10 +113,13 @@
 {% block screen_js %}
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    drawSparkline("money-spark", readJson("money-trend"), "#f5a524");
+    drawAreaChart(
+      "money-chart", readJson("money-labels"), readJson("money-trend"), "MUR"
+    );
     drawSparkline("weekly-spark", readJson("weekly-trend"), "#2f6fed");
     drawDoughnut(
-      "clients-donut", readJson("category-labels"), readJson("category-values")
+      "clients-donut", readJson("category-labels"), readJson("category-values"),
+      "clients-legend"
     );
   });
 </script>

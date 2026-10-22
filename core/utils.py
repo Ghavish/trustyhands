@@ -61,9 +61,14 @@ def day_end(day):
 
 
 def percent_change(current, previous):
-    """Percentage change between two numbers, rounded to one decimal."""
+    """
+    Percentage change between two numbers, rounded to one decimal.
+    Returns None when there is nothing to compare with (the previous value
+    is 0): a percentage would be meaningless there, so the badge shows
+    "New" instead of a made-up 100%.
+    """
     if not previous:
-        return 0.0 if not current else 100.0
+        return 0.0 if not current else None
     return round((current - previous) / previous * 100, 1)
 
 

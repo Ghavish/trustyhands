@@ -1,0 +1,100 @@
+/* =========================================================
+   Dark-mode fixes for individual screens (Somanshu).
+   base.css holds the dark colour tokens; this file only fixes
+   screen styles that used fixed light colours or harsh borders.
+   It is loaded last (see templates/base.html) so these rules win.
+   ========================================================= */
+
+/* --- Landing: experts cards --- */
+[data-theme="dark"] .expert-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .expert-card:hover {
+  background: var(--surface-alt);
+  border-color: rgba(224, 179, 84, 0.45);
+}
+
+/* --- Service Provider list --- */
+[data-theme="dark"] .pl-sidebar {
+  background: var(--surface);
+  box-shadow: none;
+  border-right: 1px solid var(--border);
+}
+
+[data-theme="dark"] .pl-category {
+  background: var(--surface-alt);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+[data-theme="dark"] .pl-banner {
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+/* The 2px white outline was the harshest thing on the page */
+[data-theme="dark"] .pl-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+[data-theme="dark"] .pl-card:hover {
+  border-color: rgba(224, 179, 84, 0.5);
+}
+
+[data-theme="dark"] .pl-services {
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+}
+
+[data-theme="dark"] .pl-cover-empty {
+  background: var(--surface-alt);
+  color: var(--text-muted);
+}
+
+/* --- Provider profile --- */
+[data-theme="dark"] .pp-header,
+[data-theme="dark"] .pp-main {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .accordion-item {
+  background: var(--surface-alt);
+  border-color: var(--border);
+}
+
+/* --- Schedule: the switch track was invisible on navy --- */
+[data-theme="dark"] .sm-switch input {
+  background: var(--border-strong);
+}
+
+[data-theme="dark"] .sm-switch input:checked {
+  background: var(--gold);
+}
+
+/* --- Tables inside cards: softer header line --- */
+[data-theme="dark"] .card .table th {
+  border-bottom: 1px solid var(--border-strong);
+}
+
+/* --- Admin dashboard --- */
+[data-theme="dark"] .an-legend li:hover,
+[data-theme="dark"] .an-legend li.is-active {
+  background: var(--surface-raised);
+}
+
+[data-theme="dark"] .ad-doc img,
+[data-theme="dark"] .ad-doc iframe {
+  background: var(--surface-alt);
+}
+
+/* --- Dropdown menus --- */
+[data-theme="dark"] .dropdown-menu {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+}

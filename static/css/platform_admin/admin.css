@@ -13,6 +13,21 @@
 .an-money {
  grid-row: span 2;
 }
+/* The Transactions card is two rows tall. Its chart takes all the
+   height left over, so the card has no empty space at the bottom. */
+.an-money-chart {
+ position: relative;
+ flex: 1;
+ min-height: 200px;
+ margin-top: 0.5rem;
+}
+.an-caption {
+ font-size: 0.8rem;
+}
+.an-badge {
+ align-self: flex-start;
+ white-space: nowrap;
+}
 .an-clients {
  grid-column: span 2;
 }
@@ -24,31 +39,82 @@
 }
 .an-donut-row {
  display: grid;
- grid-template-columns: 1fr 260px;
+ grid-template-columns: minmax(0, 1fr) 260px;
  align-items: center;
- gap: 1rem;
+ gap: 1.5rem;
 }
 .an-donut {
  position: relative;
  height: 260px;
 }
+/* Total written in the hole of the doughnut */
+.an-donut-centre {
+ position: absolute;
+ inset: 0;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ pointer-events: none;
+ text-align: center;
+}
+.an-donut-centre strong {
+ font: 700 2rem var(--font-display);
+ line-height: 1;
+}
+.an-donut-centre span {
+ font-size: 0.75rem;
+ color: var(--text-muted);
+}
+/* Legend: swatch, name, then a thin bar showing the share */
 .an-legend {
  list-style: none;
  padding: 0;
- line-height: 2;
+ margin: 0.5rem 0 0;
+ display: grid;
+ gap: 0.15rem;
+}
+.an-legend li {
+ position: relative;
+ display: grid;
+ grid-template-columns: auto 1fr auto;
+ align-items: center;
+ gap: 0.6rem;
+ padding: 0.45rem 0.6rem;
+ border-radius: 8px;
+ font-size: 0.9rem;
+ cursor: default;
+ transition: background 0.15s;
+}
+.an-legend li:hover,
+.an-legend li.is-active {
+ background: var(--surface-alt);
+}
+.an-legend li.is-empty {
+ color: var(--text-muted);
+}
+.an-legend-share {
+ position: absolute;
+ left: 0.6rem;
+ right: 0.6rem;
+ bottom: 0.15rem;
+ height: 2px;
+ border-radius: 2px;
+ background: var(--border);
+ overflow: hidden;
+}
+.an-legend-share > span {
+ display: block;
+ height: 100%;
+ border-radius: 2px;
 }
 .an-swatch {
  display: inline-block;
- width: 10px;
- height: 10px;
- margin-right: 0.5rem;
+ width: 12px;
+ height: 12px;
+ border-radius: 4px;
+ background: var(--border);
 }
-.an-c1 { background: #ff9189; }
-.an-c2 { background: #8b7cf6; }
-.an-c3 { background: #6fcf97; }
-.an-c4 { background: #4f7df0; }
-.an-c5 { background: #ffae4a; }
-.an-c6 { background: #3ec4dc; }
 .an-list {
  padding-left: 1.2rem;
  margin: 0;
