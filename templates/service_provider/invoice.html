@@ -8,6 +8,10 @@
 {% endblock %}
 
 {% block body %}
+{% url 'provider:earnings_overview' as earnings_url %}
+<div class="invoice-back no-print">
+  {% include "partials/back_button.html" with fallback=earnings_url %}
+</div>
 <main class="invoice card">
   <header class="row-between">
     <div class="row">

@@ -51,7 +51,7 @@
     <div class="row-between">
       <h2 class="pe-title">{% trans "My Projects" %}</h2>
       {% if can_add %}
-        <a class="btn btn-accent" href="#project-form">
+        <a class="btn btn-accent" href="?add=1#project-form">
           {% icon "plus" 18 %} {% trans "Add Project" %}
         </a>
       {% else %}
@@ -95,8 +95,8 @@
     </div>
 
     {# --- Add / edit form --- #}
-    {% if can_add or editing %}
-      <form class="pe-form" id="project-form" method="post" enctype="multipart/form-data">
+    {% if show_project_form and can_add or editing %}
+      <form class="pe-form pe-form-open" id="project-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="action" value="save_project">
         <h3 class="card-title">
@@ -108,11 +108,9 @@
           {% endfor %}
         </div>
         <button class="btn btn-accent" type="submit">{% trans "Save project" %}</button>
-        {% if editing %}
-          <a class="btn btn-outline" href="{% url 'provider:portfolio_editor' %}">
-            {% trans "Cancel" %}
-          </a>
-        {% endif %}
+        <a class="btn btn-outline" href="{% url 'provider:portfolio_editor' %}">
+          {% trans "Cancel" %}
+        </a>
       </form>
     {% endif %}
   </section>

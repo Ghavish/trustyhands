@@ -29,7 +29,7 @@
 }
 
 .hero-text h1 {
-  font-size: clamp(2.6rem, 5.5vw, 5rem);
+  font-size: clamp(2.2rem, 5.5vw, 5rem);
   font-weight: 800;
   letter-spacing: 0.8px;
 }
@@ -54,15 +54,43 @@
 /* --- 2. Experts --- */
 .experts {
   position: relative;
+  isolation: isolate;
+  overflow: hidden; /* the picture layer is wider than the screen */
   padding: 3rem 1.5rem 5rem;
   text-align: center;
-  background:
-    var(--experts-bg) bottom / 100% auto no-repeat,
-    linear-gradient(to top, #faf5f2 12%, var(--background));
+  background: linear-gradient(to top, #faf5f2 12%, var(--background));
+}
+
+/* The background picture has a thin frame drawn into it (a line along
+   the top and down both sides). It sits on its own layer, slightly
+   wider than the screen so the side lines fall outside, and a mask
+   fades out its top edge and its sides so no line shows. */
+.experts::before {
+  content: "";
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  bottom: 0;
+  aspect-ratio: 1440 / 368;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--experts-bg) bottom / 100% auto no-repeat;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 45%),
+    linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 45%),
+    linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-composite: intersect;
 }
 
 [data-theme="dark"] .experts {
   background: var(--background);
+}
+
+[data-theme="dark"] .experts::before {
+  display: none;
 }
 
 .experts h2 {
@@ -88,13 +116,17 @@
   padding: 1.5rem;
   border-radius: 15px;
   background: var(--surface-muted);
-  box-shadow: 0 7px 4px rgba(0, 0, 0, 0.25);
   text-decoration: none;
-  transition: transform 0.15s;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s,
+    box-shadow 0.25s;
 }
 
-.expert-card:hover {
+/* No heavy shadow at rest (it looked dated); the card lifts on hover */
+.expert-card:hover,
+.expert-card:focus-visible {
   transform: translateY(-4px);
+  background: var(--surface);
+  box-shadow: 0 18px 36px -18px rgba(27, 38, 52, 0.35);
 }
 
 .expert-card img {
@@ -117,6 +149,32 @@
   background-size: cover;
   background-position: top;
   color: #1b2634;
+}
+
+/* Dark mode: the picture is a bright white image, so a navy veil goes
+   over it. The leaves still show through, the text turns light and the
+   top blends into the Experts section above. */
+.join > * {
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="dark"] .join {
+  color: var(--text);
+}
+
+[data-theme="dark"] .join::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(to bottom, var(--background) 0, rgba(27, 38, 52, 0) 22%),
+    linear-gradient(rgba(19, 28, 39, 0.84), rgba(19, 28, 39, 0.9));
+}
+
+[data-theme="dark"] .join p {
+  color: var(--text-muted);
 }
 
 .join h2 {

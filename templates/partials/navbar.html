@@ -6,17 +6,17 @@
   </a>
 
   <nav class="nav-links">
-    {# About Us and Careers have no screen yet, so they are plain text. #}
-    <span>{% trans "About Us" %}</span>
+    <a href="{% url 'core:about' %}">{% trans "About Us" %}</a>
     <a href="{% url 'client:provider_list' %}">{% trans "Services" %}</a>
-    <span>{% trans "Careers" %}</span>
+    <a href="{% url 'core:careers' %}">{% trans "Careers" %}</a>
     <a href="{% if on_landing %}#contact{% else %}{% url 'core:home' %}#contact{% endif %}">
       {% trans "Contact" %}
     </a>
   </nav>
 
   <div class="nav-actions">
-    {% if show_dashboard_button %}
+    {# Providers (including clients who upgraded) get their dashboard here. #}
+    {% if show_dashboard_button or user.is_authenticated and user.is_provider %}
       <a class="btn btn-accent nav-cta" href="{% url 'provider:active_jobs' %}">
         {% trans "Service Provider Dashboard" %}
       </a>
