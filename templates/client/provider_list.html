@@ -142,7 +142,8 @@
  
           <div class="pl-info">
             <h3>{{ provider.business_name }}</h3>
-            <p class="pl-title">{{ provider.profession_title }}</p>
+            <!-- To avoid conflicts for service providers that have registered under multiple professions -->
+            <!-- <p class="pl-title">{{ provider.profession_title }}</p> -->
             <p class="pl-line">
               {% icon "star" 20 "gold" %}
               {{ provider.average_rating }}
