@@ -39,7 +39,6 @@ class AccountForm(forms.ModelForm):
             )
         return phone
 
-
 class ProviderDetailsForm(forms.ModelForm):
     """Extra fields for service providers."""
 
@@ -79,8 +78,7 @@ class ServiceForm(forms.ModelForm):
         model = ProviderService
         fields = ["name", "category", "description", "icon"]
         widgets = {"description": forms.Textarea(attrs={"rows": 2})}
- 
- 
+  
 # --- View --
 @login_required
 def edit_profile(request):

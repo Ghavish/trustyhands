@@ -38,6 +38,7 @@ function setupScaleSlider() {
     hidden.value = stops[index].dataset.value;
   }
 
+  show(Number(range.value));
   range.addEventListener("input", () => show(Number(range.value)));
   stops.forEach((stop) => {
     stop.addEventListener("click", () => {

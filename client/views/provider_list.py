@@ -10,7 +10,6 @@ from core.models import ServiceCategory, ServiceProvider, Subscription
 # Order of the stops on the "Project Scale" slider ("" means Any).
 SCALE_STOPS = [("", "Any")] + list(ProjectScale.choices)
 
-
 def serves_district(provider, district):
     """True when the provider is based in, or travels to, the district."""
     if not district:
@@ -20,7 +19,6 @@ def serves_district(provider, district):
         or district in provider.areas_served
         or District.ISLAND_WIDE in provider.areas_served
     )
-
 
 def rank_providers(providers, client_district, closest_first, rating_first):
     """
@@ -40,7 +38,6 @@ def rank_providers(providers, client_district, closest_first, rating_first):
 
     return sorted(providers, key=sort_key, reverse=True)
 
-
 def card_services(provider):
     """
     Up to two services for the card, each with an icon.
@@ -56,7 +53,6 @@ def card_services(provider):
         for category in provider.categories.all()[:2]:
             services.append({"name": category.name, "icon": category.icon or None})
     return services
-
 
 def provider_list(request):
     categories = ServiceCategory.objects.filter(is_active=True)
